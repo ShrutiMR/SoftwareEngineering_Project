@@ -1,4 +1,4 @@
-microservices/Client.class
-microservices/EventBoard.class
-microservices/MyHttpHandler.class
-routers/UsersRequestHandler.class
+routers\UsersRequestHandler.class
+microservices\EventBoard.class
+microservices\Client.class
+microservices\MyHttpHandler.class
