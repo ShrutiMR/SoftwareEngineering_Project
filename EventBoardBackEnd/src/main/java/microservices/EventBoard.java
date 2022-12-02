@@ -23,7 +23,7 @@ String url = "jdbc:mysql://127.0.0.1:3306/";
 String dbName = "EVENTBOARD";
 String driver = "com.mysql.cj.jdbc.Driver";
 String userName = "root";
-String dbpassword = "muneer";
+String dbpassword = "12345678";
 try {
 // loading driver
 
