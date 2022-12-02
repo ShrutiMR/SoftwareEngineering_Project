@@ -1,5 +1,5 @@
 // A Java program for a Client
-package com.eventboardbackend.microservices;
+package microservices;
 
 import java.net.*;
 import java.io.*;

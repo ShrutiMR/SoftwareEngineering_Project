@@ -3,13 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Project/Maven2/JavaApp/src/main/java/${packagePath}/${mainClassName}.java to edit this template
  */
 
-package com.eventboardbackend.microservices;
+package microservices;
 
 /**
  *
  * @author mkonidala
  */
-import com.eventboardbackend.routers.UsersRequestHandler;
+import routers.UsersRequestHandler;
 import java.sql.*;
 import java.net.*;
 import java.io.*;
