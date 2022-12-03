@@ -3,57 +3,77 @@ package rest;
 
 import java.net.*;
 import java.io.*;
-
-import com.sun.net.httpserver.HttpContext;
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpServer;
-import java.io.IOException;
-import java.net.*;
-import java.io.*;
-import java.util.*;
-import java.sql.*;
-import java.net.*;
-import java.io.*;
 import org.json.JSONObject;
+import java.util.HashMap;
 
-public class RestAPIHook
-{
-	// initialize socket and input output streams
-	private Socket socket		 = null;
-	private DataInputStream input = null;
-	private DataOutputStream out	 = null;
+public class RestAPIHook {
+    // initialize socket and input output streams
 
-	// constructor to put ip address and port
-	
-	public JSONObject restCall(String url, String methodType)
-	{
-            JSONObject ret = null;
-            try{
-		URL url_obj = new URL(url);
-HttpURLConnection con = (HttpURLConnection) url_obj.openConnection();
-con.setRequestMethod(methodType);
+    private Socket socket = null;
+    private DataInputStream input = null;
+    private DataOutputStream out = null;
+
+    // constructor to put ip address and port
+    public JSONObject invokeGetMethod(String url) {
+        JSONObject ret = null;
+        try {
+            URL url_obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) url_obj.openConnection();
+            con.setRequestMethod("GET");
 //con.setRequestProperty("Content-Type", "application/json");
-String contentType = con.getHeaderField("Content-Type");
+            String contentType = con.getHeaderField("Content-Type");
 
-BufferedReader in = new BufferedReader(
-  new InputStreamReader(con.getInputStream()));
-String inputLine;
-StringBuffer content = new StringBuffer();
-while ((inputLine = in.readLine()) != null) {
-    content.append(inputLine);
-}
-
-
-ret = new JSONObject(content.toString());
-
-                
-in.close();
-con.disconnect();
-            } catch(Exception e){
-                
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer content = new StringBuffer();
+            while ((inputLine = in.readLine()) != null) {
+                content.append(inputLine);
             }
-            
-            return ret;
-	}
+
+            ret = new JSONObject(content.toString());
+
+            in.close();
+            con.disconnect();
+        } catch (Exception e) {
+
+        }
+
+        return ret;
+    }
+
+    public JSONObject invokePostMethod(String url_string, HashMap params) {
+        JSONObject ret = null;
+        try {
+            URL url = new URL(url_string);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("POST");
+            JSONObject a = new JSONObject(params);
+            con.setRequestProperty("Content-Type", "application/json");
+            con.setRequestProperty("Accept", "application/json");
+            con.setDoOutput(true);
+
+            try ( OutputStream os = con.getOutputStream()) {
+                byte[] input = a.toString().getBytes("utf-8");
+                os.write(input, 0, input.length);
+            }
+
+            String contentType = con.getHeaderField("Content-Type");
+            System.out.println(contentType);
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer content = new StringBuffer();
+            while ((inputLine = in.readLine()) != null) {
+                content.append(inputLine);
+            }
+            ret = new JSONObject(content.toString());
+            in.close();
+            con.disconnect();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+        return ret;
+    }
 }

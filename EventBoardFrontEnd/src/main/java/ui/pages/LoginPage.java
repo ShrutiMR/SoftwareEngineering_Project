@@ -101,7 +101,7 @@ import rest.RestAPIHook;
         	String passValue = textField2.getText();        //get user entered pasword from the textField2  
                 String url = "http://localhost:9000/products/hi/?product_name="+userValue+"&param2="+passValue;
                 RestAPIHook a = new RestAPIHook();
-                JSONObject p = a.restCall(url, "GET");
+                JSONObject p = a.invokeGetMethod(url);
                 System.out.println("Hi1");
                 System.out.println(p);
                 System.out.println("Hi2");

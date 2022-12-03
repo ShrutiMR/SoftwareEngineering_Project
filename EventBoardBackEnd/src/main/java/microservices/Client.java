@@ -3,18 +3,6 @@ package microservices;
 
 import java.net.*;
 import java.io.*;
-
-import com.sun.net.httpserver.HttpContext;
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpServer;
-import java.io.IOException;
-import java.net.*;
-import java.io.*;
-import java.util.*;
-import java.sql.*;
-import java.net.*;
-import java.io.*;
 import org.json.JSONObject;
 public class Client
 {
@@ -30,8 +18,17 @@ public class Client
             try{
 		URL url = new URL("http://localhost:9000/products/hi/?product_name=mkonidala&param2=Sailaja@007");
 HttpURLConnection con = (HttpURLConnection) url.openConnection();
-con.setRequestMethod("GET");
-//con.setRequestProperty("Content-Type", "application/json");
+con.setRequestMethod("POST");
+JSONObject a = new JSONObject("{\"user_id\":15}");
+con.setRequestProperty("Content-Type", "application/json");
+con.setRequestProperty("Accept", "application/json");
+con.setDoOutput(true);
+
+try(OutputStream os = con.getOutputStream()) {
+    byte[] input = a.toString().getBytes("utf-8");
+    os.write(input, 0, input.length);			
+}
+
 String contentType = con.getHeaderField("Content-Type");
 System.out.println(contentType);
 BufferedReader in = new BufferedReader(
@@ -45,7 +42,7 @@ while ((inputLine = in.readLine()) != null) {
 in.close();
 con.disconnect();
             } catch(Exception e){
-                
+                System.out.println(e.getMessage());
             }
 	}
 }

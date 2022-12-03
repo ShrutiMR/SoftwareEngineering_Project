@@ -1,4 +1,5 @@
 package routers;
+
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -12,129 +13,232 @@ import java.net.*;
 import java.io.*;
 import org.json.JSONObject;
 
+public class UsersRequestHandler implements HttpHandler {
 
-public class UsersRequestHandler implements HttpHandler{    
+    public static Connection connection;
 
-   
-  public static Connection connection;
-  public UsersRequestHandler(Connection c){
-      connection = c;
-  }
-  
-  @Override
-  public void handle(HttpExchange httpExchange) throws IOException {
- System.out.println(httpExchange.getRemoteAddress());
-    String requestParamValue=null; 
-    if("GET".equals(httpExchange.getRequestMethod())) { 
-           System.out.println("I am at Get");
-       requestParamValue = handleGetRequest(httpExchange);
+    public UsersRequestHandler(Connection c) {
+        connection = c;
+    }
 
-     }else if("POST".equals(httpExchange)) { 
-       System.out.println("I am at Post");
-       requestParamValue = "Hi";        
+    @Override
+    public void handle(HttpExchange httpExchange) throws IOException {
+        System.out.println(httpExchange.getRemoteAddress());
+        String requestParamValue = null;
+        if ("GET".equals(httpExchange.getRequestMethod())) {
+            //There has to be a check function here
+            processGetRequest(httpExchange);
 
-      }  
+        } else if ("POST".equals(httpExchange.getRequestMethod())) {
+            processPostRequest(httpExchange);
 
+        }
 
-    handleResponse(httpExchange,requestParamValue); 
+        //handleResponse(httpExchange, requestParamValue);
+    }
 
-  }
+    private HashMap getRequestParameters(HttpExchange httpExchange) {
 
+        String[] parser = httpExchange.
+                getRequestURI()
+                .toString()
+                .split("\\?")[1].split("[=&]");
+        System.out.println(parser);
 
-   private String handleGetRequest(HttpExchange httpExchange) {
-       
-            String[] params = httpExchange.
+        HashMap<String, String> parameters = new HashMap();
 
-                    getRequestURI()
+        for (int i = 0; i < parser.length - 1; i = i + 2) {
+            parameters.put(parser[i], parser[i + 1]);
+        }
+        return parameters;
 
-                    .toString()
+    }
 
-                    .split("\\?")[1].split("[=&]");
-            System.out.println(params);
-            
-            try{
-            Statement st = connection.createStatement();
-            System.out.println(params[1]+params[3]);
-            ResultSet rs = st.executeQuery("Select * from Users where user_name = '" + params[1] + "' and password = '" + params[3]+"'");
-            
-            if(rs.next()){
-                String username = rs.getString(1);
-                System.out.println(username);
-                System.out.println("Login Success");
-            }
-            else{
-                System.out.println("Login Failed"); 
-            }
-            } catch(Exception e){
-                System.out.println("In Sql Exception: " + e.getMessage());
-            }
-            
-            return 
-
-                    httpExchange.
-
-                    getRequestURI()
-
-                    .toString()
-
-                    .split("\\?")[1].split("=")[1];
-
-   }
-
-
-   private void handleResponse(HttpExchange httpExchange, String requestParamValue)  throws  IOException {
-
-           System.out.println(requestParamValue); 
+    public void processGetRequest(HttpExchange httpExchange) {
+        HashMap parameters = getRequestParameters(httpExchange);
+        String user_name = (String) parameters.get("user_name");
+        String password = (String) parameters.get("password");
         OutputStream outputStream = httpExchange.getResponseBody();
-        System.out.println(httpExchange.getHttpContext().getPath());
-        
+        JSONObject jo = new JSONObject();
+        String resp = null;
 
-            StringBuilder htmlBuilder = new StringBuilder();
+        if (user_name != null && password != null) {
+            try {
+                Statement st = connection.createStatement();
 
-            
+                ResultSet rs = st.executeQuery("Select * from Users where user_name = '" + user_name + "' and password = '" + password + "'");
 
-            htmlBuilder.append("<html>").
+                if (rs.next()) {
+                    int user_id = Integer.valueOf(rs.getString("USER_ID"));
+                    int user_code = Integer.valueOf(rs.getString("USER_CODE"));
+                    System.out.println(user_id);
+                    System.out.println("Login Success");
 
-                    append("<body>").
+                    jo.put("isSuccess", true);
+                    jo.put("user_id", user_id);
+                    jo.put("user_code", user_code);
+                    jo.put("first_name", rs.getString("FIRST_NAME"));
+                    jo.put("email", rs.getString("EMAIL"));
+                        
+                    resp = jo.toString();
+                    httpExchange.sendResponseHeaders(200, resp.length());
 
-                    append("<h1>").
+                    // htmlResponse.getBytes()
+                    outputStream.write(resp.getBytes());
 
-                    append("Hello ")
+                    outputStream.flush();
+                    outputStream.close();
 
-                    .append(requestParamValue)
+                } else {
+                    jo.put("isSuccess", false);
 
-                    .append("</h1>")
+                    resp = jo.toString();
+                    httpExchange.sendResponseHeaders(200, resp.length());
 
-                    .append("</body>")
+                    // htmlResponse.getBytes()
+                    outputStream.write(resp.getBytes());
 
-                    .append("</html>");
-
-
-            // encode HTML content 
-
-            //String htmlResponse = StringEscapeUtils.escapeHtml4(htmlBuilder.toString());
-
-     
-
-            // this line is a must
-            // htmlResponse.length()
-            String resp = "Response";
-            for(int i=0;i<50000;i++){
-                resp+="a";
+                    outputStream.flush();
+                    outputStream.close();
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
-            JSONObject jo = new JSONObject();
-jo.put("user_id",1);
 
-resp = jo.toString();
+        } else {
+            try {
+                jo.put("isSuccess", false);
+                resp = jo.toString();
+                httpExchange.sendResponseHeaders(200, resp.length());
+
+                // htmlResponse.getBytes()
+                outputStream.write(resp.getBytes());
+
+                outputStream.flush();
+                outputStream.close();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+    }
+
+    private HashMap getPostParameters(HttpExchange httpExchange) {
+        StringBuilder sb = new StringBuilder();
+        InputStream inputStream = httpExchange.getRequestBody();
+        int i;
+        JSONObject jo = null;
+        HashMap parameters = null;
+        try {
+            System.out.println("I am here");
+            while ((i = inputStream.read()) != -1) {
+                sb.append((char) i);
+            }
+            System.out.println(sb.toString());
+            jo = new JSONObject(sb.toString());
+            System.out.println(jo);
+            Iterator<String> keys = jo.keys();
+            parameters = new HashMap();
+
+            while (keys.hasNext()) {
+                String key = keys.next();
+                parameters.put(key, jo.get(key));
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println(parameters);
+        return parameters;
+
+    }
+
+    public void processPostRequest(HttpExchange httpExchange) {
+        System.out.println("Hello");
+        HashMap parameters = getPostParameters(httpExchange);
+        JSONObject jo = new JSONObject();
+        OutputStream outputStream = httpExchange.getResponseBody();
+        
+        try {
+            Statement st = connection.createStatement();
+            String query = "insert into users (USER_CODE, USER_NAME, PASSWORD, FIRST_NAME, LAST_NAME, EMAIL)  "
+                    + "values(" + parameters.get("user_code") + ", '"
+                    + parameters.get("user_name") + "', '" + parameters.get("password") + "', '" + parameters.get("first_name") + "', '" + parameters.get("last_name") + "', '" + parameters.get("email") + "')";
+            System.out.println(query);
+            st.executeUpdate(query);
+            jo.put("isSuccess",true);
+
+            String resp = jo.toString();
             httpExchange.sendResponseHeaders(200, resp.length());
 
             // htmlResponse.getBytes()
+            
             outputStream.write(resp.getBytes());
 
             outputStream.flush();
 
             outputStream.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            jo.put("isSuccess",false);
 
+            String resp = jo.toString();
+            try{
+                httpExchange.sendResponseHeaders(200, resp.length());
+            
+                outputStream.write(resp.getBytes());
+
+                outputStream.flush();
+
+                outputStream.close();
+            } catch(Exception e1){
+                System.out.println(e1.getMessage());
+            }
         }
+    }
+
+    private void handleResponse(HttpExchange httpExchange, String requestParamValue) throws IOException {
+
+        StringBuilder sb = new StringBuilder();
+        InputStream inputStream = httpExchange.getRequestBody();
+        int i;
+        while ((i = inputStream.read()) != -1) {
+            sb.append((char) i);
+        }
+        System.out.println("hm: " + sb.toString());
+
+        System.out.println(inputStream.toString());
+
+        StringBuilder htmlBuilder = new StringBuilder();
+
+        htmlBuilder.append("<html>").
+                append("<body>").
+                append("<h1>").
+                append("Hello ")
+                .append(requestParamValue)
+                .append("</h1>")
+                .append("</body>")
+                .append("</html>");
+
+        // encode HTML content 
+        //String htmlResponse = StringEscapeUtils.escapeHtml4(htmlBuilder.toString());
+        // this line is a must
+        // htmlResponse.length()
+        String resp = "Response";
+
+        JSONObject jo = new JSONObject();
+        jo.put("user_id", 1);
+
+        resp = jo.toString();
+        httpExchange.sendResponseHeaders(200, resp.length());
+
+        // htmlResponse.getBytes()
+        OutputStream outputStream = httpExchange.getResponseBody();
+        outputStream.write(resp.getBytes());
+
+        outputStream.flush();
+
+        outputStream.close();
+
+    }
 
 }
