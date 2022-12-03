@@ -123,9 +123,8 @@ public class UsersRequestHandler implements HttpHandler{
                 resp+="a";
             }
             JSONObject jo = new JSONObject();
-jo.put("name", "jon doe");
-jo.put("age", "22");
-jo.put("city", "chicago");
+jo.put("user_id",1);
+
 resp = jo.toString();
             httpExchange.sendResponseHeaders(200, resp.length());
 
