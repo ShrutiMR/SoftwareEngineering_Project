@@ -26,13 +26,13 @@ public class RestAPIHook
 
 	// constructor to put ip address and port
 	
-	public JSONObject restCall(String url)
+	public JSONObject restCall(String url, String methodType)
 	{
             JSONObject ret = null;
             try{
 		URL url_obj = new URL(url);
 HttpURLConnection con = (HttpURLConnection) url_obj.openConnection();
-con.setRequestMethod("GET");
+con.setRequestMethod(methodType);
 //con.setRequestProperty("Content-Type", "application/json");
 String contentType = con.getHeaderField("Content-Type");
 
