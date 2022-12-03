@@ -23,7 +23,7 @@ public class UsersRequestHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        System.out.println(httpExchange.getRemoteAddress());
+        System.out.println("Recieved request from: "+httpExchange.getRemoteAddress());
         String requestParamValue = null;
         if ("GET".equals(httpExchange.getRequestMethod())) {
             //There has to be a check function here
@@ -43,7 +43,6 @@ public class UsersRequestHandler implements HttpHandler {
                 getRequestURI()
                 .toString()
                 .split("\\?")[1].split("[=&]");
-        System.out.println(parser);
 
         HashMap<String, String> parameters = new HashMap();
 
@@ -71,8 +70,6 @@ public class UsersRequestHandler implements HttpHandler {
                 if (rs.next()) {
                     int user_id = Integer.valueOf(rs.getString("USER_ID"));
                     int user_code = Integer.valueOf(rs.getString("USER_CODE"));
-                    System.out.println(user_id);
-                    System.out.println("Login Success");
 
                     jo.put("isSuccess", true);
                     jo.put("user_id", user_id);
