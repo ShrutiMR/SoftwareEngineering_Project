@@ -15,12 +15,18 @@ public class MyApp extends JFrame{
 public static void main(String[] args){    
 try  
             {  
-                //create instance of the CreateLoginForm  
-                LoginPage form = new LoginPage(); 
-                form.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-                form.setUndecorated(true);
+//                home.setVisible(true);
+//                LoginPage form = new LoginPage(); 
+//                form.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+//                form.setUndecorated(true);
+//                
+//                form.setVisible(true);
                 
-                form.setVisible(true); //make form visible to the use
+                HomePage1 home1 = new HomePage1(); 
+                home1.setVisible(true);
+               
+//                NewJFrame test = new NewJFrame();
+//                test.setVisible(true);
                 
             }  
             catch(Exception e)  
