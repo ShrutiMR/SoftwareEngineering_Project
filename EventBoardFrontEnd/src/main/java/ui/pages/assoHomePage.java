@@ -9,18 +9,18 @@ package ui.pages;
  *
  * @author shrut
  */
-public final class HomePage1 extends javax.swing.JFrame {
+public final class assoHomePage extends javax.swing.JFrame {
 
     /**
      * Creates new form HomePage
      */
     private String users;
-    public HomePage1() {
+    public assoHomePage() {
         initComponents();
         nonActive();
     }
     
-    public HomePage1(String users) {
+    public assoHomePage(String users) {
         this.users = users;
         initComponents();
         nonActive();
@@ -676,7 +676,7 @@ public final class HomePage1 extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new HomePage1().setVisible(true);
+            new assoHomePage().setVisible(true);
         });
     }
 
