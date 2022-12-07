@@ -199,9 +199,9 @@ public class EventsRequestHandler implements HttpHandler {
                     jo.put("isSuccess", false);
                 } else {
                     rs = st.executeQuery("SELECT E.EVENT_ID, E.START_TIME, E.END_TIME, E.NAME, E.DESCRIPTION, E.VENUE FROM EVENTS E, "
-                            + "FOLLOW_ASSOCIATIONS FA WHERE FA.USER_ID =  "+user_id + "AND E.ASSOCIATION_ID = FA.ASSOCIATION_ID  AND "
-                            + "E.EVENT_ID NOT IN (SELECT FE.EVENT_ID FROM FOLLOW_EVENTS FE WHERE FE.USER_ID = "+user_id+") ORDER BY E.START_TIME ASC;");
-                    
+                            + "FOLLOW_ASSOCIATIONS FA WHERE FA.USER_ID =  " + user_id + " AND E.ASSOCIATION_ID = FA.ASSOCIATION_ID  AND "
+                            + "E.EVENT_ID NOT IN (SELECT FE.EVENT_ID FROM FOLLOW_EVENTS FE WHERE FE.USER_ID = " + user_id + ") ORDER BY E.START_TIME ASC;");
+
                     while (rs.next()) {
                         JSONObject temp = new JSONObject();
                         temp.put("name", rs.getString("NAME"));
@@ -224,120 +224,34 @@ public class EventsRequestHandler implements HttpHandler {
                 outputStream.flush();
                 outputStream.close();
             } else if ("all".equals(type)) {
-            }
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+                //SELECT E.EVENT_ID, E.START_TIME, E.END_TIME, E.NAME, E.DESCRIPTION, E.VENUE FROM EVENTS E WHERE E.START_TIME>SYSDATE() AND E.START_TIME< DATE_ADD(SYSDATE(), INTERVAL 5 DAY) AND E.EVENT_ID NOT IN (SELECT FE.EVENT_ID FROM FOLLOW_EVENTS FE WHERE FE.USER_ID = 12) ORDER BY E.START_TIME ASC;
+                if (user_id == null) {
+                    jo.put("isSuccess", false);
+                } else {
+                    rs = st.executeQuery("SELECT E.EVENT_ID, E.START_TIME, E.END_TIME, E.NAME, E.DESCRIPTION, E.VENUE FROM EVENTS E WHERE E.START_TIME>SYSDATE() AND E.START_TIME< DATE_ADD(SYSDATE(), INTERVAL 5 DAY) AND "
+                            + "E.EVENT_ID NOT IN (SELECT FE.EVENT_ID FROM FOLLOW_EVENTS FE WHERE FE.USER_ID = "+user_id+") ORDER BY E.START_TIME ASC;");
 
-            if ("administrator".equals(type)) {
-                rs = st.executeQuery("SELECT B.EVENT_ID, B.START_TIME, B.END_TIME, B.NAME, B.DESCRIPTION, B.VENUE FROM USERS A, "
-                        + "EVENTS B, FOLLOW_EVENTS C WHERE A.USER_ID=C.USER_ID "
-                        + "AND B.EVENT_ID=C.EVENT_ID AND A.USER_ID=" + user_id + " AND B.START_TIME<SYSDATE() ORDER BY B.START_TIME ASC;");
-                while (rs.next()) {
-                    JSONObject temp = new JSONObject();
-                    temp.put("association_name", rs.getString("ASSOCIATION_NAME"));
-                    temp.put("description", rs.getString("DESCRIPTION"));
-                    temp.put("address", rs.getString("ADDRESS"));
-                    temp.put("contact_info", rs.getString("CONTACT_INFO"));
-                    temp.put("email", rs.getString("EMAIL"));
+                    while (rs.next()) {
+                        JSONObject temp = new JSONObject();
+                        temp.put("name", rs.getString("NAME"));
+                        temp.put("start_time", rs.getString("START_TIME"));
+                        temp.put("end_time", rs.getString("END_TIME"));
+                        temp.put("description", rs.getString("DESCRIPTION"));
+                        temp.put("venue", rs.getString("VENUE"));
 
-                    jo.put(rs.getString("ASSOCIATION_ID"), temp);
+                        jo.put(rs.getString("EVENT_ID"), temp);
+                    }
+                    jo.put("isSuccess", true);
+
                 }
-                jo.put("isSuccess", true);
+
                 resp = jo.toString();
                 httpExchange.sendResponseHeaders(200, resp.length());
-
                 // htmlResponse.getBytes()
                 outputStream.write(resp.getBytes());
 
                 outputStream.flush();
                 outputStream.close();
-            } else if ("all".equals(type)) {
-
-                rs = st.executeQuery("Select * from ASSOCIATIONS WHERE APPROVAL_STATUS='Y'");
-
-                while (rs.next()) {
-                    jo.put(rs.getString("ASSOCIATION_ID"), rs.getString("ASSOCIATION_NAME"));
-                }
-                jo.put("isSuccess", true);
-                resp = jo.toString();
-                httpExchange.sendResponseHeaders(200, resp.length());
-
-                // htmlResponse.getBytes()
-                outputStream.write(resp.getBytes());
-
-                outputStream.flush();
-                outputStream.close();
-
-            } else if ("tag".equals(type)) {
-                String query = "Select * from ASSOCIATIONS WHERE APPROVAL_STATUS='Y' AND TAG_ID = " + (String) parameters.get("tag_id");
-                System.out.println(query);
-                rs = st.executeQuery(query);
-                while (rs.next()) {
-                    jo.put(rs.getString("ASSOCIATION_ID"), rs.getString("ASSOCIATION_NAME"));
-                }
-                jo.put("isSuccess", true);
-                resp = jo.toString();
-                httpExchange.sendResponseHeaders(200, resp.length());
-
-                // htmlResponse.getBytes()
-                outputStream.write(resp.getBytes());
-
-                outputStream.flush();
-                outputStream.close();
-
-            } else if ("single".equals(type)) {
-                if (parameters.get("user_id") != null) {
-                    String query = "Select * from ASSOCIATIONS WHERE APPROVAL_STATUS='Y' AND USER_ID = " + (String) parameters.get("user_id");
-                    System.out.println(query);
-                    rs = st.executeQuery(query);
-                } else if (parameters.get("association_id") != null) {
-                    String query = "Select * from ASSOCIATIONS WHERE APPROVAL_STATUS='Y' AND ASSOCIATION_ID = " + (String) parameters.get("association_id");
-                    System.out.println(query);
-                    rs = st.executeQuery(query);
-                }
-
-                if (rs.next()) {
-                    jo.put(rs.getString("ASSOCIATION_ID"), rs.getString("ASSOCIATION_NAME"));
-                    jo.put("association_id", rs.getString("ASSOCIATION_ID"));
-                    jo.put("association_name", rs.getString("ASSOCIATION_NAME"));
-                    jo.put("description", rs.getString("DESCRIPTION"));
-                    jo.put("address", rs.getString("ADDRESS"));
-                    jo.put("contact_info", rs.getString("CONTACT_INFO"));
-                    jo.put("email", rs.getString("EMAIL"));
-
-                }
-                jo.put("isSuccess", true);
-                resp = jo.toString();
-                httpExchange.sendResponseHeaders(200, resp.length());
-
-                // htmlResponse.getBytes()
-                outputStream.write(resp.getBytes());
-
-                outputStream.flush();
-                outputStream.close();
-
             } else {
                 jo.put("isSuccess", false);
                 resp = jo.toString();
