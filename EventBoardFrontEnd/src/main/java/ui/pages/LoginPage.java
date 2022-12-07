@@ -99,7 +99,7 @@ import rest.RestAPIHook;
         {  
     		String userValue = textField1.getText();        //get user entered username from the textField1  
         	String passValue = textField2.getText();        //get user entered pasword from the textField2  
-                String url = "http://localhost:9000/products/hi/?product_name="+userValue+"&param2="+passValue;
+                String url =  "http://localhost:9000/users/?user_name="+userValue+"&password="+passValue;
                 RestAPIHook a = new RestAPIHook();
                 JSONObject p = a.invokeGetMethod(url);
                 System.out.println("Hi1");
@@ -107,9 +107,19 @@ import rest.RestAPIHook;
                 System.out.println("Hi2");
               
             //check whether the credentials are authentic or not  
-            if (userValue.equals("test1@gmail.com") && passValue.equals("test")) {  //if authentic, navigate user to a new page  
-                  
-                JOptionPane.showMessageDialog(newPanel, "You have successfully logged in!");
+            if (p.get("isSuccess").toString()=="true") {  //if authentic, navigate user to a new page  
+                System.out.println("hi muneer0");
+                System.out.println(p.get("user_code").toString());
+                if(p.get("user_code").toString().equals("1")){
+                    System.out.println("hi muneer1");
+                    newPanel.setVisible(false);
+                    adminHomepage adminHP = new adminHomepage();
+                    adminHP.setVisible(true);
+                    System.out.println("hi muneer2");
+                }
+                else{
+                    JOptionPane.showMessageDialog(newPanel, "You have successfully logged in!"+p.toString());
+                }
 //              HomePage hFrame = new HomePage();
 //            	hFrame.setVisible(true);
             }  

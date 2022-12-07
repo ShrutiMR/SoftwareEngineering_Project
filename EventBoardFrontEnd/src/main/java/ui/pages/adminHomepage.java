@@ -14,10 +14,9 @@ import javax.swing.JButton;
 import javax.swing.*;
 import org.json.JSONObject;
 import rest.RestAPIHook;
-import ui.components.RssFeed;
-import ui.components.RssFeedCell;
-import ui.components.RssFeedTableModel;
-
+import ui.components.Associations.AssociationsFeed;
+import ui.components.Associations.AssociationsFeedCell;
+import ui.components.Associations.AssociationsFeedTableModel;
 
 /**
  *
@@ -29,20 +28,21 @@ public final class adminHomepage extends javax.swing.JFrame {
      * Creates new form HomePage
      */
     private String users;
+
     public adminHomepage() {
         initComponents();
         nonActive();
-        
+
     }
-    
+
     public adminHomepage(String users) {
         this.users = users;
         initComponents();
         nonActive();
-        
+
     }
-    
-    public void nonActive(){
+
+    public void nonActive() {
         navPanelAdminUser.setVisible(false);
         navPanelAdminUser.setEnabled(false);
         jLabel3.setVisible(false);
@@ -56,8 +56,8 @@ public final class adminHomepage extends javax.swing.JFrame {
         profilePanel.setVisible(false);
         profilePanel.setEnabled(false);
     }
-    
-    public void active(){
+
+    public void active() {
         navPanelAdminUser.setVisible(true);
         navPanelAdminUser.setEnabled(true);
         jLabel3.setVisible(true);
@@ -67,7 +67,7 @@ public final class adminHomepage extends javax.swing.JFrame {
         jTable1.setVisible(true);
         jTable1.setEnabled(true);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -118,10 +118,10 @@ public final class adminHomepage extends javax.swing.JFrame {
             System.out.println("Hi2");
             System.out.println(temp);
             System.out.println("Hi3");
-            feeds.add(new RssFeed(temp));
+            feeds.add(new AssociationsFeed(temp));
 
         }
-        jTable1 = new JTable(new RssFeedTableModel(feeds));
+        jTable1 = new JTable(new AssociationsFeedTableModel(feeds));
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
@@ -294,9 +294,9 @@ public final class adminHomepage extends javax.swing.JFrame {
             }
         });
 
-        RssFeedCell cell = new RssFeedCell();
-        jTable1.setDefaultRenderer(RssFeed.class, cell);
-        jTable1.setDefaultEditor(RssFeed.class, cell);
+        AssociationsFeedCell cell = new AssociationsFeedCell();
+        jTable1.setDefaultRenderer(AssociationsFeed.class, cell);
+        jTable1.setDefaultEditor(AssociationsFeed.class, cell);
         jTable1.setRowHeight(60);
         jTable1.setModel(jTable1.getModel());
         jTable1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -353,7 +353,7 @@ public final class adminHomepage extends javax.swing.JFrame {
 
     private void logoutLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutLabelMouseClicked
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_logoutLabelMouseClicked
 
     private void menuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuMouseClicked
@@ -367,7 +367,7 @@ public final class adminHomepage extends javax.swing.JFrame {
         homePanel.setEnabled(true);
         profilePanel.setVisible(false);
         profilePanel.setEnabled(false);
-        
+
     }//GEN-LAST:event_homeAdminButtonActionPerformed
 
     private void profileAssocButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profileAssocButton1ActionPerformed
@@ -385,9 +385,7 @@ public final class adminHomepage extends javax.swing.JFrame {
         homePanel.setVisible(false);
         homePanel.setEnabled(false);
     }//GEN-LAST:event_homePanelMouseClicked
-    
-    
-    
+
     /**
      * @param args the command line arguments
      */
@@ -408,7 +406,7 @@ public final class adminHomepage extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(HomePage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
+
         //</editor-fold>        
         java.awt.EventQueue.invokeLater(() -> {
             new adminHomepage().setVisible(true);
