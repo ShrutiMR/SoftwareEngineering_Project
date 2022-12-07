@@ -24,7 +24,7 @@ public class JInteractiveTableAssociations extends JFrame {
     setDefaultCloseOperation(EXIT_ON_CLOSE);
     setSize(500, 300);
     
-    String url = "http://localhost:9001/associations/?type=administrator";
+    String url = "http://localhost:9001/associations/?type=newAssociations&user_id=12";
     RestAPIHook a = new RestAPIHook();
     JSONObject p = a.invokeGetMethod(url);
     Iterator<String> keys = p.keys();
@@ -40,6 +40,9 @@ public class JInteractiveTableAssociations extends JFrame {
         HashMap temp = new HashMap();
         
         temp.put("association_id", key);
+        temp.put("isAdmin", false);
+        temp.put("isFollow", true);
+        temp.put("user_id","12");
         JSONObject val = p.getJSONObject(key);
         Iterator<String> childKeys = val.keys();
         while(childKeys.hasNext()){
@@ -66,7 +69,7 @@ public class JInteractiveTableAssociations extends JFrame {
   
   public static void main(String[] args){
       JFrame f = new JFrame();
-      JInteractiveTableExample a = new JInteractiveTableExample();
+      JInteractiveTableAssociations a = new JInteractiveTableAssociations();
       //f.add(a);
       a.setVisible(true);
       

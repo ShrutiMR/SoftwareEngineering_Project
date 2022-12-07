@@ -263,6 +263,7 @@ public class EventsRequestHandler implements HttpHandler {
                 outputStream.flush();
                 outputStream.close();
             }
+            st.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
             jo.put("isSuccess", false);
@@ -397,6 +398,7 @@ public class EventsRequestHandler implements HttpHandler {
                     outputStream.close();
                 }
             }
+            st.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
             jo.put("isSuccess", false);

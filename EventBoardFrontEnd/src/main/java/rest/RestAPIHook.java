@@ -18,6 +18,7 @@ public class RestAPIHook {
         JSONObject ret = null;
         try {
             URL url_obj = new URL(url);
+            System.err.println(url);
             HttpURLConnection con = (HttpURLConnection) url_obj.openConnection();
             con.setRequestMethod("GET");
 //con.setRequestProperty("Content-Type", "application/json");
@@ -38,7 +39,7 @@ public class RestAPIHook {
         } catch (Exception e) {
 
         }
-
+        
         return ret;
     }
 

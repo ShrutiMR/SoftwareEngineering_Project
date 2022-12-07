@@ -98,6 +98,7 @@ public class UsersRequestHandler implements HttpHandler {
                     outputStream.flush();
                     outputStream.close();
                 }
+                st.close();
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
@@ -174,6 +175,7 @@ public class UsersRequestHandler implements HttpHandler {
             outputStream.flush();
 
             outputStream.close();
+            st.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
             jo.put("isSuccess",false);
