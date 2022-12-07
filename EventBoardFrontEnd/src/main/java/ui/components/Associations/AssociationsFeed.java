@@ -20,7 +20,8 @@ public class AssociationsFeed {
   public String address;
   public String contact_info;
   public String email;
-  public JButton approveButton = new JButton("Approve");
+  public boolean isApproved = false;
+  public boolean isRejected = false;
   public JButton rejectButton = new JButton("Reject");;
   
 
