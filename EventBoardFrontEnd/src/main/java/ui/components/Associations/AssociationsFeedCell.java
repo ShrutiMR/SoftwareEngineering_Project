@@ -26,6 +26,8 @@ public class AssociationsFeedCell extends AbstractCellEditor implements TableCel
     JLabel text;
     JButton approveButton;
     JButton rejectButton;
+    JButton followButton;
+    JButton unfollowButton;
     AssociationsFeed feed;
 
     public AssociationsFeedCell() {
@@ -34,6 +36,9 @@ public class AssociationsFeedCell extends AbstractCellEditor implements TableCel
 
         approveButton = new JButton("Approve");
         rejectButton = new JButton("Reject");
+        followButton = new JButton("Follow");
+        unfollowButton = new JButton("Unfollow");
+
         approveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 String url = "http://localhost:9001/associations/?approval=Y&association_id=" + feed.association_id;
@@ -72,43 +77,109 @@ public class AssociationsFeedCell extends AbstractCellEditor implements TableCel
 
             }
         });
+        
+        followButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                String url = "http://localhost:9001/associations/?follow=Y&user_id=" + feed.user_id + "&association_id=" + feed.association_id;
+                JSONObject output = rest.invokePostMethod(url, null);
+                if ((boolean) output.get("isSuccess")) {
+                    JOptionPane.showMessageDialog(null, "Followed the association: " + feed.association_name);
+                    feed.isChanged = true;
+                    followButton.setText("Followed");
+                    followButton.setEnabled(false);
+                    followButton.setVisible(true);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Follow failed for the association: " + feed.association_name);
+                }
+            }
+        });
+
+        unfollowButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                String url = "http://localhost:9001/associations/?follow=N&user_id=" + feed.user_id + "&association_id=" + feed.association_id;
+                JSONObject output = rest.invokePostMethod(url, null);
+                if ((boolean) output.get("isSuccess")) {
+                    JOptionPane.showMessageDialog(null, "Unfollowed the association: " + feed.association_name);
+                    feed.isChanged = true;
+                    unfollowButton.setText("Unfollowed");
+                    unfollowButton.setEnabled(false);
+                    unfollowButton.setVisible(true);
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "Unfollow failed for the association: " + feed.association_name);
+                }
+
+            }
+        });
+
 
         panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         text.setSize(new Dimension(400, 400));
         panel.add(text);
         panel.add(approveButton);
         panel.add(rejectButton);
+        panel.add(followButton);
+        panel.add(unfollowButton);
 
     }
 
     private void updateData(AssociationsFeed feed, boolean isSelected, JTable table) {
         this.feed = feed;
+        if (feed.isAdmin) {
+            followButton.setVisible(false);
+            unfollowButton.setVisible(false);
+            if (feed.isApproved || feed.isRejected) {
+                if (feed.isApproved) {
+                    approveButton.setText("Approved");
+                    approveButton.setEnabled(false);
+                    approveButton.setVisible(true);
 
-        if (feed.isApproved || feed.isRejected) {
-            if (feed.isApproved) {
-                approveButton.setText("Approved");
-                approveButton.setEnabled(false);
+                    rejectButton.setEnabled(false);
+                    rejectButton.setVisible(false);
+                } else {
+                    rejectButton.setText("Rejected");
+                    rejectButton.setEnabled(false);
+                    rejectButton.setVisible(true);
+
+                    approveButton.setEnabled(false);
+                    approveButton.setVisible(false);
+                }
+
+            } else {
+                approveButton.setText("Approve");
+                approveButton.setEnabled(true);
                 approveButton.setVisible(true);
 
-                rejectButton.setEnabled(false);
-                rejectButton.setVisible(false);
-            } else {
-                rejectButton.setText("Rejected");
-                rejectButton.setEnabled(false);
+                rejectButton.setText("Reject");
+                rejectButton.setEnabled(true);
                 rejectButton.setVisible(true);
-
-                approveButton.setEnabled(false);
-                approveButton.setVisible(false);
             }
-
-        } else {
-            approveButton.setText("Approve");
-            approveButton.setEnabled(true);
-            approveButton.setVisible(true);
-
-            rejectButton.setText("Reject");
-            rejectButton.setEnabled(true);
-            rejectButton.setVisible(true);
+        } else{
+            approveButton.setVisible(false);
+            rejectButton.setVisible(false);
+            if (feed.isFollow) {
+                unfollowButton.setVisible(false);
+                if (feed.isChanged) {
+                    followButton.setText("Followed");
+                    followButton.setEnabled(false);
+                    followButton.setVisible(true);
+                } else{
+                    followButton.setText("Follow");
+                    followButton.setEnabled(true);
+                    followButton.setVisible(true);
+                }
+            } else {
+                followButton.setVisible(false);
+                if (feed.isChanged) {
+                    unfollowButton.setText("Unfollowed");
+                    unfollowButton.setEnabled(false);
+                    unfollowButton.setVisible(true);
+                } else {
+                    unfollowButton.setText("Unfollow");
+                    unfollowButton.setEnabled(true);
+                    unfollowButton.setVisible(true);
+                }
+            }
         }
 
         String textString = "<html>Association Name: " + feed.association_name + "<br/>Description: " + feed.description + "<br/>";
