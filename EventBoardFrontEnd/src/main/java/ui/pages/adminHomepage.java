@@ -6,12 +6,17 @@ package ui.pages;
 
 import java.awt.Component;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.*;
 import org.json.JSONObject;
 import rest.RestAPIHook;
+import ui.components.RssFeed;
+import ui.components.RssFeedCell;
+import ui.components.RssFeedTableModel;
 
 
 /**
@@ -27,12 +32,14 @@ public final class adminHomepage extends javax.swing.JFrame {
     public adminHomepage() {
         initComponents();
         nonActive();
+        
     }
     
     public adminHomepage(String users) {
         this.users = users;
         initComponents();
         nonActive();
+        
     }
     
     public void nonActive(){
@@ -42,8 +49,12 @@ public final class adminHomepage extends javax.swing.JFrame {
         jLabel3.setEnabled(false);
         menu.setVisible(true);
         menu.setEnabled(true);
-//        homePanel.setVisible(true);
-//        homePanel.setEnabled(true);
+        jTable1.setVisible(true);
+        jTable1.setEnabled(true);
+        homePanel.setVisible(true);
+        homePanel.setEnabled(true);
+        profilePanel.setVisible(false);
+        profilePanel.setEnabled(false);
     }
     
     public void active(){
@@ -53,8 +64,10 @@ public final class adminHomepage extends javax.swing.JFrame {
         jLabel3.setEnabled(true);
         menu.setVisible(false);
         menu.setEnabled(false);
+        jTable1.setVisible(true);
+        jTable1.setEnabled(true);
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -75,10 +88,40 @@ public final class adminHomepage extends javax.swing.JFrame {
         logoutLabel = new javax.swing.JLabel();
         menu = new javax.swing.JLabel();
         profilePanel = new javax.swing.JPanel();
-        homePanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        homePanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        String url = "http://localhost:9001/associations/?type=administrator";
+        RestAPIHook a = new RestAPIHook();
+        JSONObject p = a.invokeGetMethod(url);
+        Iterator<String> keys1 = p.keys();
+
+        List feeds = new ArrayList();
+        while(keys1.hasNext()){
+            String key = keys1.next();
+
+            if("isSuccess".equals(key)){
+                continue;
+            }
+
+            HashMap temp = new HashMap();
+
+            temp.put("association_id", key);
+            JSONObject val = p.getJSONObject(key);
+            Iterator<String> childKeys = val.keys();
+            while(childKeys.hasNext()){
+                String childKey = childKeys.next();
+                temp.put(childKey, val.get(childKey));
+            }
+            System.out.println("Hi2");
+            System.out.println(temp);
+            System.out.println("Hi3");
+            feeds.add(new RssFeed(temp));
+
+        }
+        jTable1 = new JTable(new RssFeedTableModel(feeds));
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
@@ -196,60 +239,92 @@ public final class adminHomepage extends javax.swing.JFrame {
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1140, 70));
 
+        jLabel1.setText("User Type :        Admin");
+
+        jLabel2.setText("Email :        Admin@umass.edu");
+
+        jLabel4.setText("First Name :       Admin");
+
         javax.swing.GroupLayout profilePanelLayout = new javax.swing.GroupLayout(profilePanel);
         profilePanel.setLayout(profilePanelLayout);
         profilePanelLayout.setHorizontalGroup(
             profilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 1140, Short.MAX_VALUE)
+            .addGroup(profilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, profilePanelLayout.createSequentialGroup()
+                    .addContainerGap(281, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(557, Short.MAX_VALUE)))
+            .addGroup(profilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, profilePanelLayout.createSequentialGroup()
+                    .addContainerGap(283, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(557, Short.MAX_VALUE)))
+            .addGroup(profilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(profilePanelLayout.createSequentialGroup()
+                    .addGap(280, 280, 280)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(555, Short.MAX_VALUE)))
         );
         profilePanelLayout.setVerticalGroup(
             profilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 560, Short.MAX_VALUE)
+            .addGroup(profilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, profilePanelLayout.createSequentialGroup()
+                    .addContainerGap(60, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(451, Short.MAX_VALUE)))
+            .addGroup(profilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, profilePanelLayout.createSequentialGroup()
+                    .addContainerGap(172, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(337, Short.MAX_VALUE)))
+            .addGroup(profilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(profilePanelLayout.createSequentialGroup()
+                    .addGap(115, 115, 115)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(395, Short.MAX_VALUE)))
         );
 
         jPanel1.add(profilePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1140, 560));
 
-        jLabel1.setText("Home");
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Details", "Approve", "Deny"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, true, true
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+        homePanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                homePanelMouseClicked(evt);
             }
         });
+
+        RssFeedCell cell = new RssFeedCell();
+        jTable1.setDefaultRenderer(RssFeed.class, cell);
+        jTable1.setDefaultEditor(RssFeed.class, cell);
+        jTable1.setRowHeight(60);
+        jTable1.setModel(jTable1.getModel());
+        jTable1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jTable1.setFocusable(false);
+        jTable1.setOpaque(false);
+        jTable1.setRequestFocusEnabled(false);
+        jTable1.setRowSelectionAllowed(false);
+        jTable1.setSurrendersFocusOnKeystroke(true);
+        jTable1.setUpdateSelectionOnSort(false);
+        jTable1.setVerifyInputWhenFocusTarget(false);
         jScrollPane1.setViewportView(jTable1);
+        homePanel.revalidate();
+        homeAdminButton.doClick();
 
         javax.swing.GroupLayout homePanelLayout = new javax.swing.GroupLayout(homePanel);
         homePanel.setLayout(homePanelLayout);
         homePanelLayout.setHorizontalGroup(
             homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(homePanelLayout.createSequentialGroup()
-                .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(homePanelLayout.createSequentialGroup()
-                        .addGap(62, 62, 62)
-                        .addComponent(jLabel1))
-                    .addGroup(homePanelLayout.createSequentialGroup()
-                        .addGap(178, 178, 178)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(362, Short.MAX_VALUE))
+                .addGap(62, 62, 62)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1040, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(38, Short.MAX_VALUE))
         );
         homePanelLayout.setVerticalGroup(
             homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(homePanelLayout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(19, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(25, 25, 25))
         );
 
@@ -288,30 +363,11 @@ public final class adminHomepage extends javax.swing.JFrame {
 
     private void homeAdminButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeAdminButtonActionPerformed
         // TODO add your handling code here:
-//        homePanel.setVisible(true);
-//        homePanel.setEnabled(true);
+        homePanel.setVisible(true);
+        homePanel.setEnabled(true);
         profilePanel.setVisible(false);
         profilePanel.setEnabled(false);
         
-        String url = "http://localhost:9001/associations/?type=administrator";
-        RestAPIHook a = new RestAPIHook();
-        JSONObject p = a.invokeGetMethod(url);
-        JSONObject x =(JSONObject) p.get("5");
-        Object aN = x.get("association_name");
-        JLabel assoName = new javax.swing.JLabel();
-        assoName.setBounds(100, 80, 135, 14);
-        assoName.setText(aN.toString());
-//        panl.add(assoName);
-//        JLabel assoDesc = new javax.swing.JLabel(x.get("description").toString());
-//        panl.add(assoDesc);
-//        JLabel assoCont = new javax.swing.JLabel(x.get("contact_info").toString());
-//        panl.add(assoCont);
-//        JLabel assoEmail = new javax.swing.JLabel(x.get("email").toString());
-//        panl.add(assoEmail);
-        homePanel.add(assoName);
-//        homePanel.revalidate();
-        homePanel.setVisible(true);
-        homePanel.setEnabled(true);
     }//GEN-LAST:event_homeAdminButtonActionPerformed
 
     private void profileAssocButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profileAssocButton1ActionPerformed
@@ -321,6 +377,14 @@ public final class adminHomepage extends javax.swing.JFrame {
         homePanel.setVisible(false);
         homePanel.setEnabled(false);
     }//GEN-LAST:event_profileAssocButton1ActionPerformed
+
+    private void homePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homePanelMouseClicked
+        // TODO add your handling code here:
+        profilePanel.setVisible(true);
+        profilePanel.setEnabled(true);
+        homePanel.setVisible(false);
+        homePanel.setEnabled(false);
+    }//GEN-LAST:event_homePanelMouseClicked
     
     
     
@@ -345,16 +409,7 @@ public final class adminHomepage extends javax.swing.JFrame {
         }
         //</editor-fold>
         
-        //</editor-fold>
-//        String url = "http://localhost:9001/associations/?type=administrator";
-//        RestAPIHook a = new RestAPIHook();
-//        JSONObject p = a.invokeGetMethod(url);
-//        System.out.println("Hi1");
-//        System.out.println(p.get("5"));
-//        JSONObject x =(JSONObject) p.get("5");
-//        System.out.println(x.get("address"));
-        System.out.println("Hi2");
-        /* Create and display the form */
+        //</editor-fold>        
         java.awt.EventQueue.invokeLater(() -> {
             new adminHomepage().setVisible(true);
         });
@@ -365,11 +420,13 @@ public final class adminHomepage extends javax.swing.JFrame {
     public javax.swing.JPanel homePanel;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    public javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable1;
     private javax.swing.JLabel logoutLabel;
     private javax.swing.JLabel menu;
     private javax.swing.JPanel navPanelAdminUser;
