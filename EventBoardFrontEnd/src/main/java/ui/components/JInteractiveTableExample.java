@@ -4,6 +4,8 @@
  */
 package ui.components;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import javax.swing.*;
 import org.json.JSONObject;
@@ -22,69 +24,35 @@ public class JInteractiveTableExample extends JFrame {
     String url = "http://localhost:9001/associations/?type=administrator";
     RestAPIHook a = new RestAPIHook();
     JSONObject p = a.invokeGetMethod(url);
-    System.out.println("Hi1");
-    System.out.println(p.get("5"));
-    JSONObject x =(JSONObject) p.get("5");
-    System.out.println(x.get("address"));
+    Iterator<String> keys = p.keys();
     
     List feeds = new ArrayList();
-    feeds.add(new RssFeed("pekalicious", "http://feeds2.feedburner.com/pekalicious",
-      new Article[] {
-        new Article("Title1", "http://title1.com", "Content 1"),
-        new Article("Title2", "http://title2.com", "Content 2"),
-        new Article("Title3", "http://title3.com", "Content 3"),
-        new Article("Title4", "http://title4.com", "Content 4"),
-    }));
-    System.out.println(feeds);
-    feeds.add(new RssFeed("Various Thoughts on Photography", "http://various-photography-thoughts.blogspot.com/feeds/posts/default",
-      new Article[] {
-        new Article("Title1", "http://title1.com", "Content 1"),
-        new Article("Title2", "http://title2.com", "Content 2"),
-        new Article("Title3", "http://title3.com", "Content 3"),
-        new Article("Title4", "http://title4.com", "Content 4"),
-    }));
+    while(keys.hasNext()){
+        String key = keys.next();
+        
+        if("isSuccess".equals(key)){
+            continue;
+        }
+        
+        HashMap temp = new HashMap();
+        
+        temp.put("association_id", key);
+        JSONObject val = p.getJSONObject(key);
+        Iterator<String> childKeys = val.keys();
+        while(childKeys.hasNext()){
+            String childKey = childKeys.next();
+            temp.put(childKey, val.get(childKey));
+        }
+        System.out.println("Hi2");
+        System.out.println(temp);
+        System.out.println("Hi3");
+        feeds.add(new RssFeed(temp));
+        
+    }
+    System.out.println("Hi1");
     
-    feeds.add(new RssFeed("Various Thoughts on Photography", "http://various-photography-thoughts.blogspot.com/feeds/posts/default",
-      new Article[] {
-        new Article("Title1", "http://title1.com", "Content 1"),
-        new Article("Title2", "http://title2.com", "Content 2"),
-        new Article("Title3", "http://title3.com", "Content 3"),
-        new Article("Title4", "http://title4.com", "Content 4"),
-    }));
-
-    feeds.add(new RssFeed("Various Thoughts on Photography", "http://various-photography-thoughts.blogspot.com/feeds/posts/default",
-      new Article[] {
-        new Article("Title1", "http://title1.com", "Content 1"),
-        new Article("Title2", "http://title2.com", "Content 2"),
-        new Article("Title3", "http://title3.com", "Content 3"),
-        new Article("Title4", "http://title4.com", "Content 4"),
-    }));
-
-    feeds.add(new RssFeed("Various Thoughts on Photography", "http://various-photography-thoughts.blogspot.com/feeds/posts/default",
-      new Article[] {
-        new Article("Title1", "http://title1.com", "Content 1"),
-        new Article("Title2", "http://title2.com", "Content 2"),
-        new Article("Title3", "http://title3.com", "Content 3"),
-        new Article("Title4", "http://title4.com", "Content 4"),
-    }));
-
-    feeds.add(new RssFeed("Various Thoughts on Photography", "http://various-photography-thoughts.blogspot.com/feeds/posts/default",
-      new Article[] {
-        new Article("Title1", "http://title1.com", "Content 1"),
-        new Article("Title2", "http://title2.com", "Content 2"),
-        new Article("Title3", "http://title3.com", "Content 3"),
-        new Article("Title4", "http://title4.com", "Content 4"),
-    }));
-
-    feeds.add(new RssFeed("Various Thoughts on Photography", "http://various-photography-thoughts.blogspot.com/feeds/posts/default",
-      new Article[] {
-        new Article("Title1", "http://title1.com", "Content 1"),
-        new Article("Title2", "http://title2.com", "Content 2"),
-        new Article("Title3", "http://title3.com", "Content 3"),
-        new Article("Title4", "http://title4.com", "Content 4"),
-    }));
-
-
+    
+    
     JTable table = new JTable(new RssFeedTableModel(feeds));
     RssFeedCell cell = new RssFeedCell();
     table.setDefaultRenderer(RssFeed.class, cell);

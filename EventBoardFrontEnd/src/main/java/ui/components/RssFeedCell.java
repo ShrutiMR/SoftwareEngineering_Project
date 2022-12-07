@@ -12,6 +12,9 @@ import javax.swing.AbstractCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.*;
 import javax.swing.table.TableCellEditor;
+import org.json.JSONObject;
+import rest.RestAPIHook;
+import java.awt.Dimension;
 
 /**
  *
@@ -20,29 +23,63 @@ import javax.swing.table.TableCellEditor;
 public class RssFeedCell extends AbstractCellEditor implements TableCellEditor, TableCellRenderer{
   JPanel panel;
   JLabel text;
-  JButton showButton;
-
+  JButton approveButton;
+  JButton rejectButton;
   RssFeed feed;
 
   public RssFeedCell() {
     text = new JLabel();
-    showButton = new JButton("View Articles");
-    showButton.addActionListener(new ActionListener() {
+      RestAPIHook rest = new RestAPIHook();
+      
+    approveButton = new JButton("Approve");
+    rejectButton = new JButton("Reject");
+    approveButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent arg0) {
-        JOptionPane.showMessageDialog(null, "Reading " + feed.name);
+          String url = "http://localhost:9001/associations/?approval=Y&association_id="+feed.association_id;
+          JSONObject output = rest.invokePostMethod(url,null);
+          if((boolean)output.get("isSuccess")){
+        JOptionPane.showMessageDialog(null, "Approved " + feed.association_name);
+          } else{
+              JOptionPane.showMessageDialog(null, "Approval failed for " + feed.association_name);
+          }
+        approveButton.setText("Approved");
+        approveButton.setEnabled(false);
+        
+        rejectButton.setEnabled(false);
+        rejectButton.setVisible(false);
       }
     });
-
+    
+    rejectButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent arg0) {
+          String url = "http://localhost:9001/associations/?approval=N&association_id="+feed.association_id;
+          JSONObject output = rest.invokePostMethod(url,null);
+          if((boolean)output.get("isSuccess")){
+        JOptionPane.showMessageDialog(null, "Rejected " + feed.association_name);
+          } else{
+              JOptionPane.showMessageDialog(null, "Reject failed for " + feed.association_name);
+          }
+         rejectButton.setText("Rejected");
+        rejectButton.setEnabled(false);
+        
+        approveButton.setEnabled(false);
+        approveButton.setVisible(false);
+      }
+    });
+    
     panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    text.setSize(new Dimension(400, 400));
     panel.add(text);
-    panel.add(showButton);
+    panel.add(approveButton);
+    panel.add(rejectButton);
+    
   }
 
   private void updateData(RssFeed feed, boolean isSelected, JTable table) {
     this.feed = feed;
 
-    text.setText("" + feed.name + "" + feed.url + "Articles " + feed.articles.length + "");
-
+    text.setText("<html>Association Name: " + feed.association_name + "<br/>Description: " + feed.description + "<br/>Contact Information: " + feed.contact_info + ", Email: "+feed.email+"</html>");
+    //"<html>Hello World!<br/>blahblahblah</html>"
     if (isSelected) {
       panel.setBackground(table.getSelectionBackground());
     }else{
