@@ -40,23 +40,20 @@ public class AssociationsRequestHandler implements HttpHandler {
     }
 
     private HashMap getRequestParameters(HttpExchange httpExchange) {
-        HashMap<String, String> parameters = new HashMap(); 
+        HashMap<String, String> parameters = new HashMap();
         System.out.println("I am here inside");
         String[] parser = httpExchange.
                 getRequestURI()
                 .toString()
                 .split("\\?");
         System.out.println(parser[0]);
-        if(parser.length>1){
+        if (parser.length > 1) {
             parser = parser[1].split("[=&]");
-        } else{
+        } else {
             return parameters;
         }
-            
-        System.out.println("I am here inside 1");
 
-        
-        
+        System.out.println("I am here inside 1");
 
         for (int i = 0; i < parser.length - 1; i = i + 2) {
             parameters.put(parser[i], parser[i + 1]);
@@ -76,20 +73,21 @@ public class AssociationsRequestHandler implements HttpHandler {
         ResultSet rs = null;
         try {
             Statement st = connection.createStatement();
-            if("administrator".equals(type)){
+            if ("administrator".equals(type)) {
                 rs = st.executeQuery("Select * from ASSOCIATIONS WHERE APPROVAL_STATUS='N'");
                 while (rs.next()) {
                     JSONObject temp = new JSONObject();
-                    temp.put("association_name",  rs.getString("ASSOCIATION_NAME"));
-                    temp.put("description",  rs.getString("DESCRIPTION"));
-                    temp.put("address",  rs.getString("ADDRESS"));
-                    temp.put("contact_info",  rs.getString("CONTACT_INFO"));
-                    temp.put("email",  rs.getString("EMAIL"));
-                    
+                    temp.put("association_name", rs.getString("ASSOCIATION_NAME"));
+                    temp.put("description", rs.getString("DESCRIPTION"));
+                    temp.put("address", rs.getString("ADDRESS"));
+                    temp.put("contact_info", rs.getString("CONTACT_INFO"));
+                    temp.put("email", rs.getString("EMAIL"));
+
                     jo.put(rs.getString("ASSOCIATION_ID"), temp);
                 }
                 jo.put("isSuccess", true);
                 resp = jo.toString();
+                System.out.println(resp);
                 httpExchange.sendResponseHeaders(200, resp.length());
 
                 // htmlResponse.getBytes()
@@ -97,8 +95,7 @@ public class AssociationsRequestHandler implements HttpHandler {
 
                 outputStream.flush();
                 outputStream.close();
-            }
-            else if ("all".equals(type)) {
+            } else if ("all".equals(type)) {
 
                 rs = st.executeQuery("Select * from ASSOCIATIONS WHERE APPROVAL_STATUS='Y'");
 
@@ -132,7 +129,7 @@ public class AssociationsRequestHandler implements HttpHandler {
                 outputStream.flush();
                 outputStream.close();
 
-            } else if ("single".equals(type)) {
+            } else if ("single".equals(type) && (parameters.get("user_id") != null || parameters.get("association_id") != null)) {
                 if (parameters.get("user_id") != null) {
                     String query = "Select * from ASSOCIATIONS WHERE APPROVAL_STATUS='Y' AND USER_ID = " + (String) parameters.get("user_id");
                     System.out.println(query);
@@ -144,7 +141,6 @@ public class AssociationsRequestHandler implements HttpHandler {
                 }
 
                 if (rs.next()) {
-                    jo.put(rs.getString("ASSOCIATION_ID"), rs.getString("ASSOCIATION_NAME"));
                     jo.put("association_id", rs.getString("ASSOCIATION_ID"));
                     jo.put("association_name", rs.getString("ASSOCIATION_NAME"));
                     jo.put("description", rs.getString("DESCRIPTION"));
@@ -163,6 +159,56 @@ public class AssociationsRequestHandler implements HttpHandler {
                 outputStream.flush();
                 outputStream.close();
 
+            } else if ("newAssociations".equals(type) && parameters.get("user_id") != null) {
+                String query = "SELECT * FROM ASSOCIATIONS A WHERE A.APPROVAL_STATUS='Y' AND A.ASSOCIATION_ID NOT IN "
+                        + "(SELECT FE.ASSOCIATION_ID FROM FOLLOW_ASSOCIATIONS FE WHERE FE.USER_ID="
+                        + (String) parameters.get("user_id") + ");";
+                System.out.println(query);
+                rs = st.executeQuery(query);
+                
+                while (rs.next()) {
+                    JSONObject temp = new JSONObject();
+                    temp.put("association_name", rs.getString("ASSOCIATION_NAME"));
+                    temp.put("description", rs.getString("DESCRIPTION"));
+                    temp.put("address", rs.getString("ADDRESS"));
+                    temp.put("contact_info", rs.getString("CONTACT_INFO"));
+                    temp.put("email", rs.getString("EMAIL"));
+                    jo.put(rs.getString("ASSOCIATION_ID"), temp);
+                }
+                jo.put("isSuccess", true);
+                resp = jo.toString();
+                httpExchange.sendResponseHeaders(200, resp.length());
+
+                // htmlResponse.getBytes()
+                outputStream.write(resp.getBytes());
+
+                outputStream.flush();
+                outputStream.close();
+            } else if ("oldAssociations".equals(type) && parameters.get("user_id") != null) {
+                String query = "SELECT * FROM ASSOCIATIONS A WHERE A.APPROVAL_STATUS='Y' AND A.ASSOCIATION_ID IN "
+                        + "(SELECT FE.ASSOCIATION_ID FROM FOLLOW_ASSOCIATIONS FE WHERE FE.USER_ID="
+                        + (String) parameters.get("user_id") + ");";
+                System.out.println(query);
+                rs = st.executeQuery(query);
+                
+                while (rs.next()) {
+                    JSONObject temp = new JSONObject();
+                    temp.put("association_name", rs.getString("ASSOCIATION_NAME"));
+                    temp.put("description", rs.getString("DESCRIPTION"));
+                    temp.put("address", rs.getString("ADDRESS"));
+                    temp.put("contact_info", rs.getString("CONTACT_INFO"));
+                    temp.put("email", rs.getString("EMAIL"));
+                    jo.put(rs.getString("ASSOCIATION_ID"), temp);
+                }
+                jo.put("isSuccess", true);
+                resp = jo.toString();
+                httpExchange.sendResponseHeaders(200, resp.length());
+
+                // htmlResponse.getBytes()
+                outputStream.write(resp.getBytes());
+
+                outputStream.flush();
+                outputStream.close();
             } else {
                 jo.put("isSuccess", false);
                 resp = jo.toString();
@@ -174,6 +220,7 @@ public class AssociationsRequestHandler implements HttpHandler {
                 outputStream.flush();
                 outputStream.close();
             }
+            st.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
             jo.put("isSuccess", false);
@@ -223,7 +270,7 @@ public class AssociationsRequestHandler implements HttpHandler {
     }
 
     public void processPostRequest(HttpExchange httpExchange) {
-        
+
         HashMap requestParameters = getRequestParameters(httpExchange);
         System.out.println("I am here");
         System.out.println(requestParameters);
@@ -247,7 +294,6 @@ public class AssociationsRequestHandler implements HttpHandler {
 
                     // htmlResponse.getBytes()
                     outputStream.write(resp.getBytes());
-                    
 
                     outputStream.flush();
 
@@ -255,10 +301,10 @@ public class AssociationsRequestHandler implements HttpHandler {
                 } else if ("N".equals(approval)) {
                     rs = st.executeQuery("SELECT USER_ID FROM ASSOCIATIONS WHERE ASSOCIATION_ID = " + association_id);
                     String user_id_of_this_association = null;
-                    if(rs.next()){
+                    if (rs.next()) {
                         user_id_of_this_association = (String) rs.getString("USER_ID");
                     }
-                    
+
                     st.executeUpdate("DELETE FROM ASSOCIATIONS WHERE ASSOCIATION_ID = " + association_id);
                     st.executeUpdate("DELETE FROM USERS WHERE USER_ID = " + user_id_of_this_association);
                     jo.put("isSuccess", true);
@@ -286,7 +332,7 @@ public class AssociationsRequestHandler implements HttpHandler {
 
             } else if (follow != null && user_id != null && association_id != null) {
                 if ("Y".equals(follow)) {
-                    st.executeUpdate("INSERT INTO FOLLOW_ASSOCIATIONS  (ASSOCIATION_ID, USER_ID) VALUES ( " + association_id + "  , " + user_id+")");
+                    st.executeUpdate("INSERT INTO FOLLOW_ASSOCIATIONS  (ASSOCIATION_ID, USER_ID) VALUES ( " + association_id + "  , " + user_id + ")");
                     jo.put("isSuccess", true);
                     resp = jo.toString();
                     httpExchange.sendResponseHeaders(200, resp.length());
@@ -369,7 +415,7 @@ public class AssociationsRequestHandler implements HttpHandler {
                     }
 
                     String new_user_id = null;
-                    
+
                     String query = "INSERT INTO USERS (USER_CODE, USER_NAME, PASSWORD, FIRST_NAME, LAST_NAME, EMAIL)  "
                             + "values(" + "1" + ", '"
                             + user_name + "', '" + password + "', "
@@ -410,6 +456,7 @@ public class AssociationsRequestHandler implements HttpHandler {
                     outputStream.close();
                 }
             }
+            st.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
             jo.put("isSuccess", false);
