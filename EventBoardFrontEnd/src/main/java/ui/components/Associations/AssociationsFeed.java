@@ -20,8 +20,12 @@ public class AssociationsFeed {
   public String address;
   public String contact_info;
   public String email;
-  public JButton approveButton = new JButton("Approve");
-  public JButton rejectButton = new JButton("Reject");;
+  public String user_id;
+  public boolean isApproved = false;
+  public boolean isRejected = false;
+  public boolean isChanged = false;
+  public boolean isFollow = false;
+  public boolean isAdmin = false;
   
 
   public AssociationsFeed(HashMap params) {
@@ -32,5 +36,12 @@ public class AssociationsFeed {
     this.address = (String) params.get("address");
     this.contact_info = (String) params.get("contact_info");
     this.email = (String) params.get("email");
+    this.isAdmin = (boolean) params.get("isAdmin");
+    if(params.get("isFollow")!=null){
+        this.isFollow = (boolean) params.get("isFollow");
+    }
+    if(params.get("user_id")!=null){
+        this.user_id = (String) params.get("user_id");
+    }
   }
 }

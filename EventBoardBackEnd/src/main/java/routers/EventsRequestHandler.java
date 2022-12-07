@@ -199,7 +199,7 @@ public class EventsRequestHandler implements HttpHandler {
                     jo.put("isSuccess", false);
                 } else {
                     rs = st.executeQuery("SELECT E.EVENT_ID, E.START_TIME, E.END_TIME, E.NAME, E.DESCRIPTION, E.VENUE FROM EVENTS E, "
-                            + "FOLLOW_ASSOCIATIONS FA WHERE FA.USER_ID =  " + user_id + " AND E.ASSOCIATION_ID = FA.ASSOCIATION_ID  AND "
+                            + "FOLLOW_ASSOCIATIONS FA WHERE FA.USER_ID =  " + user_id + " AND E.ASSOCIATION_ID = FA.ASSOCIATION_ID  AND E.START_TIME>SYSDATE() AND "
                             + "E.EVENT_ID NOT IN (SELECT FE.EVENT_ID FROM FOLLOW_EVENTS FE WHERE FE.USER_ID = " + user_id + ") ORDER BY E.START_TIME ASC;");
 
                     while (rs.next()) {
