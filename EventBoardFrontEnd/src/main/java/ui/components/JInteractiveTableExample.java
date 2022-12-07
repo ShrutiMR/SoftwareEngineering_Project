@@ -3,6 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package ui.components;
+import ui.components.Associations.AssociationsFeed;
+import ui.components.Associations.AssociationsFeedCell;
+import ui.components.Associations.AssociationsFeedTableModel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -46,17 +49,17 @@ public class JInteractiveTableExample extends JFrame {
         System.out.println("Hi2");
         System.out.println(temp);
         System.out.println("Hi3");
-        feeds.add(new RssFeed(temp));
+        feeds.add(new AssociationsFeed(temp));
         
     }
     System.out.println("Hi1");
     
     
     
-    JTable table = new JTable(new RssFeedTableModel(feeds));
-    RssFeedCell cell = new RssFeedCell();
-    table.setDefaultRenderer(RssFeed.class, cell);
-    table.setDefaultEditor(RssFeed.class, cell);
+    JTable table = new JTable(new AssociationsFeedTableModel(feeds));
+    //AssociationsFeedCell cell = new AssociationsFeedCell();
+    table.setDefaultRenderer(AssociationsFeed.class, new AssociationsFeedCell());
+    table.setDefaultEditor(AssociationsFeed.class, new AssociationsFeedCell());
     table.setRowHeight(60);
     add(new JScrollPane(table));
   }
