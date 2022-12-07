@@ -22,7 +22,6 @@ public class AssociationsFeed {
   public String email;
   public boolean isApproved = false;
   public boolean isRejected = false;
-  public JButton rejectButton = new JButton("Reject");;
   
 
   public AssociationsFeed(HashMap params) {
