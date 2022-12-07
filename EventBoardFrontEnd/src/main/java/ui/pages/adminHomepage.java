@@ -216,19 +216,12 @@ public final class adminHomepage extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Association Name", "Description", "Contact Info", "Email", "Action"
+                "Details", "Approve", "Deny"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
-            };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true
+                false, true, true
             };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -303,9 +296,6 @@ public final class adminHomepage extends javax.swing.JFrame {
         String url = "http://localhost:9001/associations/?type=administrator";
         RestAPIHook a = new RestAPIHook();
         JSONObject p = a.invokeGetMethod(url);
-//        for (int i =0;){
-            
-//        }
         JSONObject x =(JSONObject) p.get("5");
         Object aN = x.get("association_name");
         JLabel assoName = new javax.swing.JLabel();
