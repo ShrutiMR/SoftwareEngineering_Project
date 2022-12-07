@@ -108,6 +108,8 @@ public final class HomePage1 extends javax.swing.JFrame {
         titleLabel = new javax.swing.JLabel();
         logoutLabel = new javax.swing.JLabel();
         menu = new javax.swing.JLabel();
+        homeAdminPanel = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
         postEvePanel = new javax.swing.JPanel();
         profilePanel = new javax.swing.JPanel();
         pastEvePanel = new javax.swing.JPanel();
@@ -390,6 +392,27 @@ public final class HomePage1 extends javax.swing.JFrame {
         );
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1140, 70));
+
+        jLabel2.setText("Home Admin");
+
+        javax.swing.GroupLayout homeAdminPanelLayout = new javax.swing.GroupLayout(homeAdminPanel);
+        homeAdminPanel.setLayout(homeAdminPanelLayout);
+        homeAdminPanelLayout.setHorizontalGroup(
+            homeAdminPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(homeAdminPanelLayout.createSequentialGroup()
+                .addGap(62, 62, 62)
+                .addComponent(jLabel2)
+                .addContainerGap(1007, Short.MAX_VALUE))
+        );
+        homeAdminPanelLayout.setVerticalGroup(
+            homeAdminPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(homeAdminPanelLayout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(jLabel2)
+                .addContainerGap(521, Short.MAX_VALUE))
+        );
+
+        jPanel1.add(homeAdminPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1140, 560));
 
         javax.swing.GroupLayout postEvePanelLayout = new javax.swing.GroupLayout(postEvePanel);
         postEvePanel.setLayout(postEvePanelLayout);
@@ -682,11 +705,13 @@ public final class HomePage1 extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton homeAdminButton;
+    private javax.swing.JPanel homeAdminPanel;
     private javax.swing.JButton homeAssocButton;
     private javax.swing.JButton homeButton;
     private javax.swing.JPanel homePanel;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
