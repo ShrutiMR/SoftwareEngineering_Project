@@ -76,7 +76,29 @@ public class AssociationsRequestHandler implements HttpHandler {
         ResultSet rs = null;
         try {
             Statement st = connection.createStatement();
-            if ("all".equals(type)) {
+            if("administrator".equals(type)){
+                rs = st.executeQuery("Select * from ASSOCIATIONS WHERE APPROVAL_STATUS='N'");
+                while (rs.next()) {
+                    JSONObject temp = new JSONObject();
+                    temp.put("association_name",  rs.getString("ASSOCIATION_NAME"));
+                    temp.put("description",  rs.getString("DESCRIPTION"));
+                    temp.put("address",  rs.getString("ADDRESS"));
+                    temp.put("contact_info",  rs.getString("CONTACT_INFO"));
+                    temp.put("email",  rs.getString("EMAIL"));
+                    
+                    jo.put(rs.getString("ASSOCIATION_ID"), temp);
+                }
+                jo.put("isSuccess", true);
+                resp = jo.toString();
+                httpExchange.sendResponseHeaders(200, resp.length());
+
+                // htmlResponse.getBytes()
+                outputStream.write(resp.getBytes());
+
+                outputStream.flush();
+                outputStream.close();
+            }
+            else if ("all".equals(type)) {
 
                 rs = st.executeQuery("Select * from ASSOCIATIONS WHERE APPROVAL_STATUS='Y'");
 
@@ -217,7 +239,7 @@ public class AssociationsRequestHandler implements HttpHandler {
         try {
             Statement st = connection.createStatement();
             if (approval != null && association_id != null) {
-                if ("true".equals(approval)) {
+                if ("Y".equals(approval)) {
                     st.executeUpdate("UPDATE ASSOCIATIONS SET APPROVAL_STATUS='Y' WHERE ASSOCIATION_ID = " + association_id);
                     jo.put("isSuccess", true);
                     resp = jo.toString();
@@ -225,12 +247,20 @@ public class AssociationsRequestHandler implements HttpHandler {
 
                     // htmlResponse.getBytes()
                     outputStream.write(resp.getBytes());
+                    
 
                     outputStream.flush();
 
                     outputStream.close();
-                } else if ("false".equals(approval)) {
+                } else if ("N".equals(approval)) {
+                    rs = st.executeQuery("SELECT USER_ID FROM ASSOCIATIONS WHERE ASSOCIATION_ID = " + association_id);
+                    String user_id_of_this_association = null;
+                    if(rs.next()){
+                        user_id_of_this_association = (String) rs.getString("USER_ID");
+                    }
+                    
                     st.executeUpdate("DELETE FROM ASSOCIATIONS WHERE ASSOCIATION_ID = " + association_id);
+                    st.executeUpdate("DELETE FROM USERS WHERE USER_ID = " + user_id_of_this_association);
                     jo.put("isSuccess", true);
                     resp = jo.toString();
                     httpExchange.sendResponseHeaders(200, resp.length());
@@ -255,8 +285,8 @@ public class AssociationsRequestHandler implements HttpHandler {
                 }
 
             } else if (follow != null && user_id != null && association_id != null) {
-                if ("true".equals(follow)) {
-                    st.executeUpdate("INSERT INTO FOLLOW_ASSOCIATIONS WHERE ASSOCIATION_ID = " + association_id + " AND USER_ID = " + user_id);
+                if ("Y".equals(follow)) {
+                    st.executeUpdate("INSERT INTO FOLLOW_ASSOCIATIONS  (ASSOCIATION_ID, USER_ID) VALUES ( " + association_id + "  , " + user_id+")");
                     jo.put("isSuccess", true);
                     resp = jo.toString();
                     httpExchange.sendResponseHeaders(200, resp.length());
@@ -267,7 +297,7 @@ public class AssociationsRequestHandler implements HttpHandler {
                     outputStream.flush();
 
                     outputStream.close();
-                } else if ("false".equals(follow)) {
+                } else if ("N".equals(follow)) {
                     st.executeUpdate("DELETE FROM FOLLOW_ASSOCIATIONS WHERE ASSOCIATION_ID = " + association_id + " AND USER_ID = " + user_id);
                     jo.put("isSuccess", true);
                     resp = jo.toString();
