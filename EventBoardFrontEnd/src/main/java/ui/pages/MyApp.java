@@ -22,7 +22,7 @@ try
 //                
 //                form.setVisible(true);
                 
-                HomePage1 home1 = new HomePage1("Normal"); 
+                HomePage1 home1 = new HomePage1("Admin"); 
                 home1.setVisible(true);
                
 //                NewJFrame test = new NewJFrame();
