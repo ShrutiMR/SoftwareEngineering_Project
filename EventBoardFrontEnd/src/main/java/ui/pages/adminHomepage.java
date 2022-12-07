@@ -4,6 +4,12 @@
  */
 package ui.pages;
 
+import java.awt.Component;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.*;
 import org.json.JSONObject;
 import rest.RestAPIHook;
 
@@ -32,49 +38,17 @@ public final class adminHomepage extends javax.swing.JFrame {
     public void nonActive(){
         navPanelAdminUser.setVisible(false);
         navPanelAdminUser.setEnabled(false);
-        navPanelAssocUser.setVisible(false);
-        navPanelAssocUser.setEnabled(false);
-        navPanel.setVisible(false);
-        navPanel.setEnabled(false);
         jLabel3.setVisible(false);
         jLabel3.setEnabled(false);
         menu.setVisible(true);
         menu.setEnabled(true);
+//        homePanel.setVisible(true);
+//        homePanel.setEnabled(true);
     }
     
     public void active(){
-        if(users == null){
-            navPanel.setVisible(true);
-            navPanel.setEnabled(true);
-            navPanelAssocUser.setVisible(false);
-            navPanelAssocUser.setEnabled(false);
-            navPanelAdminUser.setVisible(false);
-            navPanelAdminUser.setEnabled(false);
-        }
-        else switch (users) {
-            case "Assoc" -> {
-                navPanelAssocUser.setVisible(true);
-                navPanelAssocUser.setEnabled(true);
-                navPanelAdminUser.setVisible(false);
-                navPanelAdminUser.setEnabled(false);
-                navPanel.setVisible(false);
-                navPanel.setEnabled(false);
-            }
-            case "Admin" -> {
-                navPanelAdminUser.setVisible(true);
-                navPanelAdminUser.setEnabled(true);
-                navPanelAssocUser.setVisible(false);
-                navPanelAssocUser.setEnabled(false);
-                navPanel.setVisible(false);
-                navPanel.setEnabled(false);
-            }
-            default -> {
-                navPanel.setVisible(true);
-                navPanel.setEnabled(true);
-                navPanelAssocUser.setVisible(false);
-                navPanelAssocUser.setEnabled(false);
-            }
-        }
+        navPanelAdminUser.setVisible(true);
+        navPanelAdminUser.setEnabled(true);
         jLabel3.setVisible(true);
         jLabel3.setEnabled(true);
         menu.setVisible(false);
@@ -93,30 +67,18 @@ public final class adminHomepage extends javax.swing.JFrame {
         jFrame1 = new javax.swing.JFrame();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        navPanel = new javax.swing.JPanel();
-        profileButton = new javax.swing.JButton();
-        pastEveButton = new javax.swing.JButton();
-        upcomEveButton = new javax.swing.JButton();
-        homeButton = new javax.swing.JButton();
         navPanelAdminUser = new javax.swing.JPanel();
         homeAdminButton = new javax.swing.JButton();
         profileAssocButton1 = new javax.swing.JButton();
-        navPanelAssocUser = new javax.swing.JPanel();
-        homeAssocButton = new javax.swing.JButton();
-        profileAssocButton = new javax.swing.JButton();
-        postEveAssocButton = new javax.swing.JButton();
-        upcomEveAssocButton = new javax.swing.JButton();
-        pastEveAssocButton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         titleLabel = new javax.swing.JLabel();
         logoutLabel = new javax.swing.JLabel();
         menu = new javax.swing.JLabel();
-        postEvePanel = new javax.swing.JPanel();
         profilePanel = new javax.swing.JPanel();
-        pastEvePanel = new javax.swing.JPanel();
-        upcomEvePanel = new javax.swing.JPanel();
         homePanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
@@ -140,78 +102,6 @@ public final class adminHomepage extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 70, 870, 560));
-
-        navPanel.setBackground(new java.awt.Color(102, 102, 102));
-
-        profileButton.setBackground(new java.awt.Color(102, 102, 102));
-        profileButton.setForeground(new java.awt.Color(255, 255, 255));
-        profileButton.setText("Profile Settings");
-        profileButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        profileButton.setMaximumSize(new java.awt.Dimension(140, 29));
-        profileButton.setMinimumSize(new java.awt.Dimension(140, 29));
-        profileButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                profileButtonActionPerformed(evt);
-            }
-        });
-
-        pastEveButton.setBackground(new java.awt.Color(102, 102, 102));
-        pastEveButton.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        pastEveButton.setForeground(new java.awt.Color(255, 255, 255));
-        pastEveButton.setText("Past Events");
-        pastEveButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        pastEveButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pastEveButtonActionPerformed(evt);
-            }
-        });
-
-        upcomEveButton.setBackground(new java.awt.Color(102, 102, 102));
-        upcomEveButton.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        upcomEveButton.setForeground(new java.awt.Color(255, 255, 255));
-        upcomEveButton.setText("Upcoming Events");
-        upcomEveButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        upcomEveButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                upcomEveButtonActionPerformed(evt);
-            }
-        });
-
-        homeButton.setBackground(new java.awt.Color(102, 102, 102));
-        homeButton.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        homeButton.setForeground(new java.awt.Color(255, 255, 255));
-        homeButton.setText("Home       ");
-        homeButton.setActionCommand("Home");
-        homeButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        homeButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                homeButtonActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout navPanelLayout = new javax.swing.GroupLayout(navPanel);
-        navPanel.setLayout(navPanelLayout);
-        navPanelLayout.setHorizontalGroup(
-            navPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(profileButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(pastEveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(upcomEveButton, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
-            .addComponent(homeButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        navPanelLayout.setVerticalGroup(
-            navPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(navPanelLayout.createSequentialGroup()
-                .addComponent(profileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(homeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(upcomEveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pastEveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-
-        jPanel1.add(navPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 270, 560));
 
         navPanelAdminUser.setBackground(new java.awt.Color(102, 102, 102));
 
@@ -257,95 +147,7 @@ public final class adminHomepage extends javax.swing.JFrame {
 
         jPanel1.add(navPanelAdminUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 270, 560));
 
-        navPanelAssocUser.setBackground(new java.awt.Color(102, 102, 102));
-
-        homeAssocButton.setBackground(new java.awt.Color(102, 102, 102));
-        homeAssocButton.setForeground(new java.awt.Color(255, 255, 255));
-        homeAssocButton.setText("Home");
-        homeAssocButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        homeAssocButton.setMaximumSize(new java.awt.Dimension(140, 29));
-        homeAssocButton.setMinimumSize(new java.awt.Dimension(140, 29));
-        homeAssocButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                homeAssocButtonActionPerformed(evt);
-            }
-        });
-
-        profileAssocButton.setBackground(new java.awt.Color(102, 102, 102));
-        profileAssocButton.setForeground(new java.awt.Color(255, 255, 255));
-        profileAssocButton.setText("Profile Settings");
-        profileAssocButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        profileAssocButton.setMaximumSize(new java.awt.Dimension(140, 29));
-        profileAssocButton.setMinimumSize(new java.awt.Dimension(140, 29));
-        profileAssocButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                profileAssocButtonActionPerformed(evt);
-            }
-        });
-
-        postEveAssocButton.setBackground(new java.awt.Color(102, 102, 102));
-        postEveAssocButton.setForeground(new java.awt.Color(255, 255, 255));
-        postEveAssocButton.setText("Post Events");
-        postEveAssocButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        postEveAssocButton.setMaximumSize(new java.awt.Dimension(140, 29));
-        postEveAssocButton.setMinimumSize(new java.awt.Dimension(140, 29));
-        postEveAssocButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                postEveAssocButtonActionPerformed(evt);
-            }
-        });
-
-        upcomEveAssocButton.setBackground(new java.awt.Color(102, 102, 102));
-        upcomEveAssocButton.setForeground(new java.awt.Color(255, 255, 255));
-        upcomEveAssocButton.setText("Upcoming Events");
-        upcomEveAssocButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        upcomEveAssocButton.setMaximumSize(new java.awt.Dimension(140, 29));
-        upcomEveAssocButton.setMinimumSize(new java.awt.Dimension(140, 29));
-        upcomEveAssocButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                upcomEveAssocButtonActionPerformed(evt);
-            }
-        });
-
-        pastEveAssocButton.setBackground(new java.awt.Color(102, 102, 102));
-        pastEveAssocButton.setForeground(new java.awt.Color(255, 255, 255));
-        pastEveAssocButton.setText("Past Events");
-        pastEveAssocButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        pastEveAssocButton.setMaximumSize(new java.awt.Dimension(140, 29));
-        pastEveAssocButton.setMinimumSize(new java.awt.Dimension(140, 29));
-        pastEveAssocButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pastEveAssocButtonActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout navPanelAssocUserLayout = new javax.swing.GroupLayout(navPanelAssocUser);
-        navPanelAssocUser.setLayout(navPanelAssocUserLayout);
-        navPanelAssocUserLayout.setHorizontalGroup(
-            navPanelAssocUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(homeAssocButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(postEveAssocButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(upcomEveAssocButton, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
-            .addComponent(profileAssocButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(pastEveAssocButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        navPanelAssocUserLayout.setVerticalGroup(
-            navPanelAssocUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, navPanelAssocUserLayout.createSequentialGroup()
-                .addComponent(profileAssocButton, javax.swing.GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(homeAssocButton, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(postEveAssocButton, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(upcomEveAssocButton, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pastEveAssocButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-
-        jPanel1.add(navPanelAssocUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 270, 560));
-
-        jPanel2.setBackground(new java.awt.Color(204, 0, 0));
+        jPanel2.setBackground(new java.awt.Color(51, 51, 255));
 
         titleLabel.setFont(new java.awt.Font("Arial", 3, 24)); // NOI18N
         titleLabel.setForeground(new java.awt.Color(255, 255, 255));
@@ -394,19 +196,6 @@ public final class adminHomepage extends javax.swing.JFrame {
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1140, 70));
 
-        javax.swing.GroupLayout postEvePanelLayout = new javax.swing.GroupLayout(postEvePanel);
-        postEvePanel.setLayout(postEvePanelLayout);
-        postEvePanelLayout.setHorizontalGroup(
-            postEvePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1140, Short.MAX_VALUE)
-        );
-        postEvePanelLayout.setVerticalGroup(
-            postEvePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 560, Short.MAX_VALUE)
-        );
-
-        jPanel1.add(postEvePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1140, 560));
-
         javax.swing.GroupLayout profilePanelLayout = new javax.swing.GroupLayout(profilePanel);
         profilePanel.setLayout(profilePanelLayout);
         profilePanelLayout.setHorizontalGroup(
@@ -420,49 +209,55 @@ public final class adminHomepage extends javax.swing.JFrame {
 
         jPanel1.add(profilePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1140, 560));
 
-        javax.swing.GroupLayout pastEvePanelLayout = new javax.swing.GroupLayout(pastEvePanel);
-        pastEvePanel.setLayout(pastEvePanelLayout);
-        pastEvePanelLayout.setHorizontalGroup(
-            pastEvePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1140, Short.MAX_VALUE)
-        );
-        pastEvePanelLayout.setVerticalGroup(
-            pastEvePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 560, Short.MAX_VALUE)
-        );
-
-        jPanel1.add(pastEvePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1140, 560));
-
-        javax.swing.GroupLayout upcomEvePanelLayout = new javax.swing.GroupLayout(upcomEvePanel);
-        upcomEvePanel.setLayout(upcomEvePanelLayout);
-        upcomEvePanelLayout.setHorizontalGroup(
-            upcomEvePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1140, Short.MAX_VALUE)
-        );
-        upcomEvePanelLayout.setVerticalGroup(
-            upcomEvePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 560, Short.MAX_VALUE)
-        );
-
-        jPanel1.add(upcomEvePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1140, 560));
-
         jLabel1.setText("Home");
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Association Name", "Description", "Contact Info", "Email", "Action"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout homePanelLayout = new javax.swing.GroupLayout(homePanel);
         homePanel.setLayout(homePanelLayout);
         homePanelLayout.setHorizontalGroup(
             homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(homePanelLayout.createSequentialGroup()
-                .addGap(62, 62, 62)
-                .addComponent(jLabel1)
-                .addContainerGap(1045, Short.MAX_VALUE))
+                .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(homePanelLayout.createSequentialGroup()
+                        .addGap(62, 62, 62)
+                        .addComponent(jLabel1))
+                    .addGroup(homePanelLayout.createSequentialGroup()
+                        .addGap(178, 178, 178)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(362, Short.MAX_VALUE))
         );
         homePanelLayout.setVerticalGroup(
             homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(homePanelLayout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(jLabel1)
-                .addContainerGap(521, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25))
         );
 
         jPanel1.add(homePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1140, 560));
@@ -498,116 +293,35 @@ public final class adminHomepage extends javax.swing.JFrame {
         active();
     }//GEN-LAST:event_menuMouseClicked
 
-    private void postEveAssocButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_postEveAssocButtonActionPerformed
-        // TODO add your handling code here:
-        postEvePanel.setVisible(true);
-        postEvePanel.setEnabled(true);
-        homePanel.setVisible(false);
-        homePanel.setEnabled(false);
-        profilePanel.setVisible(false);
-        profilePanel.setEnabled(false);
-        upcomEvePanel.setVisible(false);
-        upcomEvePanel.setEnabled(false);
-        pastEvePanel.setVisible(false);
-        pastEvePanel.setEnabled(false);
-    }//GEN-LAST:event_postEveAssocButtonActionPerformed
-
-    private void upcomEveAssocButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upcomEveAssocButtonActionPerformed
-        // TODO add your handling code here:
-        upcomEvePanel.setVisible(true);
-        upcomEvePanel.setEnabled(true);
-        profilePanel.setVisible(false);
-        profilePanel.setEnabled(false);
-        homePanel.setVisible(false);
-        homePanel.setEnabled(false);
-        pastEvePanel.setVisible(false);
-        pastEvePanel.setEnabled(false);
-        postEvePanel.setVisible(false);
-        postEvePanel.setEnabled(false);
-    }//GEN-LAST:event_upcomEveAssocButtonActionPerformed
-
-    private void pastEveAssocButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pastEveAssocButtonActionPerformed
-        // TODO add your handling code here:
-        pastEvePanel.setVisible(true);
-        pastEvePanel.setEnabled(true);
-        profilePanel.setVisible(false);
-        profilePanel.setEnabled(false);
-        homePanel.setVisible(false);
-        homePanel.setEnabled(false);
-        upcomEvePanel.setVisible(false);
-        upcomEvePanel.setEnabled(false);
-        postEvePanel.setVisible(false);
-        postEvePanel.setEnabled(false);
-    }//GEN-LAST:event_pastEveAssocButtonActionPerformed
-
-    private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
-        // TODO add your handling code here:
-        homePanel.setVisible(true);
-        homePanel.setEnabled(true);
-        profilePanel.setVisible(false);
-        profilePanel.setEnabled(false);
-        upcomEvePanel.setVisible(false);
-        upcomEvePanel.setEnabled(false);
-        pastEvePanel.setVisible(false);
-        pastEvePanel.setEnabled(false);
-        postEvePanel.setVisible(false);
-        postEvePanel.setEnabled(false);
-    }//GEN-LAST:event_homeButtonActionPerformed
-
-    private void upcomEveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upcomEveButtonActionPerformed
-        // TODO add your handling code here:
-        upcomEvePanel.setVisible(true);
-        upcomEvePanel.setEnabled(true);
-        profilePanel.setVisible(false);
-        profilePanel.setEnabled(false);
-        homePanel.setVisible(false);
-        homePanel.setEnabled(false);
-        pastEvePanel.setVisible(false);
-        pastEvePanel.setEnabled(false);
-        postEvePanel.setVisible(false);
-        postEvePanel.setEnabled(false);
-    }//GEN-LAST:event_upcomEveButtonActionPerformed
-
-    private void profileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profileButtonActionPerformed
-        // TODO add your handling code here:
-        profilePanel.setVisible(true);
-        profilePanel.setEnabled(true);
-        homePanel.setVisible(false);
-        homePanel.setEnabled(false);
-        upcomEvePanel.setVisible(false);
-        upcomEvePanel.setEnabled(false);
-        pastEvePanel.setVisible(false);
-        pastEvePanel.setEnabled(false);
-        postEvePanel.setVisible(false);
-        postEvePanel.setEnabled(false);
-    }//GEN-LAST:event_profileButtonActionPerformed
-
-    private void pastEveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pastEveButtonActionPerformed
-        // TODO add your handling code here:
-        pastEvePanel.setVisible(true);
-        pastEvePanel.setEnabled(true);
-        profilePanel.setVisible(false);
-        profilePanel.setEnabled(false);
-        homePanel.setVisible(false);
-        homePanel.setEnabled(false);
-        upcomEvePanel.setVisible(false);
-        upcomEvePanel.setEnabled(false);
-        postEvePanel.setVisible(false);
-        postEvePanel.setEnabled(false);
-    }//GEN-LAST:event_pastEveButtonActionPerformed
-
     private void homeAdminButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeAdminButtonActionPerformed
         // TODO add your handling code here:
-        homePanel.setVisible(true);
-        homePanel.setEnabled(true);
+//        homePanel.setVisible(true);
+//        homePanel.setEnabled(true);
         profilePanel.setVisible(false);
         profilePanel.setEnabled(false);
-        upcomEvePanel.setVisible(false);
-        upcomEvePanel.setEnabled(false);
-        pastEvePanel.setVisible(false);
-        pastEvePanel.setEnabled(false);
-        postEvePanel.setVisible(false);
-        postEvePanel.setEnabled(false);
+        
+        String url = "http://localhost:9001/associations/?type=administrator";
+        RestAPIHook a = new RestAPIHook();
+        JSONObject p = a.invokeGetMethod(url);
+//        for (int i =0;){
+            
+//        }
+        JSONObject x =(JSONObject) p.get("5");
+        Object aN = x.get("association_name");
+        JLabel assoName = new javax.swing.JLabel();
+        assoName.setBounds(100, 80, 135, 14);
+        assoName.setText(aN.toString());
+//        panl.add(assoName);
+//        JLabel assoDesc = new javax.swing.JLabel(x.get("description").toString());
+//        panl.add(assoDesc);
+//        JLabel assoCont = new javax.swing.JLabel(x.get("contact_info").toString());
+//        panl.add(assoCont);
+//        JLabel assoEmail = new javax.swing.JLabel(x.get("email").toString());
+//        panl.add(assoEmail);
+        homePanel.add(assoName);
+//        homePanel.revalidate();
+        homePanel.setVisible(true);
+        homePanel.setEnabled(true);
     }//GEN-LAST:event_homeAdminButtonActionPerformed
 
     private void profileAssocButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profileAssocButton1ActionPerformed
@@ -616,41 +330,7 @@ public final class adminHomepage extends javax.swing.JFrame {
         profilePanel.setEnabled(true);
         homePanel.setVisible(false);
         homePanel.setEnabled(false);
-        upcomEvePanel.setVisible(false);
-        upcomEvePanel.setEnabled(false);
-        pastEvePanel.setVisible(false);
-        pastEvePanel.setEnabled(false);
-        postEvePanel.setVisible(false);
-        postEvePanel.setEnabled(false);
     }//GEN-LAST:event_profileAssocButton1ActionPerformed
-
-    private void homeAssocButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeAssocButtonActionPerformed
-        // TODO add your handling code here:
-        homePanel.setVisible(true);
-        homePanel.setEnabled(true);
-        profilePanel.setVisible(false);
-        profilePanel.setEnabled(false);
-        upcomEvePanel.setVisible(false);
-        upcomEvePanel.setEnabled(false);
-        pastEvePanel.setVisible(false);
-        pastEvePanel.setEnabled(false);
-        postEvePanel.setVisible(false);
-        postEvePanel.setEnabled(false);
-    }//GEN-LAST:event_homeAssocButtonActionPerformed
-
-    private void profileAssocButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profileAssocButtonActionPerformed
-        // TODO add your handling code here:
-        profilePanel.setVisible(true);
-        profilePanel.setEnabled(true);
-        homePanel.setVisible(false);
-        homePanel.setEnabled(false);
-        upcomEvePanel.setVisible(false);
-        upcomEvePanel.setEnabled(false);
-        pastEvePanel.setVisible(false);
-        pastEvePanel.setEnabled(false);
-        postEvePanel.setVisible(false);
-        postEvePanel.setEnabled(false);
-    }//GEN-LAST:event_profileAssocButtonActionPerformed
     
     
     
@@ -676,11 +356,13 @@ public final class adminHomepage extends javax.swing.JFrame {
         //</editor-fold>
         
         //</editor-fold>
-        String url = "http://localhost:9001/associations/?type=administrator";
-        RestAPIHook a = new RestAPIHook();
-        JSONObject p = a.invokeGetMethod(url);
-        System.out.println("Hi1");
-        System.out.println(p);
+//        String url = "http://localhost:9001/associations/?type=administrator";
+//        RestAPIHook a = new RestAPIHook();
+//        JSONObject p = a.invokeGetMethod(url);
+//        System.out.println("Hi1");
+//        System.out.println(p.get("5"));
+//        JSONObject x =(JSONObject) p.get("5");
+//        System.out.println(x.get("address"));
         System.out.println("Hi2");
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
@@ -690,31 +372,19 @@ public final class adminHomepage extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton homeAdminButton;
-    private javax.swing.JButton homeAssocButton;
-    private javax.swing.JButton homeButton;
-    private javax.swing.JPanel homePanel;
+    public javax.swing.JPanel homePanel;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    public javax.swing.JTable jTable1;
     private javax.swing.JLabel logoutLabel;
     private javax.swing.JLabel menu;
-    private javax.swing.JPanel navPanel;
     private javax.swing.JPanel navPanelAdminUser;
-    private javax.swing.JPanel navPanelAssocUser;
-    private javax.swing.JButton pastEveAssocButton;
-    private javax.swing.JButton pastEveButton;
-    private javax.swing.JPanel pastEvePanel;
-    private javax.swing.JButton postEveAssocButton;
-    private javax.swing.JPanel postEvePanel;
-    private javax.swing.JButton profileAssocButton;
     private javax.swing.JButton profileAssocButton1;
-    private javax.swing.JButton profileButton;
     private javax.swing.JPanel profilePanel;
     private javax.swing.JLabel titleLabel;
-    private javax.swing.JButton upcomEveAssocButton;
-    private javax.swing.JButton upcomEveButton;
-    private javax.swing.JPanel upcomEvePanel;
     // End of variables declaration//GEN-END:variables
 }
