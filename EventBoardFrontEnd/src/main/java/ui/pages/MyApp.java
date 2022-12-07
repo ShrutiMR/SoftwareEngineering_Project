@@ -22,8 +22,8 @@ try
 //                
 //                form.setVisible(true);
                 
-                HomePage1 home1 = new HomePage1("Admin"); 
-                home1.setVisible(true);
+                assoHomePage hm = new assoHomePage();
+                hm.setVisible(true);
                
 //                NewJFrame test = new NewJFrame();
 //                test.setVisible(true);

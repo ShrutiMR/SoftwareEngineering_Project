@@ -4,6 +4,15 @@
  */
 package ui.pages;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import javax.swing.JOptionPane;
+import org.json.JSONObject;
+import rest.RestAPIHook;
+
 
 /**
  *
@@ -14,14 +23,14 @@ public final class assoHomePage extends javax.swing.JFrame {
     /**
      * Creates new form HomePage
      */
-    private String users;
+    private JSONObject input;
     public assoHomePage() {
         initComponents();
         nonActive();
     }
     
-    public assoHomePage(String users) {
-        this.users = users;
+    public assoHomePage(JSONObject input) {
+        this.input = input;
         initComponents();
         nonActive();
     }
@@ -29,41 +38,25 @@ public final class assoHomePage extends javax.swing.JFrame {
     public void nonActive(){
         navPanelAssocUser.setVisible(false);
         navPanelAssocUser.setEnabled(false);
-        navPanel.setVisible(false);
-        navPanel.setEnabled(false);
         jLabel3.setVisible(false);
         jLabel3.setEnabled(false);
         menu.setVisible(true);
         menu.setEnabled(true);
+        homePanel.setVisible(false);
+        homePanel.setEnabled(false);
+        profilePanel.setVisible(false);
+        profilePanel.setEnabled(false);
+        upcomEvePanel.setVisible(false);
+        upcomEvePanel.setEnabled(false);
+        pastEvePanel.setVisible(false);
+        pastEvePanel.setEnabled(false);
+        postEvePanel.setVisible(false);
+        postEvePanel.setEnabled(false);
     }
     
     public void active(){
-        if(users == null){
-            navPanel.setVisible(true);
-            navPanel.setEnabled(true);
-            navPanelAssocUser.setVisible(false);
-            navPanelAssocUser.setEnabled(false);
-        }
-        else switch (users) {
-            case "Assoc" -> {
-                navPanelAssocUser.setVisible(true);
-                navPanelAssocUser.setEnabled(true);
-                navPanel.setVisible(false);
-                navPanel.setEnabled(false);
-            }
-            case "Admin" -> {
-                navPanelAssocUser.setVisible(false);
-                navPanelAssocUser.setEnabled(false);
-                navPanel.setVisible(false);
-                navPanel.setEnabled(false);
-            }
-            default -> {
-                navPanel.setVisible(true);
-                navPanel.setEnabled(true);
-                navPanelAssocUser.setVisible(false);
-                navPanelAssocUser.setEnabled(false);
-            }
-        }
+        navPanelAssocUser.setVisible(true);
+        navPanelAssocUser.setEnabled(true);
         jLabel3.setVisible(true);
         jLabel3.setEnabled(true);
         menu.setVisible(false);
@@ -82,11 +75,6 @@ public final class assoHomePage extends javax.swing.JFrame {
         jFrame1 = new javax.swing.JFrame();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        navPanel = new javax.swing.JPanel();
-        profileButton = new javax.swing.JButton();
-        pastEveButton = new javax.swing.JButton();
-        upcomEveButton = new javax.swing.JButton();
-        homeButton = new javax.swing.JButton();
         navPanelAssocUser = new javax.swing.JPanel();
         homeAssocButton = new javax.swing.JButton();
         profileAssocButton = new javax.swing.JButton();
@@ -97,12 +85,24 @@ public final class assoHomePage extends javax.swing.JFrame {
         titleLabel = new javax.swing.JLabel();
         logoutLabel = new javax.swing.JLabel();
         menu = new javax.swing.JLabel();
-        postEvePanel = new javax.swing.JPanel();
         profilePanel = new javax.swing.JPanel();
-        pastEvePanel = new javax.swing.JPanel();
-        upcomEvePanel = new javax.swing.JPanel();
         homePanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        upcomEvePanel = new javax.swing.JPanel();
+        pastEvePanel = new javax.swing.JPanel();
+        postEvePanel = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        postButton = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
+        jTextField7 = new javax.swing.JTextField();
+        jTextField8 = new javax.swing.JTextField();
+        jTextField9 = new javax.swing.JTextField();
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
@@ -126,78 +126,6 @@ public final class assoHomePage extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 70, 870, 560));
-
-        navPanel.setBackground(new java.awt.Color(102, 102, 102));
-
-        profileButton.setBackground(new java.awt.Color(102, 102, 102));
-        profileButton.setForeground(new java.awt.Color(255, 255, 255));
-        profileButton.setText("Profile Settings");
-        profileButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        profileButton.setMaximumSize(new java.awt.Dimension(140, 29));
-        profileButton.setMinimumSize(new java.awt.Dimension(140, 29));
-        profileButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                profileButtonActionPerformed(evt);
-            }
-        });
-
-        pastEveButton.setBackground(new java.awt.Color(102, 102, 102));
-        pastEveButton.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        pastEveButton.setForeground(new java.awt.Color(255, 255, 255));
-        pastEveButton.setText("Past Events");
-        pastEveButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        pastEveButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pastEveButtonActionPerformed(evt);
-            }
-        });
-
-        upcomEveButton.setBackground(new java.awt.Color(102, 102, 102));
-        upcomEveButton.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        upcomEveButton.setForeground(new java.awt.Color(255, 255, 255));
-        upcomEveButton.setText("Upcoming Events");
-        upcomEveButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        upcomEveButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                upcomEveButtonActionPerformed(evt);
-            }
-        });
-
-        homeButton.setBackground(new java.awt.Color(102, 102, 102));
-        homeButton.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        homeButton.setForeground(new java.awt.Color(255, 255, 255));
-        homeButton.setText("Home       ");
-        homeButton.setActionCommand("Home");
-        homeButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        homeButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                homeButtonActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout navPanelLayout = new javax.swing.GroupLayout(navPanel);
-        navPanel.setLayout(navPanelLayout);
-        navPanelLayout.setHorizontalGroup(
-            navPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(profileButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(pastEveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(upcomEveButton, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
-            .addComponent(homeButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        navPanelLayout.setVerticalGroup(
-            navPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(navPanelLayout.createSequentialGroup()
-                .addComponent(profileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(homeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(upcomEveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pastEveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-
-        jPanel1.add(navPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 270, 560));
 
         navPanelAssocUser.setBackground(new java.awt.Color(102, 102, 102));
 
@@ -336,19 +264,6 @@ public final class assoHomePage extends javax.swing.JFrame {
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1140, 70));
 
-        javax.swing.GroupLayout postEvePanelLayout = new javax.swing.GroupLayout(postEvePanel);
-        postEvePanel.setLayout(postEvePanelLayout);
-        postEvePanelLayout.setHorizontalGroup(
-            postEvePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1140, Short.MAX_VALUE)
-        );
-        postEvePanelLayout.setVerticalGroup(
-            postEvePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 560, Short.MAX_VALUE)
-        );
-
-        jPanel1.add(postEvePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1140, 560));
-
         javax.swing.GroupLayout profilePanelLayout = new javax.swing.GroupLayout(profilePanel);
         profilePanel.setLayout(profilePanelLayout);
         profilePanelLayout.setHorizontalGroup(
@@ -361,32 +276,6 @@ public final class assoHomePage extends javax.swing.JFrame {
         );
 
         jPanel1.add(profilePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1140, 560));
-
-        javax.swing.GroupLayout pastEvePanelLayout = new javax.swing.GroupLayout(pastEvePanel);
-        pastEvePanel.setLayout(pastEvePanelLayout);
-        pastEvePanelLayout.setHorizontalGroup(
-            pastEvePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1140, Short.MAX_VALUE)
-        );
-        pastEvePanelLayout.setVerticalGroup(
-            pastEvePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 560, Short.MAX_VALUE)
-        );
-
-        jPanel1.add(pastEvePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1140, 560));
-
-        javax.swing.GroupLayout upcomEvePanelLayout = new javax.swing.GroupLayout(upcomEvePanel);
-        upcomEvePanel.setLayout(upcomEvePanelLayout);
-        upcomEvePanelLayout.setHorizontalGroup(
-            upcomEvePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1140, Short.MAX_VALUE)
-        );
-        upcomEvePanelLayout.setVerticalGroup(
-            upcomEvePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 560, Short.MAX_VALUE)
-        );
-
-        jPanel1.add(upcomEvePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1140, 560));
 
         jLabel1.setText("Home");
 
@@ -409,6 +298,76 @@ public final class assoHomePage extends javax.swing.JFrame {
 
         jPanel1.add(homePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1140, 560));
 
+        javax.swing.GroupLayout upcomEvePanelLayout = new javax.swing.GroupLayout(upcomEvePanel);
+        upcomEvePanel.setLayout(upcomEvePanelLayout);
+        upcomEvePanelLayout.setHorizontalGroup(
+            upcomEvePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1140, Short.MAX_VALUE)
+        );
+        upcomEvePanelLayout.setVerticalGroup(
+            upcomEvePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 560, Short.MAX_VALUE)
+        );
+
+        jPanel1.add(upcomEvePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1140, 560));
+
+        javax.swing.GroupLayout pastEvePanelLayout = new javax.swing.GroupLayout(pastEvePanel);
+        pastEvePanel.setLayout(pastEvePanelLayout);
+        pastEvePanelLayout.setHorizontalGroup(
+            pastEvePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1140, Short.MAX_VALUE)
+        );
+        pastEvePanelLayout.setVerticalGroup(
+            pastEvePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 560, Short.MAX_VALUE)
+        );
+
+        jPanel1.add(pastEvePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1140, 560));
+
+        postEvePanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel7.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel7.setText("Name");
+        postEvePanel.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 90, -1, -1));
+
+        jLabel9.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel9.setText("Description");
+        postEvePanel.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 140, -1, -1));
+
+        jLabel8.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel8.setText("Venue");
+        postEvePanel.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 270, -1, -1));
+
+        jLabel5.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel5.setText("Start Time");
+        postEvePanel.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 320, -1, -1));
+
+        jLabel6.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel6.setText("End Time");
+        postEvePanel.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 370, -1, -1));
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        postEvePanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 140, 210, -1));
+
+        postButton.setText("POST");
+        postButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                postButtonActionPerformed(evt);
+            }
+        });
+        postEvePanel.add(postButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 450, 100, 40));
+        postEvePanel.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 90, 210, -1));
+        postEvePanel.add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 270, 210, -1));
+
+        jTextField8.setToolTipText("");
+        postEvePanel.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 320, 210, -1));
+        postEvePanel.add(jTextField9, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 370, 210, -1));
+
+        jPanel1.add(postEvePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1140, 560));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -427,7 +386,12 @@ public final class assoHomePage extends javax.swing.JFrame {
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
         // TODO add your handling code here:
-        nonActive();
+        navPanelAssocUser.setVisible(false);
+        navPanelAssocUser.setEnabled(false);
+        jLabel3.setVisible(false);
+        jLabel3.setEnabled(false);
+        menu.setVisible(true);
+        menu.setEnabled(true);
     }//GEN-LAST:event_jLabel3MouseClicked
 
     private void logoutLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutLabelMouseClicked
@@ -482,62 +446,6 @@ public final class assoHomePage extends javax.swing.JFrame {
         postEvePanel.setEnabled(false);
     }//GEN-LAST:event_pastEveAssocButtonActionPerformed
 
-    private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
-        // TODO add your handling code here:
-        homePanel.setVisible(true);
-        homePanel.setEnabled(true);
-        profilePanel.setVisible(false);
-        profilePanel.setEnabled(false);
-        upcomEvePanel.setVisible(false);
-        upcomEvePanel.setEnabled(false);
-        pastEvePanel.setVisible(false);
-        pastEvePanel.setEnabled(false);
-        postEvePanel.setVisible(false);
-        postEvePanel.setEnabled(false);
-    }//GEN-LAST:event_homeButtonActionPerformed
-
-    private void upcomEveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upcomEveButtonActionPerformed
-        // TODO add your handling code here:
-        upcomEvePanel.setVisible(true);
-        upcomEvePanel.setEnabled(true);
-        profilePanel.setVisible(false);
-        profilePanel.setEnabled(false);
-        homePanel.setVisible(false);
-        homePanel.setEnabled(false);
-        pastEvePanel.setVisible(false);
-        pastEvePanel.setEnabled(false);
-        postEvePanel.setVisible(false);
-        postEvePanel.setEnabled(false);
-    }//GEN-LAST:event_upcomEveButtonActionPerformed
-
-    private void profileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profileButtonActionPerformed
-        // TODO add your handling code here:
-        profilePanel.setVisible(true);
-        profilePanel.setEnabled(true);
-        homePanel.setVisible(false);
-        homePanel.setEnabled(false);
-        upcomEvePanel.setVisible(false);
-        upcomEvePanel.setEnabled(false);
-        pastEvePanel.setVisible(false);
-        pastEvePanel.setEnabled(false);
-        postEvePanel.setVisible(false);
-        postEvePanel.setEnabled(false);
-    }//GEN-LAST:event_profileButtonActionPerformed
-
-    private void pastEveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pastEveButtonActionPerformed
-        // TODO add your handling code here:
-        pastEvePanel.setVisible(true);
-        pastEvePanel.setEnabled(true);
-        profilePanel.setVisible(false);
-        profilePanel.setEnabled(false);
-        homePanel.setVisible(false);
-        homePanel.setEnabled(false);
-        upcomEvePanel.setVisible(false);
-        upcomEvePanel.setEnabled(false);
-        postEvePanel.setVisible(false);
-        postEvePanel.setEnabled(false);
-    }//GEN-LAST:event_pastEveButtonActionPerformed
-
     private void homeAssocButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeAssocButtonActionPerformed
         // TODO add your handling code here:
         homePanel.setVisible(true);
@@ -550,6 +458,14 @@ public final class assoHomePage extends javax.swing.JFrame {
         pastEvePanel.setEnabled(false);
         postEvePanel.setVisible(false);
         postEvePanel.setEnabled(false);
+        
+        // retrieve the upcoming events using a GET request
+        String url = "http://localhost:9002/events/association_id=2&type=associationUpcoming";
+        RestAPIHook a = new RestAPIHook();
+        JSONObject p = a.invokeGetMethod(url);
+        System.out.println(p);
+        
+        
     }//GEN-LAST:event_homeAssocButtonActionPerformed
 
     private void profileAssocButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profileAssocButtonActionPerformed
@@ -565,7 +481,54 @@ public final class assoHomePage extends javax.swing.JFrame {
         postEvePanel.setVisible(false);
         postEvePanel.setEnabled(false);
     }//GEN-LAST:event_profileAssocButtonActionPerformed
-    
+
+    private void postButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_postButtonActionPerformed
+        // TODO add your handling code here:
+        try{
+            String name = jTextField1.getText();
+            String desc = jTextArea1.getText();
+            String venue = jTextField7.getText();
+            String startDate = jTextField8.getText();
+            String endDate = jTextField9.getText();
+            if(name.isEmpty() || desc.isEmpty() || venue.isEmpty() || startDate.isEmpty() || endDate.isEmpty()){
+                JOptionPane.showMessageDialog(postEvePanel, "Please fill all fields");
+            }
+            else{
+                System.out.println(startDate);
+                System.out.println(endDate);
+
+                Date startDateCheck = null;
+                Date endDateCheck = null;
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                dateFormat.setLenient(false);
+
+                startDateCheck = dateFormat.parse(startDate);
+                endDateCheck = dateFormat.parse(endDate);
+
+                System.out.println(startDateCheck);
+                System.out.println(endDateCheck);   
+            }
+            
+            String url = "http://localhost:9002/events/?";
+            RestAPIHook a = new RestAPIHook();
+            HashMap<String, String> params = new HashMap<>();
+//            params.put("association_id", association_id);
+            params.put("association_id", "1");
+            params.put("start_time", startDate);
+            params.put("end_time", endDate);
+            params.put("name", name);
+            params.put("venue", venue);
+            params.put("description", desc);
+            System.out.println(params);
+            JSONObject p = a.invokePostMethod(url, params);
+            System.out.println(p);
+        }
+        catch (ParseException parseException){
+            JOptionPane.showMessageDialog(postEvePanel, "Please enter valid start and end times");
+        }
+        
+    }//GEN-LAST:event_postButtonActionPerformed
+
     
     
     /**
@@ -599,28 +562,35 @@ public final class assoHomePage extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton homeAssocButton;
-    private javax.swing.JButton homeButton;
     private javax.swing.JPanel homePanel;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField7;
+    public javax.swing.JTextField jTextField8;
+    private javax.swing.JTextField jTextField9;
     private javax.swing.JLabel logoutLabel;
     private javax.swing.JLabel menu;
-    private javax.swing.JPanel navPanel;
     private javax.swing.JPanel navPanelAssocUser;
     private javax.swing.JButton pastEveAssocButton;
-    private javax.swing.JButton pastEveButton;
     private javax.swing.JPanel pastEvePanel;
+    private javax.swing.JButton postButton;
     private javax.swing.JButton postEveAssocButton;
     private javax.swing.JPanel postEvePanel;
     private javax.swing.JButton profileAssocButton;
-    private javax.swing.JButton profileButton;
     private javax.swing.JPanel profilePanel;
     private javax.swing.JLabel titleLabel;
     private javax.swing.JButton upcomEveAssocButton;
-    private javax.swing.JButton upcomEveButton;
     private javax.swing.JPanel upcomEvePanel;
     // End of variables declaration//GEN-END:variables
 }
