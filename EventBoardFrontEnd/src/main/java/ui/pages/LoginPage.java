@@ -116,7 +116,20 @@ public class LoginPage extends JFrame implements ActionListener {
                 this.dispose();
                 System.out.println("hi muneer2");
             } //vs
-            else if (p.get("user_code").toString().equals("2")) {
+            else if (p.get("user_code").toString().equals("1")) {
+                url = "http://localhost:9001/associations/?type=single&user_id="+p.get("user_id").toString();
+                JSONObject associationData = a.invokeGetMethod(url);
+                if(associationData.get("approval_status").equals("N")){
+                    JOptionPane.showMessageDialog(newPanel, "Pending Approval");
+                }
+                else{
+                    UserHomePage userHP = new UserHomePage(p);
+                    userHP.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                    userHP.setVisible(true);
+                    this.dispose();
+                }
+            } 
+            else if(p.get("user_code").toString().equals("2")) {
                 System.out.println("hi muneer1");
                 newPanel.setVisible(false);
                 UserHomePage userHP = new UserHomePage(p);
@@ -124,7 +137,8 @@ public class LoginPage extends JFrame implements ActionListener {
                 userHP.setVisible(true);
                 this.dispose();
                 System.out.println("hi muneer2");
-            } else {
+            }
+            else {
                 JOptionPane.showMessageDialog(newPanel, "You have successfully logged in!" + p.toString());
             }
 //              HomePage hFrame = new HomePage();
