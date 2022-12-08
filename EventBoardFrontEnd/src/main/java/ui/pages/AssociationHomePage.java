@@ -25,19 +25,19 @@ import rest.RestAPIHook;
  *
  * @author shrut
  */
-public final class assoHomePage extends javax.swing.JFrame {
+public final class AssociationHomePage extends javax.swing.JFrame {
 
     /**
      * Creates new form HomePage
      */
     private JSONObject input;
     private String associationId;
-    public assoHomePage() {
+    public AssociationHomePage() {
         initComponents();
         nonActive();
     }
     
-    public assoHomePage(JSONObject input) {
+    public AssociationHomePage(JSONObject input) {
         this.input = input;
         initComponents();
         nonActive();
@@ -600,7 +600,7 @@ public final class assoHomePage extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new assoHomePage().setVisible(true);
+            new AssociationHomePage().setVisible(true);
         });
     }
 

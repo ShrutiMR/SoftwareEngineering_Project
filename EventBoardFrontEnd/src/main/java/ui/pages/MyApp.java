@@ -22,7 +22,7 @@ try
 //                
 //                form.setVisible(true);
                 
-                assoHomePage hm = new assoHomePage();
+                AssociationHomePage hm = new AssociationHomePage();
                 hm.setVisible(true);
                
 //                NewJFrame test = new NewJFrame();
