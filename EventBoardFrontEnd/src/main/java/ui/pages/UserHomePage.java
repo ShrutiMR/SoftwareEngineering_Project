@@ -106,7 +106,7 @@ public final class UserHomePage extends javax.swing.JFrame {
             }
             temp.put("isRendered", false);
             temp.put("isFollow", false);
-            temp.put("user_id", this.inputJSON.get("user_id"));
+            temp.put("user_id", this.inputJSON.get("user_id").toString());
             System.out.println("Hi2");
             System.out.println(temp);
             System.out.println("Hi3");
