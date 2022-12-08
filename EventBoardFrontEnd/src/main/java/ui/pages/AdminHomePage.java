@@ -29,12 +29,12 @@ public final class AdminHomePage extends javax.swing.JFrame {
      */
     private String users;
     private JSONObject inputJSON;
+
     public AdminHomePage(JSONObject input) {
         this.inputJSON = input;
         initComponents();
         active();
     }
-
 
     public void nonActive() {
         navPanelAdminUser.setVisible(false);
@@ -337,6 +337,11 @@ public final class AdminHomePage extends javax.swing.JFrame {
 
     private void logoutLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutLabelMouseClicked
         // TODO add your handling code here:
+        this.dispose();
+        LoginPage form = new LoginPage();
+        form.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        form.setUndecorated(true);
+        form.setVisible(true);
 
     }//GEN-LAST:event_logoutLabelMouseClicked
 
