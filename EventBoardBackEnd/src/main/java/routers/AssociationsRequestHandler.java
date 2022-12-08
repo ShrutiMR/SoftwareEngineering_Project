@@ -131,11 +131,11 @@ public class AssociationsRequestHandler implements HttpHandler {
 
             } else if ("single".equals(type) && (parameters.get("user_id") != null || parameters.get("association_id") != null)) {
                 if (parameters.get("user_id") != null) {
-                    String query = "Select * from ASSOCIATIONS WHERE APPROVAL_STATUS='Y' AND USER_ID = " + (String) parameters.get("user_id");
+                    String query = "Select * from ASSOCIATIONS WHERE USER_ID = " + (String) parameters.get("user_id");
                     System.out.println(query);
                     rs = st.executeQuery(query);
                 } else if (parameters.get("association_id") != null) {
-                    String query = "Select * from ASSOCIATIONS WHERE APPROVAL_STATUS='Y' AND ASSOCIATION_ID = " + (String) parameters.get("association_id");
+                    String query = "Select * from ASSOCIATIONS WHERE ASSOCIATION_ID = " + (String) parameters.get("association_id");
                     System.out.println(query);
                     rs = st.executeQuery(query);
                 }
@@ -147,6 +147,7 @@ public class AssociationsRequestHandler implements HttpHandler {
                     jo.put("address", rs.getString("ADDRESS"));
                     jo.put("contact_info", rs.getString("CONTACT_INFO"));
                     jo.put("email", rs.getString("EMAIL"));
+                    jo.put("approval_status", rs.getString("APPROVAL_STATUS"));
 
                 }
                 jo.put("isSuccess", true);
