@@ -7,9 +7,15 @@ package ui.pages;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerDateModel;
 import org.json.JSONObject;
 import rest.RestAPIHook;
 
@@ -101,8 +107,14 @@ public final class assoHomePage extends javax.swing.JFrame {
         postButton = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
         jTextField7 = new javax.swing.JTextField();
-        jTextField8 = new javax.swing.JTextField();
-        jTextField9 = new javax.swing.JTextField();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jDateChooser2 = new com.toedter.calendar.JDateChooser();
+        Date date = new Date();
+        SpinnerDateModel startModel = new SpinnerDateModel(date, null, null, Calendar.HOUR_OF_DAY);
+        jSpinner1 = new javax.swing.JSpinner(startModel);
+        Date date1 = new Date();
+        SpinnerDateModel endModel = new SpinnerDateModel(date, null, null, Calendar.HOUR_OF_DAY);
+        jSpinner2 = new javax.swing.JSpinner(endModel);
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
@@ -362,9 +374,19 @@ public final class assoHomePage extends javax.swing.JFrame {
         postEvePanel.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 90, 210, -1));
         postEvePanel.add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 270, 210, -1));
 
-        jTextField8.setToolTipText("");
-        postEvePanel.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 320, 210, -1));
-        postEvePanel.add(jTextField9, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 370, 210, -1));
+        jDateChooser1.setDateFormatString("yyyy-MM-dd");
+        postEvePanel.add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 320, 210, -1));
+
+        jDateChooser2.setDateFormatString("yyyy-MM-dd");
+        postEvePanel.add(jDateChooser2, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 370, 210, -1));
+
+        JSpinner.DateEditor startEditor = new JSpinner.DateEditor(jSpinner1, "HH:mm:ss");
+        jSpinner1.setEditor(startEditor);
+        postEvePanel.add(jSpinner1, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 320, 90, -1));
+
+        JSpinner.DateEditor endEditor = new JSpinner.DateEditor(jSpinner2, "HH:mm:ss");
+        jSpinner2.setEditor(endEditor);
+        postEvePanel.add(jSpinner2, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 370, 90, -1));
 
         jPanel1.add(postEvePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1140, 560));
 
@@ -464,8 +486,6 @@ public final class assoHomePage extends javax.swing.JFrame {
         RestAPIHook a = new RestAPIHook();
         JSONObject p = a.invokeGetMethod(url);
         System.out.println(p);
-        
-        
     }//GEN-LAST:event_homeAssocButtonActionPerformed
 
     private void profileAssocButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profileAssocButtonActionPerformed
@@ -484,49 +504,49 @@ public final class assoHomePage extends javax.swing.JFrame {
 
     private void postButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_postButtonActionPerformed
         // TODO add your handling code here:
-        try{
-            String name = jTextField1.getText();
-            String desc = jTextArea1.getText();
-            String venue = jTextField7.getText();
-            String startDate = jTextField8.getText();
-            String endDate = jTextField9.getText();
-            if(name.isEmpty() || desc.isEmpty() || venue.isEmpty() || startDate.isEmpty() || endDate.isEmpty()){
-                JOptionPane.showMessageDialog(postEvePanel, "Please fill all fields");
-            }
-            else{
-                System.out.println(startDate);
-                System.out.println(endDate);
+        String name = jTextField1.getText();
+        String desc = jTextArea1.getText();
+        String venue = jTextField7.getText();
+        //Format the start date and time
+        Date start = jDateChooser1.getDate();
+        SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
+        String startDate = dateFormat1.format(start);
+        String startTime = jSpinner1.getValue().toString().split(" ",6)[3];
+        String startDateTime = startDate+" "+startTime;
+        System.out.println("startDateTime -- "+startDateTime);
+        //Format the end date and time
+        Date end = jDateChooser2.getDate();
+        String endDate = dateFormat1.format(end);
+        String endTime = jSpinner2.getValue().toString().split(" ",6)[3];
+        String endDateTime = endDate+" "+endTime;
+        System.out.println("startDateTime -- "+endDateTime);
 
-                Date startDateCheck = null;
-                Date endDateCheck = null;
-                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                dateFormat.setLenient(false);
+        //Check if all fields are populated
+        if(name.isEmpty() || desc.isEmpty() || venue.isEmpty() || startDate.isEmpty() || endDate.isEmpty() || startTime.isEmpty() || endTime.isEmpty()){
+            JOptionPane.showMessageDialog(postEvePanel, "Please fill all fields");
+        }
+        //Clear the fields after clicking button
+        jTextField1.setText("");
+        jTextArea1.setText("");
+        jTextField7.setText("");
+        jDateChooser1.setCalendar(null);
+        jDateChooser2.setCalendar(null);
+        jSpinner1.setValue(null);
+        jSpinner2.setValue(null);
 
-                startDateCheck = dateFormat.parse(startDate);
-                endDateCheck = dateFormat.parse(endDate);
-
-                System.out.println(startDateCheck);
-                System.out.println(endDateCheck);   
-            }
-            
-            String url = "http://localhost:9002/events/?";
-            RestAPIHook a = new RestAPIHook();
-            HashMap<String, String> params = new HashMap<>();
+        String url = "http://localhost:9002/events/?";
+        RestAPIHook a = new RestAPIHook();
+        HashMap<String, String> params = new HashMap<>();
 //            params.put("association_id", association_id);
-            params.put("association_id", "1");
-            params.put("start_time", startDate);
-            params.put("end_time", endDate);
-            params.put("name", name);
-            params.put("venue", venue);
-            params.put("description", desc);
-            System.out.println(params);
-            JSONObject p = a.invokePostMethod(url, params);
-            System.out.println(p);
-        }
-        catch (ParseException parseException){
-            JOptionPane.showMessageDialog(postEvePanel, "Please enter valid start and end times");
-        }
-        
+        params.put("association_id", "1");
+        params.put("start_time", startDateTime);
+        params.put("end_time", endDateTime);
+        params.put("name", name);
+        params.put("venue", venue);
+        params.put("description", desc);
+        System.out.println(params);
+        JSONObject p = a.invokePostMethod(url, params);
+        System.out.println(p);
     }//GEN-LAST:event_postButtonActionPerformed
 
     
@@ -563,6 +583,8 @@ public final class assoHomePage extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton homeAssocButton;
     private javax.swing.JPanel homePanel;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
@@ -574,11 +596,11 @@ public final class assoHomePage extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSpinner jSpinner1;
+    private javax.swing.JSpinner jSpinner2;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField7;
-    public javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField9;
     private javax.swing.JLabel logoutLabel;
     private javax.swing.JLabel menu;
     private javax.swing.JPanel navPanelAssocUser;
