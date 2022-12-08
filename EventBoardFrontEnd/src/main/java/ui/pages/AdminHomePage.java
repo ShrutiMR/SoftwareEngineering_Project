@@ -352,6 +352,51 @@ public final class AdminHomePage extends javax.swing.JFrame {
 
     private void homeAdminButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeAdminButtonActionPerformed
         // TODO add your handling code here:
+        String url = "http://localhost:9001/associations/?type=administrator";
+        RestAPIHook a = new RestAPIHook();
+        JSONObject p = a.invokeGetMethod(url);
+        Iterator<String> keys1 = p.keys();
+
+        List feeds = new ArrayList();
+        while(keys1.hasNext()){
+            String key = keys1.next();
+
+            if("isSuccess".equals(key)){
+                continue;
+            }
+
+            HashMap temp = new HashMap();
+
+            temp.put("association_id", key);
+            temp.put("isAdmin",true);
+            JSONObject val = p.getJSONObject(key);
+            Iterator<String> childKeys = val.keys();
+            while(childKeys.hasNext()){
+                String childKey = childKeys.next();
+                temp.put(childKey, val.get(childKey));
+            }
+            System.out.println("Hi2");
+            System.out.println(temp);
+            System.out.println("Hi3");
+            feeds.add(new AssociationsFeed(temp));
+
+        }
+        jTable1 = new JTable(new AssociationsFeedTableModel(feeds));
+        //AssociationsFeedCell cell = new AssociationsFeedCell();
+        jTable1.setDefaultRenderer(AssociationsFeed.class, new AssociationsFeedCell());
+        jTable1.setDefaultEditor(AssociationsFeed.class, new AssociationsFeedCell());
+        jTable1.setRowHeight(60);
+        jTable1.setModel(jTable1.getModel());
+
+        jTable1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jTable1.setFocusable(false);
+        jTable1.setOpaque(false);
+        jTable1.setRequestFocusEnabled(false);
+        jTable1.setRowSelectionAllowed(false);
+        jTable1.setSurrendersFocusOnKeystroke(true);
+        jTable1.setUpdateSelectionOnSort(false);
+        jTable1.setVerifyInputWhenFocusTarget(false);
+        jScrollPane1.setViewportView(jTable1);
         homePanel.setVisible(true);
         homePanel.setEnabled(true);
         profilePanel.setVisible(false);
