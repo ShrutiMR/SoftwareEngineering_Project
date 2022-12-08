@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
@@ -418,7 +419,13 @@ public final class assoHomePage extends javax.swing.JFrame {
 
     private void logoutLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutLabelMouseClicked
         // TODO add your handling code here:
+        JOptionPane.showMessageDialog(this, "Logout Successful!");
+        this.dispose();
         
+        LoginPage redirectLogin = new LoginPage();
+        redirectLogin.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+        redirectLogin.setUndecorated(true);
+        redirectLogin.setVisible(true);
     }//GEN-LAST:event_logoutLabelMouseClicked
 
     private void menuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuMouseClicked
