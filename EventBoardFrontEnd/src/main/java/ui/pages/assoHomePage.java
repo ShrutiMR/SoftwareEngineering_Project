@@ -514,24 +514,30 @@ public final class assoHomePage extends javax.swing.JFrame {
         String name = jTextField1.getText();
         String desc = jTextArea1.getText();
         String venue = jTextField7.getText();
-        //Format the start date and time
         Date start = jDateChooser1.getDate();
+        Date end = jDateChooser2.getDate();
+        //Check if all fields are populated
+        if(name.isEmpty() || desc.isEmpty() || venue.isEmpty()){
+            JOptionPane.showMessageDialog(postEvePanel, "Please fill all fields");
+        }
+        else if(start == null){
+            JOptionPane.showMessageDialog(postEvePanel, "Please fill the start time!");
+        }
+        else if(end == null){
+            JOptionPane.showMessageDialog(postEvePanel, "Please fill the end time!");
+        }
+        //Format the start date and time  
         SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
         String startDate = dateFormat1.format(start);
         String startTime = jSpinner1.getValue().toString().split(" ",6)[3];
         String startDateTime = startDate+" "+startTime;
         System.out.println("startDateTime -- "+startDateTime);
         //Format the end date and time
-        Date end = jDateChooser2.getDate();
         String endDate = dateFormat1.format(end);
         String endTime = jSpinner2.getValue().toString().split(" ",6)[3];
         String endDateTime = endDate+" "+endTime;
         System.out.println("startDateTime -- "+endDateTime);
-
-        //Check if all fields are populated
-        if(name.isEmpty() || desc.isEmpty() || venue.isEmpty() || startDate.isEmpty() || endDate.isEmpty() || startTime.isEmpty() || endTime.isEmpty()){
-            JOptionPane.showMessageDialog(postEvePanel, "Please fill all fields");
-        }
+        
         //Clear the fields after clicking button
         jTextField1.setText("");
         jTextArea1.setText("");
