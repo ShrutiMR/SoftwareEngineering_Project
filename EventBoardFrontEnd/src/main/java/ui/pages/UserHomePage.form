@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
     <Container class="javax.swing.JFrame" name="jFrame1">
 
@@ -293,15 +293,54 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="1140" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="291" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="jLabel5" alignment="1" min="-2" pref="305" max="-2" attributes="0"/>
+                          <Component id="jLabel2" alignment="1" min="-2" pref="302" max="-2" attributes="0"/>
+                          <Component id="jLabel4" alignment="1" min="-2" pref="300" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="544" max="32767" attributes="0"/>
+                  </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="560" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="66" max="-2" attributes="0"/>
+                      <Component id="jLabel2" min="-2" pref="49" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                      <Component id="jLabel5" min="-2" pref="50" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="jLabel4" min="-2" pref="51" max="-2" attributes="0"/>
+                      <EmptySpace pref="312" max="32767" attributes="0"/>
+                  </Group>
               </Group>
             </DimensionLayout>
           </Layout>
+          <SubComponents>
+            <Component class="javax.swing.JLabel" name="jLabel2">
+              <Properties>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="&quot;User Type :        User&quot;" type="code"/>
+                </Property>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel4">
+              <Properties>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="&quot;Email :        &quot;+ this.inputJSON.get(&quot;email&quot;).toString()" type="code"/>
+                </Property>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel5">
+              <Properties>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="&quot;First Name :       &quot;+this.inputJSON.get(&quot;first_name&quot;).toString()" type="code"/>
+                </Property>
+              </Properties>
+            </Component>
+          </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="pastEvePanel">
           <Constraints>
@@ -313,15 +352,47 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="1140" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="269" max="-2" attributes="0"/>
+                      <Component id="jScrollPane2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="419" max="32767" attributes="0"/>
+                  </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="560" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="74" max="-2" attributes="0"/>
+                      <Component id="jScrollPane2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="84" max="32767" attributes="0"/>
+                  </Group>
               </Group>
             </DimensionLayout>
           </Layout>
+          <SubComponents>
+            <Container class="javax.swing.JScrollPane" name="jScrollPane2">
+              <AuxValues>
+                <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+              </AuxValues>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <SubComponents>
+                <Component class="javax.swing.JTable" name="homeFeedsTable1">
+                  <Properties>
+                    <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="homeFeedsTable1.getModel()" type="code"/>
+                    </Property>
+                  </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JTable (new EventsFeedTableModel(pastfeeds))"/>
+                    <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="String pastUrl = &quot;http://localhost:9002/events/?type=past&amp;user_id=&quot;+this.inputJSON.get(&quot;user_id&quot;);&#xa;RestAPIHook pastHook = new RestAPIHook();&#xa;JSONObject pastJSON = pastHook.invokeGetMethod(pastUrl);&#xa;Iterator&lt;String&gt; pastKeys = pastJSON.keys();&#xa;&#xa;List pastfeeds = new ArrayList();&#xa;while(pastKeys.hasNext()){&#xa;    String pastKey = pastKeys.next();&#xa;&#xa;    if(&quot;isSuccess&quot;.equals(pastKey)){&#xa;        continue;&#xa;    }&#xa;&#xa;    HashMap temp = new HashMap();&#xa;&#xa;    temp.put(&quot;event_id&quot;, pastKey);&#xa;    JSONObject val = pastJSON.getJSONObject(pastKey);&#xa;    Iterator&lt;String&gt; childKeys = val.keys();&#xa;    while(childKeys.hasNext()){&#xa;        String childKey = childKeys.next();&#xa;        temp.put(childKey, val.get(childKey));&#xa;    }&#xa;    temp.put(&quot;isRendered&quot;, false);&#xa;    temp.put(&quot;isFollow&quot;, false);&#xa;    temp.put(&quot;user_id&quot;, this.inputJSON.get(&quot;user_id&quot;));&#xa;    System.out.println(&quot;Hi2&quot;);&#xa;    System.out.println(temp);&#xa;    System.out.println(&quot;Hi3&quot;);&#xa;    pastfeeds.add(new EventsFeed(temp));&#xa;}"/>
+                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="homeFeedsTable1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));&#xa;homeFeedsTable1.setFocusable(false);&#xa;homeFeedsTable1.setOpaque(false);&#xa;homeFeedsTable1.setRequestFocusEnabled(false);&#xa;homeFeedsTable1.setRowSelectionAllowed(false);&#xa;homeFeedsTable1.setSurrendersFocusOnKeystroke(true);&#xa;homeFeedsTable1.setUpdateSelectionOnSort(false);&#xa;homeFeedsTable1.setVerifyInputWhenFocusTarget(false);"/>
+                    <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="homeFeedsTable1.setDefaultRenderer(EventsFeed.class, new EventsFeedCell());&#xa;homeFeedsTable1.setDefaultEditor(EventsFeed.class, new EventsFeedCell());&#xa;homeFeedsTable1.setRowHeight(60);"/>
+                  </AuxValues>
+                </Component>
+              </SubComponents>
+            </Container>
+          </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="upcomEvePanel">
           <Constraints>
@@ -400,8 +471,9 @@
                     </Property>
                   </Properties>
                   <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="homeButton.doClick();"/>
                     <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JTable(new EventsFeedTableModel(homefeeds))"/>
-                    <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="String feedUrl = &quot;http://localhost:9002/events/?type=feed&amp;user_id=&quot;+this.inputJSON.get(&quot;user_id&quot;);&#xa;RestAPIHook a = new RestAPIHook();&#xa;JSONObject feedJSON = a.invokeGetMethod(feedUrl);&#xa;Iterator&lt;String&gt; feedKeys = feedJSON.keys();&#xa;&#xa;List homefeeds = new ArrayList();&#xa;while(feedKeys.hasNext()){&#xa;    String feedKey = feedKeys.next();&#xa;&#xa;    if(&quot;isSuccess&quot;.equals(feedKey)){&#xa;        continue;&#xa;    }&#xa;&#xa;    HashMap temp = new HashMap();&#xa;&#xa;    temp.put(&quot;event_id&quot;, feedKey);&#xa;    JSONObject val = feedJSON.getJSONObject(feedKey);&#xa;    Iterator&lt;String&gt; childKeys = val.keys();&#xa;    while(childKeys.hasNext()){&#xa;        String childKey = childKeys.next();&#xa;        temp.put(childKey, val.get(childKey));&#xa;    }&#xa;    temp.put(&quot;isRendered&quot;, true);&#xa;    temp.put(&quot;isFollow&quot;, true);&#xa;    temp.put(&quot;user_id&quot;, this.inputJSON.get(&quot;user_id&quot;).toString());&#xa;    System.out.println(&quot;Hi2&quot;);&#xa;    System.out.println(temp);&#xa;    System.out.println(&quot;Hi3&quot;);&#xa;    homefeeds.add(new EventsFeed(temp));&#xa;&#xa;}"/>
+                    <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="String feedUrl = &quot;http://localhost:9002/events/?type=feed&amp;user_id=&quot;+this.inputJSON.get(&quot;user_id&quot;);&#xa;RestAPIHook feedHook = new RestAPIHook();&#xa;JSONObject feedJSON = feedHook.invokeGetMethod(feedUrl);&#xa;Iterator&lt;String&gt; feedKeys = feedJSON.keys();&#xa;&#xa;List homefeeds = new ArrayList();&#xa;while(feedKeys.hasNext()){&#xa;    String feedKey = feedKeys.next();&#xa;&#xa;    if(&quot;isSuccess&quot;.equals(feedKey)){&#xa;        continue;&#xa;    }&#xa;&#xa;    HashMap temp = new HashMap();&#xa;&#xa;    temp.put(&quot;event_id&quot;, feedKey);&#xa;    JSONObject val = feedJSON.getJSONObject(feedKey);&#xa;    Iterator&lt;String&gt; childKeys = val.keys();&#xa;    while(childKeys.hasNext()){&#xa;        String childKey = childKeys.next();&#xa;        temp.put(childKey, val.get(childKey));&#xa;    }&#xa;    temp.put(&quot;isRendered&quot;, true);&#xa;    temp.put(&quot;isFollow&quot;, true);&#xa;    temp.put(&quot;user_id&quot;, this.inputJSON.get(&quot;user_id&quot;).toString());&#xa;    System.out.println(&quot;Hi2&quot;);&#xa;    System.out.println(temp);&#xa;    System.out.println(&quot;Hi3&quot;);&#xa;    homefeeds.add(new EventsFeed(temp));&#xa;&#xa;}"/>
                     <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="homeFeedsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));&#xa;homeFeedsTable.setFocusable(false);&#xa;homeFeedsTable.setOpaque(false);&#xa;homeFeedsTable.setRequestFocusEnabled(false);&#xa;homeFeedsTable.setRowSelectionAllowed(false);&#xa;homeFeedsTable.setSurrendersFocusOnKeystroke(true);&#xa;homeFeedsTable.setUpdateSelectionOnSort(false);&#xa;homeFeedsTable.setVerifyInputWhenFocusTarget(false);"/>
                     <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="homeFeedsTable.setDefaultRenderer(EventsFeed.class, new EventsFeedCell());&#xa;homeFeedsTable.setDefaultEditor(EventsFeed.class, new EventsFeedCell());&#xa;homeFeedsTable.setRowHeight(60);"/>
                   </AuxValues>

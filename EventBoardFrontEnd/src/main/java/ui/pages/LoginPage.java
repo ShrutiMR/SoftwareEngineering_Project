@@ -118,12 +118,12 @@ import rest.RestAPIHook;
                     adminHP.setVisible(true);
                     System.out.println("hi muneer2");
                 }
-                else if(p.get("user_code").toString().equals("1")){
+                else if(p.get("user_code").toString().equals("2")){
                     System.out.println("hi muneer1");
                     newPanel.setVisible(false);
-                    AdminHomepage adminHP = new AdminHomepage(p);
-                    adminHP.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-                    adminHP.setVisible(true);
+                    UserHomePage userHP = new UserHomePage(p);
+                    userHP.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+                    userHP.setVisible(true);
                     System.out.println("hi muneer2");
                 }
                 else{

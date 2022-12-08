@@ -45,10 +45,14 @@ public final class UserHomePage extends javax.swing.JFrame {
     }
     
     public void active(){
+        navPanel.setVisible(true);
+        navPanel.setEnabled(true);
         jLabel3.setVisible(true);
         jLabel3.setEnabled(true);
         menu.setVisible(false);
         menu.setEnabled(false);
+        homeFeedsTable.setVisible(true);
+        homeFeedsTable.setEnabled(true);
     }
 
     /**
@@ -73,14 +77,49 @@ public final class UserHomePage extends javax.swing.JFrame {
         logoutLabel = new javax.swing.JLabel();
         menu = new javax.swing.JLabel();
         profilePanel = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         pastEvePanel = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        String pastUrl = "http://localhost:9002/events/?type=past&user_id="+this.inputJSON.get("user_id");
+        RestAPIHook pastHook = new RestAPIHook();
+        JSONObject pastJSON = pastHook.invokeGetMethod(pastUrl);
+        Iterator<String> pastKeys = pastJSON.keys();
+
+        List pastfeeds = new ArrayList();
+        while(pastKeys.hasNext()){
+            String pastKey = pastKeys.next();
+
+            if("isSuccess".equals(pastKey)){
+                continue;
+            }
+
+            HashMap temp = new HashMap();
+
+            temp.put("event_id", pastKey);
+            JSONObject val = pastJSON.getJSONObject(pastKey);
+            Iterator<String> childKeys = val.keys();
+            while(childKeys.hasNext()){
+                String childKey = childKeys.next();
+                temp.put(childKey, val.get(childKey));
+            }
+            temp.put("isRendered", false);
+            temp.put("isFollow", false);
+            temp.put("user_id", this.inputJSON.get("user_id"));
+            System.out.println("Hi2");
+            System.out.println(temp);
+            System.out.println("Hi3");
+            pastfeeds.add(new EventsFeed(temp));
+        }
+        homeFeedsTable1 = new JTable (new EventsFeedTableModel(pastfeeds));
         upcomEvePanel = new javax.swing.JPanel();
         homePanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         String feedUrl = "http://localhost:9002/events/?type=feed&user_id="+this.inputJSON.get("user_id");
-        RestAPIHook a = new RestAPIHook();
-        JSONObject feedJSON = a.invokeGetMethod(feedUrl);
+        RestAPIHook feedHook = new RestAPIHook();
+        JSONObject feedJSON = feedHook.invokeGetMethod(feedUrl);
         Iterator<String> feedKeys = feedJSON.keys();
 
         List homefeeds = new ArrayList();
@@ -255,28 +294,67 @@ public final class UserHomePage extends javax.swing.JFrame {
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1140, 70));
 
+        jLabel2.setText("User Type :        User");
+
+        jLabel4.setText("Email :        "+ this.inputJSON.get("email").toString());
+
+        jLabel5.setText("First Name :       "+this.inputJSON.get("first_name").toString());
+
         javax.swing.GroupLayout profilePanelLayout = new javax.swing.GroupLayout(profilePanel);
         profilePanel.setLayout(profilePanelLayout);
         profilePanelLayout.setHorizontalGroup(
             profilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1140, Short.MAX_VALUE)
+            .addGroup(profilePanelLayout.createSequentialGroup()
+                .addGap(291, 291, 291)
+                .addGroup(profilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(544, Short.MAX_VALUE))
         );
         profilePanelLayout.setVerticalGroup(
             profilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 560, Short.MAX_VALUE)
+            .addGroup(profilePanelLayout.createSequentialGroup()
+                .addGap(66, 66, 66)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(312, Short.MAX_VALUE))
         );
 
         jPanel1.add(profilePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1140, 560));
+
+        homeFeedsTable1.setDefaultRenderer(EventsFeed.class, new EventsFeedCell());
+        homeFeedsTable1.setDefaultEditor(EventsFeed.class, new EventsFeedCell());
+        homeFeedsTable1.setRowHeight(60);
+        homeFeedsTable1.setModel(homeFeedsTable1.getModel());
+        homeFeedsTable1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        homeFeedsTable1.setFocusable(false);
+        homeFeedsTable1.setOpaque(false);
+        homeFeedsTable1.setRequestFocusEnabled(false);
+        homeFeedsTable1.setRowSelectionAllowed(false);
+        homeFeedsTable1.setSurrendersFocusOnKeystroke(true);
+        homeFeedsTable1.setUpdateSelectionOnSort(false);
+        homeFeedsTable1.setVerifyInputWhenFocusTarget(false);
+        jScrollPane2.setViewportView(homeFeedsTable1);
 
         javax.swing.GroupLayout pastEvePanelLayout = new javax.swing.GroupLayout(pastEvePanel);
         pastEvePanel.setLayout(pastEvePanelLayout);
         pastEvePanelLayout.setHorizontalGroup(
             pastEvePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1140, Short.MAX_VALUE)
+            .addGroup(pastEvePanelLayout.createSequentialGroup()
+                .addGap(269, 269, 269)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(419, Short.MAX_VALUE))
         );
         pastEvePanelLayout.setVerticalGroup(
             pastEvePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 560, Short.MAX_VALUE)
+            .addGroup(pastEvePanelLayout.createSequentialGroup()
+                .addGap(74, 74, 74)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(84, Short.MAX_VALUE))
         );
 
         jPanel1.add(pastEvePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1140, 560));
@@ -309,6 +387,7 @@ public final class UserHomePage extends javax.swing.JFrame {
         homeFeedsTable.setUpdateSelectionOnSort(false);
         homeFeedsTable.setVerifyInputWhenFocusTarget(false);
         jScrollPane1.setViewportView(homeFeedsTable);
+        homeButton.doClick();
 
         javax.swing.GroupLayout homePanelLayout = new javax.swing.GroupLayout(homePanel);
         homePanel.setLayout(homePanelLayout);
@@ -369,6 +448,51 @@ public final class UserHomePage extends javax.swing.JFrame {
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
         // TODO add your handling code here:
+        String feedUrl = "http://localhost:9002/events/?type=feed&user_id="+this.inputJSON.get("user_id");
+        RestAPIHook a = new RestAPIHook();
+        JSONObject feedJSON = a.invokeGetMethod(feedUrl);
+        Iterator<String> feedKeys = feedJSON.keys();
+
+        List homefeeds = new ArrayList();
+        while(feedKeys.hasNext()){
+            String feedKey = feedKeys.next();
+
+            if("isSuccess".equals(feedKey)){
+                continue;
+            }
+
+            HashMap temp = new HashMap();
+
+            temp.put("event_id", feedKey);
+            JSONObject val = feedJSON.getJSONObject(feedKey);
+            Iterator<String> childKeys = val.keys();
+            while(childKeys.hasNext()){
+                String childKey = childKeys.next();
+                temp.put(childKey, val.get(childKey));
+            }
+            temp.put("isRendered", true);
+            temp.put("isFollow", true);
+            temp.put("user_id", this.inputJSON.get("user_id").toString());
+            System.out.println("Hi2");
+            System.out.println(temp);
+            System.out.println("Hi3");
+            homefeeds.add(new EventsFeed(temp));
+
+        }
+        homeFeedsTable = new JTable(new EventsFeedTableModel(homefeeds));
+        homeFeedsTable.setDefaultRenderer(EventsFeed.class, new EventsFeedCell());
+        homeFeedsTable.setDefaultEditor(EventsFeed.class, new EventsFeedCell());
+        homeFeedsTable.setRowHeight(60);
+        homeFeedsTable.setModel(homeFeedsTable.getModel());
+        homeFeedsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        homeFeedsTable.setFocusable(false);
+        homeFeedsTable.setOpaque(false);
+        homeFeedsTable.setRequestFocusEnabled(false);
+        homeFeedsTable.setRowSelectionAllowed(false);
+        homeFeedsTable.setSurrendersFocusOnKeystroke(true);
+        homeFeedsTable.setUpdateSelectionOnSort(false);
+        homeFeedsTable.setVerifyInputWhenFocusTarget(false);
+        jScrollPane1.setViewportView(homeFeedsTable);
         homePanel.setVisible(true);
         homePanel.setEnabled(true);
         profilePanel.setVisible(false);
@@ -377,6 +501,8 @@ public final class UserHomePage extends javax.swing.JFrame {
         upcomEvePanel.setEnabled(false);
         pastEvePanel.setVisible(false);
         pastEvePanel.setEnabled(false);
+        homeFeedsTable.setVisible(true);
+        homeFeedsTable.setEnabled(true);
     }//GEN-LAST:event_homeButtonActionPerformed
 
     private void upcomEveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upcomEveButtonActionPerformed
@@ -389,6 +515,8 @@ public final class UserHomePage extends javax.swing.JFrame {
         homePanel.setEnabled(false);
         pastEvePanel.setVisible(false);
         pastEvePanel.setEnabled(false);
+        homeFeedsTable.setVisible(false);
+        homeFeedsTable.setEnabled(false);
     }//GEN-LAST:event_upcomEveButtonActionPerformed
 
     private void profileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profileButtonActionPerformed
@@ -401,6 +529,8 @@ public final class UserHomePage extends javax.swing.JFrame {
         upcomEvePanel.setEnabled(false);
         pastEvePanel.setVisible(false);
         pastEvePanel.setEnabled(false);
+        homeFeedsTable.setVisible(false);
+        homeFeedsTable.setEnabled(false);
     }//GEN-LAST:event_profileButtonActionPerformed
 
     private void pastEveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pastEveButtonActionPerformed
@@ -413,6 +543,8 @@ public final class UserHomePage extends javax.swing.JFrame {
         homePanel.setEnabled(false);
         upcomEvePanel.setVisible(false);
         upcomEvePanel.setEnabled(false);
+        homeFeedsTable.setVisible(false);
+        homeFeedsTable.setEnabled(false);
     }//GEN-LAST:event_pastEveButtonActionPerformed
     
     
@@ -449,13 +581,18 @@ public final class UserHomePage extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton homeButton;
     private javax.swing.JTable homeFeedsTable;
+    private javax.swing.JTable homeFeedsTable1;
     private javax.swing.JPanel homePanel;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel logoutLabel;
     private javax.swing.JLabel menu;
     private javax.swing.JPanel navPanel;
