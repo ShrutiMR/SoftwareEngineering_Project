@@ -31,7 +31,8 @@ public final class UserHomePage extends javax.swing.JFrame {
     public UserHomePage(JSONObject input) {
         this.inputJSON = input;
         initComponents();
-        nonActive();
+//        nonActive();
+        active();
     }
 
     
