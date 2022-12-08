@@ -41,19 +41,17 @@ public class EventsRequestHandler implements HttpHandler {
 
     private HashMap getRequestParameters(HttpExchange httpExchange) {
         HashMap<String, String> parameters = new HashMap();
-        
+
         String[] parser = httpExchange.
                 getRequestURI()
                 .toString()
                 .split("\\?");
-       
+
         if (parser.length > 1) {
             parser = parser[1].split("[=&]");
         } else {
             return parameters;
         }
-
-        
 
         for (int i = 0; i < parser.length - 1; i = i + 2) {
             parameters.put(parser[i], parser[i + 1]);
@@ -100,9 +98,10 @@ public class EventsRequestHandler implements HttpHandler {
                 }
 
                 resp = jo.toString();
-                httpExchange.sendResponseHeaders(200, resp.length());
+                byte[] b = resp.getBytes("UTF-8");
+                httpExchange.sendResponseHeaders(200, b.length);
                 // htmlResponse.getBytes()
-                outputStream.write(resp.getBytes());
+                outputStream.write(b);
 
                 outputStream.flush();
                 outputStream.close();
@@ -129,9 +128,10 @@ public class EventsRequestHandler implements HttpHandler {
                 }
 
                 resp = jo.toString();
-                httpExchange.sendResponseHeaders(200, resp.length());
+                byte[] b = resp.getBytes("UTF-8");
+                httpExchange.sendResponseHeaders(200, b.length);
                 // htmlResponse.getBytes()
-                outputStream.write(resp.getBytes());
+                outputStream.write(b);
 
                 outputStream.flush();
                 outputStream.close();
@@ -219,9 +219,10 @@ public class EventsRequestHandler implements HttpHandler {
                 }
 
                 resp = jo.toString();
-                httpExchange.sendResponseHeaders(200, resp.length());
+                byte[] b = resp.getBytes("UTF-8");
+                httpExchange.sendResponseHeaders(200, b.length);
                 // htmlResponse.getBytes()
-                outputStream.write(resp.getBytes());
+                outputStream.write(b);
 
                 outputStream.flush();
                 outputStream.close();
@@ -248,19 +249,20 @@ public class EventsRequestHandler implements HttpHandler {
                 }
 
                 resp = jo.toString();
-                httpExchange.sendResponseHeaders(200, resp.length());
+                byte[] b = resp.getBytes("UTF-8");
+                httpExchange.sendResponseHeaders(200, b.length);
                 // htmlResponse.getBytes()
-                outputStream.write(resp.getBytes());
+                outputStream.write(b);
 
                 outputStream.flush();
                 outputStream.close();
             } else {
                 jo.put("isSuccess", false);
                 resp = jo.toString();
-                httpExchange.sendResponseHeaders(200, resp.length());
-
+                byte[] b = resp.getBytes("UTF-8");
+                httpExchange.sendResponseHeaders(200, b.length);
                 // htmlResponse.getBytes()
-                outputStream.write(resp.getBytes());
+                outputStream.write(b);
 
                 outputStream.flush();
                 outputStream.close();
@@ -270,14 +272,14 @@ public class EventsRequestHandler implements HttpHandler {
             System.out.println(e.getMessage());
             jo.put("isSuccess", false);
 
-            resp = jo.toString();
             try {
-                httpExchange.sendResponseHeaders(200, resp.length());
-
-                outputStream.write(resp.getBytes());
+                resp = jo.toString();
+                byte[] b = resp.getBytes("UTF-8");
+                httpExchange.sendResponseHeaders(200, b.length);
+                // htmlResponse.getBytes()
+                outputStream.write(b);
 
                 outputStream.flush();
-
                 outputStream.close();
             } catch (Exception e1) {
                 System.out.println(e1.getMessage());
@@ -292,13 +294,13 @@ public class EventsRequestHandler implements HttpHandler {
         JSONObject jo = null;
         HashMap parameters = null;
         try {
-            
+
             while ((i = inputStream.read()) != -1) {
                 sb.append((char) i);
             }
-            
+
             jo = new JSONObject(sb.toString());
-            
+
             Iterator<String> keys = jo.keys();
             parameters = new HashMap();
 
@@ -309,7 +311,7 @@ public class EventsRequestHandler implements HttpHandler {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        
+
         return parameters;
 
     }
@@ -343,10 +345,10 @@ public class EventsRequestHandler implements HttpHandler {
                 }
 
                 resp = jo.toString();
-                httpExchange.sendResponseHeaders(200, resp.length());
-
+                byte[] b = resp.getBytes("UTF-8");
+                httpExchange.sendResponseHeaders(200, b.length);
                 // htmlResponse.getBytes()
-                outputStream.write(resp.getBytes());
+                outputStream.write(b);
 
                 outputStream.flush();
                 outputStream.close();
@@ -371,30 +373,29 @@ public class EventsRequestHandler implements HttpHandler {
                     } else {
                         venue = "'" + venue + "'";
                     }
-                    
+
                     String query = "INSERT INTO EVENTS (ASSOCIATION_ID, NAME, START_TIME, END_TIME, VENUE, DESCRIPTION)  "
-                            + "values(" + association_id + ","+name+","+start_time+","+end_time+","+venue+","+description+");";
+                            + "values(" + association_id + "," + name + "," + start_time + "," + end_time + "," + venue + "," + description + ");";
                     System.out.println(query);
                     st.executeUpdate(query);
-                    
+
                     jo.put("isSuccess", true);
 
                     resp = jo.toString();
-                    httpExchange.sendResponseHeaders(200, resp.length());
-
+                    byte[] b = resp.getBytes("UTF-8");
+                    httpExchange.sendResponseHeaders(200, b.length);
                     // htmlResponse.getBytes()
-                    outputStream.write(resp.getBytes());
+                    outputStream.write(b);
 
                     outputStream.flush();
-
                     outputStream.close();
                 } else {
                     jo.put("isSuccess", false);
                     resp = jo.toString();
-                    httpExchange.sendResponseHeaders(200, resp.length());
-
+                    byte[] b = resp.getBytes("UTF-8");
+                    httpExchange.sendResponseHeaders(200, b.length);
                     // htmlResponse.getBytes()
-                    outputStream.write(resp.getBytes());
+                    outputStream.write(b);
 
                     outputStream.flush();
                     outputStream.close();
@@ -405,14 +406,14 @@ public class EventsRequestHandler implements HttpHandler {
             System.out.println(e.getMessage());
             jo.put("isSuccess", false);
 
-            resp = jo.toString();
             try {
-                httpExchange.sendResponseHeaders(200, resp.length());
-
-                outputStream.write(resp.getBytes());
+                resp = jo.toString();
+                byte[] b = resp.getBytes("UTF-8");
+                httpExchange.sendResponseHeaders(200, b.length);
+                // htmlResponse.getBytes()
+                outputStream.write(b);
 
                 outputStream.flush();
-
                 outputStream.close();
             } catch (Exception e1) {
                 System.out.println(e1.getMessage());

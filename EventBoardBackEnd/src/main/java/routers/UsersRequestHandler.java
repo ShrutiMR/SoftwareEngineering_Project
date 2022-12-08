@@ -23,7 +23,7 @@ public class UsersRequestHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        System.out.println("Recieved request from: "+httpExchange.getRemoteAddress());
+        System.out.println("Recieved request from: " + httpExchange.getRemoteAddress());
         String requestParamValue = null;
         if ("GET".equals(httpExchange.getRequestMethod())) {
             //There has to be a check function here
@@ -76,12 +76,12 @@ public class UsersRequestHandler implements HttpHandler {
                     jo.put("user_code", user_code);
                     jo.put("first_name", rs.getString("FIRST_NAME"));
                     jo.put("email", rs.getString("EMAIL"));
-                        
-                    resp = jo.toString();
-                    httpExchange.sendResponseHeaders(200, resp.length());
 
+                    resp = jo.toString();
+                    byte[] b = resp.getBytes("UTF-8");
+                    httpExchange.sendResponseHeaders(200, b.length);
                     // htmlResponse.getBytes()
-                    outputStream.write(resp.getBytes());
+                    outputStream.write(b);
 
                     outputStream.flush();
                     outputStream.close();
@@ -90,10 +90,10 @@ public class UsersRequestHandler implements HttpHandler {
                     jo.put("isSuccess", false);
 
                     resp = jo.toString();
-                    httpExchange.sendResponseHeaders(200, resp.length());
-
+                    byte[] b = resp.getBytes("UTF-8");
+                    httpExchange.sendResponseHeaders(200, b.length);
                     // htmlResponse.getBytes()
-                    outputStream.write(resp.getBytes());
+                    outputStream.write(b);
 
                     outputStream.flush();
                     outputStream.close();
@@ -107,10 +107,10 @@ public class UsersRequestHandler implements HttpHandler {
             try {
                 jo.put("isSuccess", false);
                 resp = jo.toString();
-                httpExchange.sendResponseHeaders(200, resp.length());
-
+                byte[] b = resp.getBytes("UTF-8");
+                httpExchange.sendResponseHeaders(200, b.length);
                 // htmlResponse.getBytes()
-                outputStream.write(resp.getBytes());
+                outputStream.write(b);
 
                 outputStream.flush();
                 outputStream.close();
@@ -155,7 +155,7 @@ public class UsersRequestHandler implements HttpHandler {
         HashMap parameters = getPostParameters(httpExchange);
         JSONObject jo = new JSONObject();
         OutputStream outputStream = httpExchange.getResponseBody();
-        
+
         try {
             Statement st = connection.createStatement();
             String query = "insert into users (USER_CODE, USER_NAME, PASSWORD, FIRST_NAME, LAST_NAME, EMAIL)  "
@@ -163,33 +163,31 @@ public class UsersRequestHandler implements HttpHandler {
                     + parameters.get("user_name") + "', '" + parameters.get("password") + "', '" + parameters.get("first_name") + "', '" + parameters.get("last_name") + "', '" + parameters.get("email") + "')";
             System.out.println(query);
             st.executeUpdate(query);
-            jo.put("isSuccess",true);
+            jo.put("isSuccess", true);
 
             String resp = jo.toString();
-            httpExchange.sendResponseHeaders(200, resp.length());
-
+            byte[] b = resp.getBytes("UTF-8");
+            httpExchange.sendResponseHeaders(200, b.length);
             // htmlResponse.getBytes()
-            
-            outputStream.write(resp.getBytes());
+            outputStream.write(b);
 
             outputStream.flush();
-
             outputStream.close();
             st.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            jo.put("isSuccess",false);
+            jo.put("isSuccess", false);
 
-            String resp = jo.toString();
-            try{
-                httpExchange.sendResponseHeaders(200, resp.length());
-            
-                outputStream.write(resp.getBytes());
+            try {
+                String resp = jo.toString();
+                byte[] b = resp.getBytes("UTF-8");
+                httpExchange.sendResponseHeaders(200, b.length);
+                // htmlResponse.getBytes()
+                outputStream.write(b);
 
                 outputStream.flush();
-
                 outputStream.close();
-            } catch(Exception e1){
+            } catch (Exception e1) {
                 System.out.println(e1.getMessage());
             }
         }
