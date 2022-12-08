@@ -31,6 +31,7 @@ public final class assoHomePage extends javax.swing.JFrame {
      * Creates new form HomePage
      */
     private JSONObject input;
+    private String associationId;
     public assoHomePage() {
         initComponents();
         nonActive();
@@ -40,6 +41,16 @@ public final class assoHomePage extends javax.swing.JFrame {
         this.input = input;
         initComponents();
         nonActive();
+        fetchAssociationDetails();
+    }
+    
+    public void fetchAssociationDetails(){
+        Integer userId = (Integer) input.get("user_id");
+        String url = "http://localhost:9001/associations/?type=single&user_id="+userId;
+        RestAPIHook a = new RestAPIHook();
+        JSONObject assoc_Details = a.invokeGetMethod(url);
+        System.out.println("assoc_Details -- "+assoc_Details);
+        this.associationId = (String) assoc_Details.get("association_id");
     }
     
     public void nonActive(){
@@ -489,10 +500,10 @@ public final class assoHomePage extends javax.swing.JFrame {
         postEvePanel.setEnabled(false);
         
         // retrieve the upcoming events using a GET request
-        String url = "http://localhost:9002/events/association_id=2&type=associationUpcoming";
-        RestAPIHook a = new RestAPIHook();
-        JSONObject p = a.invokeGetMethod(url);
-        System.out.println(p);
+//        String url = "http://localhost:9002/events/association_id=2&type=associationUpcoming";
+//        RestAPIHook a = new RestAPIHook();
+//        JSONObject p = a.invokeGetMethod(url);
+//        System.out.println(p);
     }//GEN-LAST:event_homeAssocButtonActionPerformed
 
     private void profileAssocButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profileAssocButtonActionPerformed
@@ -550,8 +561,8 @@ public final class assoHomePage extends javax.swing.JFrame {
         String url = "http://localhost:9002/events/?";
         RestAPIHook a = new RestAPIHook();
         HashMap<String, String> params = new HashMap<>();
-//            params.put("association_id", association_id);
-        params.put("association_id", "1");
+        params.put("association_id", associationId);
+//        params.put("association_id", "1");
         params.put("start_time", startDateTime);
         params.put("end_time", endDateTime);
         params.put("name", name);
