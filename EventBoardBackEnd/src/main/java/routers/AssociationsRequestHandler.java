@@ -87,11 +87,10 @@ public class AssociationsRequestHandler implements HttpHandler {
                 }
                 jo.put("isSuccess", true);
                 resp = jo.toString();
-                System.out.println(resp);
-                httpExchange.sendResponseHeaders(200, resp.length());
-
+                byte[] b = resp.getBytes("UTF-8");
+                httpExchange.sendResponseHeaders(200, b.length);
                 // htmlResponse.getBytes()
-                outputStream.write(resp.getBytes());
+                outputStream.write(b);
 
                 outputStream.flush();
                 outputStream.close();
@@ -104,10 +103,10 @@ public class AssociationsRequestHandler implements HttpHandler {
                 }
                 jo.put("isSuccess", true);
                 resp = jo.toString();
-                httpExchange.sendResponseHeaders(200, resp.length());
-
+                byte[] b = resp.getBytes("UTF-8");
+                httpExchange.sendResponseHeaders(200, b.length);
                 // htmlResponse.getBytes()
-                outputStream.write(resp.getBytes());
+                outputStream.write(b);
 
                 outputStream.flush();
                 outputStream.close();
@@ -121,10 +120,10 @@ public class AssociationsRequestHandler implements HttpHandler {
                 }
                 jo.put("isSuccess", true);
                 resp = jo.toString();
-                httpExchange.sendResponseHeaders(200, resp.length());
-
+                byte[] b = resp.getBytes("UTF-8");
+                httpExchange.sendResponseHeaders(200, b.length);
                 // htmlResponse.getBytes()
-                outputStream.write(resp.getBytes());
+                outputStream.write(b);
 
                 outputStream.flush();
                 outputStream.close();
@@ -152,10 +151,10 @@ public class AssociationsRequestHandler implements HttpHandler {
                 }
                 jo.put("isSuccess", true);
                 resp = jo.toString();
-                httpExchange.sendResponseHeaders(200, resp.length());
-
+                byte[] b = resp.getBytes("UTF-8");
+                httpExchange.sendResponseHeaders(200, b.length);
                 // htmlResponse.getBytes()
-                outputStream.write(resp.getBytes());
+                outputStream.write(b);
 
                 outputStream.flush();
                 outputStream.close();
@@ -166,7 +165,7 @@ public class AssociationsRequestHandler implements HttpHandler {
                         + (String) parameters.get("user_id") + ");";
                 System.out.println(query);
                 rs = st.executeQuery(query);
-                
+
                 while (rs.next()) {
                     JSONObject temp = new JSONObject();
                     temp.put("association_name", rs.getString("ASSOCIATION_NAME"));
@@ -178,10 +177,10 @@ public class AssociationsRequestHandler implements HttpHandler {
                 }
                 jo.put("isSuccess", true);
                 resp = jo.toString();
-                httpExchange.sendResponseHeaders(200, resp.length());
-
+                byte[] b = resp.getBytes("UTF-8");
+                httpExchange.sendResponseHeaders(200, b.length);
                 // htmlResponse.getBytes()
-                outputStream.write(resp.getBytes());
+                outputStream.write(b);
 
                 outputStream.flush();
                 outputStream.close();
@@ -191,7 +190,7 @@ public class AssociationsRequestHandler implements HttpHandler {
                         + (String) parameters.get("user_id") + ");";
                 System.out.println(query);
                 rs = st.executeQuery(query);
-                
+
                 while (rs.next()) {
                     JSONObject temp = new JSONObject();
                     temp.put("association_name", rs.getString("ASSOCIATION_NAME"));
@@ -203,20 +202,20 @@ public class AssociationsRequestHandler implements HttpHandler {
                 }
                 jo.put("isSuccess", true);
                 resp = jo.toString();
-                httpExchange.sendResponseHeaders(200, resp.length());
-
+                byte[] b = resp.getBytes("UTF-8");
+                httpExchange.sendResponseHeaders(200, b.length);
                 // htmlResponse.getBytes()
-                outputStream.write(resp.getBytes());
+                outputStream.write(b);
 
                 outputStream.flush();
                 outputStream.close();
             } else {
                 jo.put("isSuccess", false);
                 resp = jo.toString();
-                httpExchange.sendResponseHeaders(200, resp.length());
-
+                byte[] b = resp.getBytes("UTF-8");
+                httpExchange.sendResponseHeaders(200, b.length);
                 // htmlResponse.getBytes()
-                outputStream.write(resp.getBytes());
+                outputStream.write(b);
 
                 outputStream.flush();
                 outputStream.close();
@@ -226,14 +225,14 @@ public class AssociationsRequestHandler implements HttpHandler {
             System.out.println(e.getMessage());
             jo.put("isSuccess", false);
 
-            resp = jo.toString();
             try {
-                httpExchange.sendResponseHeaders(200, resp.length());
-
-                outputStream.write(resp.getBytes());
+                resp = jo.toString();
+                byte[] b = resp.getBytes("UTF-8");
+                httpExchange.sendResponseHeaders(200, b.length);
+                // htmlResponse.getBytes()
+                outputStream.write(b);
 
                 outputStream.flush();
-
                 outputStream.close();
             } catch (Exception e1) {
                 System.out.println(e1.getMessage());
@@ -291,13 +290,12 @@ public class AssociationsRequestHandler implements HttpHandler {
                     st.executeUpdate("UPDATE ASSOCIATIONS SET APPROVAL_STATUS='Y' WHERE ASSOCIATION_ID = " + association_id);
                     jo.put("isSuccess", true);
                     resp = jo.toString();
-                    httpExchange.sendResponseHeaders(200, resp.length());
-
+                    byte[] b = resp.getBytes("UTF-8");
+                    httpExchange.sendResponseHeaders(200, b.length);
                     // htmlResponse.getBytes()
-                    outputStream.write(resp.getBytes());
+                    outputStream.write(b);
 
                     outputStream.flush();
-
                     outputStream.close();
                 } else if ("N".equals(approval)) {
                     rs = st.executeQuery("SELECT USER_ID FROM ASSOCIATIONS WHERE ASSOCIATION_ID = " + association_id);
@@ -310,24 +308,22 @@ public class AssociationsRequestHandler implements HttpHandler {
                     st.executeUpdate("DELETE FROM USERS WHERE USER_ID = " + user_id_of_this_association);
                     jo.put("isSuccess", true);
                     resp = jo.toString();
-                    httpExchange.sendResponseHeaders(200, resp.length());
-
+                    byte[] b = resp.getBytes("UTF-8");
+                    httpExchange.sendResponseHeaders(200, b.length);
                     // htmlResponse.getBytes()
-                    outputStream.write(resp.getBytes());
+                    outputStream.write(b);
 
                     outputStream.flush();
-
                     outputStream.close();
                 } else {
                     jo.put("isSuccess", false);
                     resp = jo.toString();
-                    httpExchange.sendResponseHeaders(200, resp.length());
-
+                    byte[] b = resp.getBytes("UTF-8");
+                    httpExchange.sendResponseHeaders(200, b.length);
                     // htmlResponse.getBytes()
-                    outputStream.write(resp.getBytes());
+                    outputStream.write(b);
 
                     outputStream.flush();
-
                     outputStream.close();
                 }
 
@@ -336,36 +332,33 @@ public class AssociationsRequestHandler implements HttpHandler {
                     st.executeUpdate("INSERT INTO FOLLOW_ASSOCIATIONS  (ASSOCIATION_ID, USER_ID) VALUES ( " + association_id + "  , " + user_id + ")");
                     jo.put("isSuccess", true);
                     resp = jo.toString();
-                    httpExchange.sendResponseHeaders(200, resp.length());
-
+                    byte[] b = resp.getBytes("UTF-8");
+                    httpExchange.sendResponseHeaders(200, b.length);
                     // htmlResponse.getBytes()
-                    outputStream.write(resp.getBytes());
+                    outputStream.write(b);
 
                     outputStream.flush();
-
                     outputStream.close();
                 } else if ("N".equals(follow)) {
                     st.executeUpdate("DELETE FROM FOLLOW_ASSOCIATIONS WHERE ASSOCIATION_ID = " + association_id + " AND USER_ID = " + user_id);
                     jo.put("isSuccess", true);
                     resp = jo.toString();
-                    httpExchange.sendResponseHeaders(200, resp.length());
-
+                    byte[] b = resp.getBytes("UTF-8");
+                    httpExchange.sendResponseHeaders(200, b.length);
                     // htmlResponse.getBytes()
-                    outputStream.write(resp.getBytes());
+                    outputStream.write(b);
 
                     outputStream.flush();
-
                     outputStream.close();
                 } else {
                     jo.put("isSuccess", false);
                     resp = jo.toString();
-                    httpExchange.sendResponseHeaders(200, resp.length());
-
+                    byte[] b = resp.getBytes("UTF-8");
+                    httpExchange.sendResponseHeaders(200, b.length);
                     // htmlResponse.getBytes()
-                    outputStream.write(resp.getBytes());
+                    outputStream.write(b);
 
                     outputStream.flush();
-
                     outputStream.close();
                 }
             } else {
@@ -437,21 +430,20 @@ public class AssociationsRequestHandler implements HttpHandler {
                     jo.put("isSuccess", true);
 
                     resp = jo.toString();
-                    httpExchange.sendResponseHeaders(200, resp.length());
-
+                    byte[] b = resp.getBytes("UTF-8");
+                    httpExchange.sendResponseHeaders(200, b.length);
                     // htmlResponse.getBytes()
-                    outputStream.write(resp.getBytes());
+                    outputStream.write(b);
 
                     outputStream.flush();
-
                     outputStream.close();
                 } else {
                     jo.put("isSuccess", false);
                     resp = jo.toString();
-                    httpExchange.sendResponseHeaders(200, resp.length());
-
+                    byte[] b = resp.getBytes("UTF-8");
+                    httpExchange.sendResponseHeaders(200, b.length);
                     // htmlResponse.getBytes()
-                    outputStream.write(resp.getBytes());
+                    outputStream.write(b);
 
                     outputStream.flush();
                     outputStream.close();
@@ -462,14 +454,14 @@ public class AssociationsRequestHandler implements HttpHandler {
             System.out.println(e.getMessage());
             jo.put("isSuccess", false);
 
-            resp = jo.toString();
             try {
-                httpExchange.sendResponseHeaders(200, resp.length());
-
-                outputStream.write(resp.getBytes());
+                resp = jo.toString();
+                byte[] b = resp.getBytes("UTF-8");
+                httpExchange.sendResponseHeaders(200, b.length);
+                // htmlResponse.getBytes()
+                outputStream.write(b);
 
                 outputStream.flush();
-
                 outputStream.close();
             } catch (Exception e1) {
                 System.out.println(e1.getMessage());
