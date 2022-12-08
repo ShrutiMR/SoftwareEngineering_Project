@@ -26,6 +26,9 @@ import rest.RestAPIHook;
 import ui.components.Associations.AssociationsFeed;
 import ui.components.Associations.AssociationsFeedCell;
 import ui.components.Associations.AssociationsFeedTableModel;
+import ui.components.Events.EventsFeed;
+import ui.components.Events.EventsFeedCell;
+import ui.components.Events.EventsFeedTableModel;
 
 
 /**
@@ -115,38 +118,74 @@ public final class AssociationHomePage extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         upcomEvePanel = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        System.out.println(associationDetailsJSON.toString());
-        String associationUpcomEveUrl = "http://localhost:9002/events/?type=associationUpcoming&association_id="+associationDetailsJSON.get("association_id").toString();
+        String url= "http://localhost:9002/events/?type=associationUpcoming&association_id="+ this.associationDetailsJSON.get("association_id").toString();
+
         RestAPIHook a = new RestAPIHook();
-        JSONObject associationUpcomEveData = a.invokeGetMethod(associationUpcomEveUrl);
-        Iterator<String> associationUpcomEveKeys = associationUpcomEveData.keys();
+        JSONObject p = a.invokeGetMethod(url);
+        Iterator<String> keys = p.keys();
 
-        List associationUpcomEveFeeds = new ArrayList();
-        while(associationUpcomEveKeys.hasNext()){
-            String associationUpcomEveKey = associationUpcomEveKeys.next();
+        List feeds = new ArrayList();
+        while(keys.hasNext()){
+            String key = keys.next();
 
-            if("isSuccess".equals(associationUpcomEveKey)){
+            if("isSuccess".equals(key)){
                 continue;
             }
 
             HashMap temp = new HashMap();
 
-            temp.put("event_id", associationUpcomEveKey);
-            temp.put("isRendered",false);
-            JSONObject val = associationUpcomEveData.getJSONObject(associationUpcomEveKey);
+            temp.put("event_id", key);
+            JSONObject val = p.getJSONObject(key);
             Iterator<String> childKeys = val.keys();
             while(childKeys.hasNext()){
                 String childKey = childKeys.next();
                 temp.put(childKey, val.get(childKey));
             }
+            temp.put("isRendered", false);
+            temp.put("isFollow", true);
+            temp.put("user_id", "12");
             System.out.println("Hi2");
             System.out.println(temp);
             System.out.println("Hi3");
-            associationUpcomEveFeeds.add(new AssociationsFeed(temp));
-
+            feeds.add(new EventsFeed(temp));
         }
-        upcomingEventsTable = new JTable(new AssociationsFeedTableModel(associationUpcomEveFeeds));
+        System.out.println("Hi1");
+        upcomingEventsTable = new JTable(new EventsFeedTableModel(feeds));
         pastEvePanel = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        url= "http://localhost:9002/events/?type=associationPast&association_id="+ this.associationDetailsJSON.get("association_id").toString();
+
+        a = new RestAPIHook();
+        p = a.invokeGetMethod(url);
+        keys = p.keys();
+
+        feeds = new ArrayList();
+        while(keys.hasNext()){
+            String key = keys.next();
+
+            if("isSuccess".equals(key)){
+                continue;
+            }
+
+            HashMap temp = new HashMap();
+
+            temp.put("event_id", key);
+            JSONObject val = p.getJSONObject(key);
+            Iterator<String> childKeys = val.keys();
+            while(childKeys.hasNext()){
+                String childKey = childKeys.next();
+                temp.put(childKey, val.get(childKey));
+            }
+            temp.put("isRendered", false);
+            temp.put("isFollow", true);
+            temp.put("user_id", "12");
+            System.out.println("Hi2");
+            System.out.println(temp);
+            System.out.println("Hi3");
+            feeds.add(new EventsFeed(temp));
+        }
+        System.out.println("Hi1");
+        pastEventsTable = new JTable(new EventsFeedTableModel(feeds));
         postEvePanel = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -350,9 +389,8 @@ public final class AssociationHomePage extends javax.swing.JFrame {
 
         jPanel1.add(profilePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1560, 560));
 
-        //AssociationsFeedCell cell = new AssociationsFeedCell();
-        upcomingEventsTable.setDefaultRenderer(AssociationsFeed.class, new AssociationsFeedCell());
-        upcomingEventsTable.setDefaultEditor(AssociationsFeed.class, new AssociationsFeedCell());
+        upcomingEventsTable.setDefaultRenderer(EventsFeed.class, new EventsFeedCell());
+        upcomingEventsTable.setDefaultEditor(EventsFeed.class, new EventsFeedCell());
         upcomingEventsTable.setRowHeight(60);
         upcomingEventsTable.setModel(upcomingEventsTable.getModel());
         upcomingEventsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -384,15 +422,35 @@ public final class AssociationHomePage extends javax.swing.JFrame {
 
         jPanel1.add(upcomEvePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1560, 560));
 
+        pastEventsTable.setDefaultRenderer(EventsFeed.class, new EventsFeedCell());
+        pastEventsTable.setDefaultEditor(EventsFeed.class, new EventsFeedCell());
+        pastEventsTable.setRowHeight(60);
+        pastEventsTable.setModel(pastEventsTable.getModel());
+        pastEventsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        pastEventsTable.setFocusable(false);
+        pastEventsTable.setOpaque(false);
+        pastEventsTable.setRequestFocusEnabled(false);
+        pastEventsTable.setRowSelectionAllowed(false);
+        pastEventsTable.setSurrendersFocusOnKeystroke(true);
+        pastEventsTable.setUpdateSelectionOnSort(false);
+        pastEventsTable.setVerifyInputWhenFocusTarget(false);
+        jScrollPane3.setViewportView(pastEventsTable);
+
         javax.swing.GroupLayout pastEvePanelLayout = new javax.swing.GroupLayout(pastEvePanel);
         pastEvePanel.setLayout(pastEvePanelLayout);
         pastEvePanelLayout.setHorizontalGroup(
             pastEvePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1560, Short.MAX_VALUE)
+            .addGroup(pastEvePanelLayout.createSequentialGroup()
+                .addGap(333, 333, 333)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 1148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(79, Short.MAX_VALUE))
         );
         pastEvePanelLayout.setVerticalGroup(
             pastEvePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 560, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pastEvePanelLayout.createSequentialGroup()
+                .addContainerGap(69, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 466, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25))
         );
 
         jPanel1.add(pastEvePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1560, 560));
@@ -479,9 +537,8 @@ public final class AssociationHomePage extends javax.swing.JFrame {
 
     private void logoutLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutLabelMouseClicked
         // TODO add your handling code here:
-        JOptionPane.showMessageDialog(this, "Logout Successful!");
-        this.dispose();
-        
+//        JOptionPane.showMessageDialog(this, "Logout Successful!");
+        this.dispose();     
         LoginPage redirectLogin = new LoginPage();
         redirectLogin.setExtendedState(JFrame.MAXIMIZED_BOTH); 
         redirectLogin.setUndecorated(true);
@@ -507,6 +564,54 @@ public final class AssociationHomePage extends javax.swing.JFrame {
 
     private void upcomEveAssocButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upcomEveAssocButtonActionPerformed
         // TODO add your handling code here:
+        String url= "http://localhost:9002/events/?type=associationUpcoming&association_id="+ this.associationDetailsJSON.get("association_id").toString();
+
+        RestAPIHook a = new RestAPIHook();
+        JSONObject p = a.invokeGetMethod(url);
+        Iterator<String> keys = p.keys();
+
+        List feeds = new ArrayList();
+        while(keys.hasNext()){
+            String key = keys.next();
+
+            if("isSuccess".equals(key)){
+                continue;
+            }
+
+            HashMap temp = new HashMap();
+
+            temp.put("event_id", key);
+            JSONObject val = p.getJSONObject(key);
+            Iterator<String> childKeys = val.keys();
+            while(childKeys.hasNext()){
+                String childKey = childKeys.next();
+                temp.put(childKey, val.get(childKey));
+            }
+            temp.put("isRendered", false);
+            temp.put("isFollow", true);
+            temp.put("user_id", "12");
+            System.out.println("Hi2");
+            System.out.println(temp);
+            System.out.println("Hi3");
+            feeds.add(new EventsFeed(temp));
+        }
+        System.out.println("Hi1");
+        upcomingEventsTable = new JTable(new EventsFeedTableModel(feeds));
+        upcomingEventsTable.setDefaultRenderer(EventsFeed.class, new EventsFeedCell());
+        upcomingEventsTable.setDefaultEditor(EventsFeed.class, new EventsFeedCell());
+        upcomingEventsTable.setRowHeight(60);
+        upcomingEventsTable.setModel(upcomingEventsTable.getModel());
+
+        upcomingEventsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        upcomingEventsTable.setFocusable(false);
+        upcomingEventsTable.setOpaque(false);
+        upcomingEventsTable.setRequestFocusEnabled(false);
+        upcomingEventsTable.setRowSelectionAllowed(false);
+        upcomingEventsTable.setSurrendersFocusOnKeystroke(true);
+        upcomingEventsTable.setUpdateSelectionOnSort(false);
+        upcomingEventsTable.setVerifyInputWhenFocusTarget(false);
+        jScrollPane2.setViewportView(upcomingEventsTable);
+
         upcomEvePanel.setVisible(true);
         upcomEvePanel.setEnabled(true);
         profilePanel.setVisible(false);
@@ -519,6 +624,52 @@ public final class AssociationHomePage extends javax.swing.JFrame {
 
     private void pastEveAssocButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pastEveAssocButtonActionPerformed
         // TODO add your handling code here:
+        String url= "http://localhost:9002/events/?type=associationPast&association_id="+ this.associationDetailsJSON.get("association_id").toString();
+        RestAPIHook a = new RestAPIHook();
+        JSONObject p = a.invokeGetMethod(url);
+        Iterator<String> keys = p.keys();
+
+        List feeds = new ArrayList();
+        while(keys.hasNext()){
+            String key = keys.next();
+
+            if("isSuccess".equals(key)){
+                continue;
+            }
+
+            HashMap temp = new HashMap();
+
+            temp.put("event_id", key);
+            JSONObject val = p.getJSONObject(key);
+            Iterator<String> childKeys = val.keys();
+            while(childKeys.hasNext()){
+                String childKey = childKeys.next();
+                temp.put(childKey, val.get(childKey));
+            }
+            temp.put("isRendered", false);
+            temp.put("isFollow", true);
+            temp.put("user_id", "12");
+            System.out.println("Hi2");
+            System.out.println(temp);
+            System.out.println("Hi3");
+            feeds.add(new EventsFeed(temp));
+        }
+        System.out.println("Hi1");
+        pastEventsTable = new JTable(new EventsFeedTableModel(feeds));
+        pastEventsTable.setDefaultRenderer(EventsFeed.class, new EventsFeedCell());
+        pastEventsTable.setDefaultEditor(EventsFeed.class, new EventsFeedCell());
+        pastEventsTable.setRowHeight(60);
+        pastEventsTable.setModel(pastEventsTable.getModel());
+
+        pastEventsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        pastEventsTable.setFocusable(false);
+        pastEventsTable.setOpaque(false);
+        pastEventsTable.setRequestFocusEnabled(false);
+        pastEventsTable.setRowSelectionAllowed(false);
+        pastEventsTable.setSurrendersFocusOnKeystroke(true);
+        pastEventsTable.setUpdateSelectionOnSort(false);
+        pastEventsTable.setVerifyInputWhenFocusTarget(false);
+        jScrollPane3.setViewportView(pastEventsTable);
         pastEvePanel.setVisible(true);
         pastEvePanel.setEnabled(true);
         profilePanel.setVisible(false);
@@ -576,13 +727,12 @@ public final class AssociationHomePage extends javax.swing.JFrame {
         jTextField7.setText("");
         jDateChooser1.setCalendar(null);
         jDateChooser2.setCalendar(null);
-        jSpinner1.setValue(null);
-        jSpinner2.setValue(null);
+        
 
         String url = "http://localhost:9002/events/?";
         RestAPIHook a = new RestAPIHook();
         HashMap<String, String> params = new HashMap<>();
-        params.put("association_id", associationId);
+        params.put("association_id", associationDetailsJSON.get("association_id").toString());
 //        params.put("association_id", "1");
         params.put("start_time", startDateTime);
         params.put("end_time", endDateTime);
@@ -591,6 +741,12 @@ public final class AssociationHomePage extends javax.swing.JFrame {
         params.put("description", desc);
         System.out.println(params);
         JSONObject p = a.invokePostMethod(url, params);
+        if(p.get("isSuccess").toString().equals("true")){
+            JOptionPane.showMessageDialog(postEvePanel, "Successfully created an event");
+        }
+        else{
+            JOptionPane.showMessageDialog(postEvePanel, "Could not create an event");
+        }
         System.out.println(p);
     }//GEN-LAST:event_postButtonActionPerformed
 
@@ -642,6 +798,7 @@ public final class AssociationHomePage extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSpinner jSpinner1;
     private javax.swing.JSpinner jSpinner2;
     private javax.swing.JTextArea jTextArea1;
@@ -652,6 +809,7 @@ public final class AssociationHomePage extends javax.swing.JFrame {
     private javax.swing.JPanel navPanelAssocUser;
     private javax.swing.JButton pastEveAssocButton;
     private javax.swing.JPanel pastEvePanel;
+    private javax.swing.JTable pastEventsTable;
     private javax.swing.JButton postButton;
     private javax.swing.JButton postEveAssocButton;
     private javax.swing.JPanel postEvePanel;
