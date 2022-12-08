@@ -123,9 +123,9 @@ public class LoginPage extends JFrame implements ActionListener {
                     JOptionPane.showMessageDialog(newPanel, "Pending Approval");
                 }
                 else{
-                    UserHomePage userHP = new UserHomePage(p);
-                    userHP.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                    userHP.setVisible(true);
+                    AssociationHomePage associationHP = new AssociationHomePage(p,associationData);
+                    associationHP.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                    associationHP.setVisible(true);
                     this.dispose();
                 }
             } 
