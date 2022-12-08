@@ -112,7 +112,7 @@ public final class UserHomePage extends javax.swing.JFrame {
             System.out.println("Hi3");
             pastfeeds.add(new EventsFeed(temp));
         }
-        homeFeedsTable1 = new JTable (new EventsFeedTableModel(pastfeeds));
+        pastFeedsTable = new JTable (new EventsFeedTableModel(pastfeeds));
         upcomEvePanel = new javax.swing.JPanel();
         homePanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -326,19 +326,19 @@ public final class UserHomePage extends javax.swing.JFrame {
 
         jPanel1.add(profilePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1140, 560));
 
-        homeFeedsTable1.setDefaultRenderer(EventsFeed.class, new EventsFeedCell());
-        homeFeedsTable1.setDefaultEditor(EventsFeed.class, new EventsFeedCell());
-        homeFeedsTable1.setRowHeight(60);
-        homeFeedsTable1.setModel(homeFeedsTable1.getModel());
-        homeFeedsTable1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        homeFeedsTable1.setFocusable(false);
-        homeFeedsTable1.setOpaque(false);
-        homeFeedsTable1.setRequestFocusEnabled(false);
-        homeFeedsTable1.setRowSelectionAllowed(false);
-        homeFeedsTable1.setSurrendersFocusOnKeystroke(true);
-        homeFeedsTable1.setUpdateSelectionOnSort(false);
-        homeFeedsTable1.setVerifyInputWhenFocusTarget(false);
-        jScrollPane2.setViewportView(homeFeedsTable1);
+        pastFeedsTable.setDefaultRenderer(EventsFeed.class, new EventsFeedCell());
+        pastFeedsTable.setDefaultEditor(EventsFeed.class, new EventsFeedCell());
+        pastFeedsTable.setRowHeight(60);
+        pastFeedsTable.setModel(pastFeedsTable.getModel());
+        pastFeedsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        pastFeedsTable.setFocusable(false);
+        pastFeedsTable.setOpaque(false);
+        pastFeedsTable.setRequestFocusEnabled(false);
+        pastFeedsTable.setRowSelectionAllowed(false);
+        pastFeedsTable.setSurrendersFocusOnKeystroke(true);
+        pastFeedsTable.setUpdateSelectionOnSort(false);
+        pastFeedsTable.setVerifyInputWhenFocusTarget(false);
+        jScrollPane2.setViewportView(pastFeedsTable);
 
         javax.swing.GroupLayout pastEvePanelLayout = new javax.swing.GroupLayout(pastEvePanel);
         pastEvePanel.setLayout(pastEvePanelLayout);
@@ -581,7 +581,6 @@ public final class UserHomePage extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton homeButton;
     private javax.swing.JTable homeFeedsTable;
-    private javax.swing.JTable homeFeedsTable1;
     private javax.swing.JPanel homePanel;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JLabel jLabel1;
@@ -598,6 +597,7 @@ public final class UserHomePage extends javax.swing.JFrame {
     private javax.swing.JPanel navPanel;
     private javax.swing.JButton pastEveButton;
     private javax.swing.JPanel pastEvePanel;
+    private javax.swing.JTable pastFeedsTable;
     private javax.swing.JButton profileButton;
     private javax.swing.JPanel profilePanel;
     private javax.swing.JLabel titleLabel;

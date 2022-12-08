@@ -32,7 +32,7 @@ public final class AdminHomepage extends javax.swing.JFrame {
     public AdminHomepage(JSONObject input) {
         this.inputJSON = input;
         initComponents();
-        nonActive();
+        active();
     }
 
 
@@ -326,7 +326,13 @@ public final class AdminHomepage extends javax.swing.JFrame {
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
         // TODO add your handling code here:
-        nonActive();
+//        nonActive();
+//        navPanelAdminUser.setVisible(false);
+//        navPanelAdminUser.setEnabled(false);
+        jLabel3.setVisible(false);
+        jLabel3.setEnabled(false);
+        menu.setVisible(false);
+        menu.setEnabled(false);
     }//GEN-LAST:event_jLabel3MouseClicked
 
     private void logoutLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutLabelMouseClicked
