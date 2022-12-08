@@ -733,6 +733,10 @@ public final class UserHomePage extends javax.swing.JFrame {
         homeFeedsTable.setDefaultRenderer(EventsFeed.class, new EventsFeedCell());
         homeFeedsTable.setDefaultEditor(EventsFeed.class, new EventsFeedCell());
         homeFeedsTable.setRowHeight(60);
+        
+        homeFeedsTable.getColumnModel().getColumn(0).setHeaderValue("Home");
+        homeFeedsTable.getTableHeader().resizeAndRepaint();
+        
         homeFeedsTable.setModel(homeFeedsTable.getModel());
         homeFeedsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         homeFeedsTable.setFocusable(false);
@@ -797,6 +801,9 @@ public final class UserHomePage extends javax.swing.JFrame {
         upcomEveFeedsTable.setDefaultRenderer(EventsFeed.class, new EventsFeedCell());
         upcomEveFeedsTable.setDefaultEditor(EventsFeed.class, new EventsFeedCell());
         upcomEveFeedsTable.setRowHeight(60);
+        upcomEveFeedsTable.getColumnModel().getColumn(0).setHeaderValue("Upcoming Events");
+        upcomEveFeedsTable.getTableHeader().resizeAndRepaint();
+        
         upcomEveFeedsTable.setModel(upcomEveFeedsTable.getModel());
         upcomEveFeedsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         upcomEveFeedsTable.setFocusable(false);
@@ -878,6 +885,10 @@ public final class UserHomePage extends javax.swing.JFrame {
         pastFeedsTable.setDefaultRenderer(EventsFeed.class, new EventsFeedCell());
         pastFeedsTable.setDefaultEditor(EventsFeed.class, new EventsFeedCell());
         pastFeedsTable.setRowHeight(60);
+        
+        pastFeedsTable.getColumnModel().getColumn(0).setHeaderValue("Past Events");
+        pastFeedsTable.getTableHeader().resizeAndRepaint();
+        
         pastFeedsTable.setModel(pastFeedsTable.getModel());
         pastFeedsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         pastFeedsTable.setFocusable(false);
@@ -943,6 +954,10 @@ public final class UserHomePage extends javax.swing.JFrame {
         myAssociationsFeedsTable.setDefaultRenderer(AssociationsFeed.class, new AssociationsFeedCell());
         myAssociationsFeedsTable.setDefaultEditor(AssociationsFeed.class, new AssociationsFeedCell());
         myAssociationsFeedsTable.setRowHeight(60);
+        
+        myAssociationsFeedsTable.getColumnModel().getColumn(0).setHeaderValue("My Associations");
+        myAssociationsFeedsTable.getTableHeader().resizeAndRepaint();
+        
         myAssociationsFeedsTable.setModel(myAssociationsFeedsTable.getModel());
         myAssociationsFeedsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         myAssociationsFeedsTable.setFocusable(false);
@@ -1005,6 +1020,10 @@ public final class UserHomePage extends javax.swing.JFrame {
         exploreAssociationsFeedsTable.setDefaultRenderer(AssociationsFeed.class, new AssociationsFeedCell());
         exploreAssociationsFeedsTable.setDefaultEditor(AssociationsFeed.class, new AssociationsFeedCell());
         exploreAssociationsFeedsTable.setRowHeight(60);
+        
+        exploreAssociationsFeedsTable.getColumnModel().getColumn(0).setHeaderValue("Explore Associations");
+        exploreAssociationsFeedsTable.getTableHeader().resizeAndRepaint();
+        
         exploreAssociationsFeedsTable.setModel(exploreAssociationsFeedsTable.getModel());
         exploreAssociationsFeedsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         exploreAssociationsFeedsTable.setFocusable(false);

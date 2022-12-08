@@ -400,6 +400,9 @@ public final class AssociationHomePage extends javax.swing.JFrame {
         upcomingEventsTable.setDefaultRenderer(EventsFeed.class, new EventsFeedCell());
         upcomingEventsTable.setDefaultEditor(EventsFeed.class, new EventsFeedCell());
         upcomingEventsTable.setRowHeight(60);
+
+        upcomingEventsTable.getColumnModel().getColumn(0).setHeaderValue("Upcoming Events");
+        upcomingEventsTable.getTableHeader().resizeAndRepaint();
         upcomingEventsTable.setModel(upcomingEventsTable.getModel());
         upcomingEventsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         upcomingEventsTable.setFocusable(false);
@@ -608,6 +611,10 @@ public final class AssociationHomePage extends javax.swing.JFrame {
         upcomingEventsTable.setDefaultRenderer(EventsFeed.class, new EventsFeedCell());
         upcomingEventsTable.setDefaultEditor(EventsFeed.class, new EventsFeedCell());
         upcomingEventsTable.setRowHeight(60);
+        
+        upcomingEventsTable.getColumnModel().getColumn(0).setHeaderValue("Upcoming Events");
+        upcomingEventsTable.getTableHeader().resizeAndRepaint();
+        
         upcomingEventsTable.setModel(upcomingEventsTable.getModel());
 
         upcomingEventsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -667,6 +674,11 @@ public final class AssociationHomePage extends javax.swing.JFrame {
         pastEventsTable.setDefaultRenderer(EventsFeed.class, new EventsFeedCell());
         pastEventsTable.setDefaultEditor(EventsFeed.class, new EventsFeedCell());
         pastEventsTable.setRowHeight(60);
+        
+        
+        pastEventsTable.getColumnModel().getColumn(0).setHeaderValue("Past Events");
+        pastEventsTable.getTableHeader().resizeAndRepaint();
+        
         pastEventsTable.setModel(pastEventsTable.getModel());
 
         pastEventsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));

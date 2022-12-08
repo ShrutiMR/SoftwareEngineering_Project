@@ -388,7 +388,8 @@ public final class AdminHomePage extends javax.swing.JFrame {
         jTable1.setDefaultEditor(AssociationsFeed.class, new AssociationsFeedCell());
         jTable1.setRowHeight(60);
         jTable1.setModel(jTable1.getModel());
-        jTable1.getColumnModel().getColumn(0).setHeaderValue("Pending Approvals for Association");
+//        jTable1.getColumnModel().getColumn(0).setHeaderValue("Pending Associations for approval");
+        jTable1.getColumnModel().getColumn(0).setHeaderValue("Home");
         jTable1.getTableHeader().resizeAndRepaint();
         jTable1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jTable1.setFocusable(false);
