@@ -131,14 +131,18 @@ public class RegistrationPage extends JFrame implements ActionListener {
                     System.out.println(params);
                     JSONObject p = a.invokePostMethod(url, params);
                     System.out.println(p);
-                    if(p.get("isSuccess") == "true"){
+                    if(p.get("isSuccess").toString().equals("true")){
+                        dispose();
                         LoginPage login = new LoginPage();
                         login.setExtendedState(JFrame.MAXIMIZED_BOTH);
                         login.setVisible(true);
-                        dispose();
                     }
                     else{
-                        JOptionPane.showMessageDialog(panel, "Error in Registration" + p.toString());
+                        JOptionPane.showMessageDialog(panel, "Error in Registration. Please try again");
+                        dispose();
+                        RegistrationPage registerLogin = new RegistrationPage();
+                        registerLogin.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                        registerLogin.setVisible(true);
                     }
                 }
                 System.out.println("Hi");

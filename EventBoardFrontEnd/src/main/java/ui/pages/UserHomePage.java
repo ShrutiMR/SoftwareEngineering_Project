@@ -686,7 +686,7 @@ public final class UserHomePage extends javax.swing.JFrame {
         this.dispose();
         LoginPage form = new LoginPage();
         form.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        form.setUndecorated(true);
+//        form.setUndecorated(true);
         form.setVisible(true);
         
     }//GEN-LAST:event_logoutLabelMouseClicked

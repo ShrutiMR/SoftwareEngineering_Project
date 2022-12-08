@@ -273,14 +273,18 @@ public class RegistrationPageAssociation extends javax.swing.JFrame {
             System.out.println(params);
             JSONObject p = a.invokePostMethod(url, params);
             System.out.println(p);
-            if(p.get("isSuccess") == "true"){
+            if(p.get("isSuccess").toString() == "true"){
+                this.dispose();
                 LoginPage login = new LoginPage();
                 login.setExtendedState(JFrame.MAXIMIZED_BOTH);
                 login.setVisible(true);
-                this.dispose();
             }
             else{
-                JOptionPane.showMessageDialog(jPanel1, "Error in Registration" + p.toString());
+                JOptionPane.showMessageDialog(jPanel1, "Error in Registration. Please try again" + p.toString());
+                dispose();
+                RegistrationPageAssociation registerAssociationLogin = new RegistrationPageAssociation();
+                registerAssociationLogin.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                registerAssociationLogin.setVisible(true);
             }
         }
 

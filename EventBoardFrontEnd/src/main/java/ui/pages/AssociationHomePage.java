@@ -89,6 +89,14 @@ public final class AssociationHomePage extends javax.swing.JFrame {
         jLabel3.setEnabled(true);
         menu.setVisible(false);
         menu.setEnabled(false);
+        profilePanel.setVisible(false);
+        profilePanel.setEnabled(false);
+        upcomEvePanel.setVisible(true);
+        upcomEvePanel.setEnabled(true);
+        pastEvePanel.setVisible(false);
+        pastEvePanel.setEnabled(false);
+        postEvePanel.setVisible(false);
+        postEvePanel.setEnabled(false);
     }
 
     /**
@@ -541,7 +549,7 @@ public final class AssociationHomePage extends javax.swing.JFrame {
         this.dispose();     
         LoginPage redirectLogin = new LoginPage();
         redirectLogin.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-        redirectLogin.setUndecorated(true);
+//        redirectLogin.setUndecorated(true);
         redirectLogin.setVisible(true);
     }//GEN-LAST:event_logoutLabelMouseClicked
 

@@ -163,7 +163,7 @@ public class LoginPage extends JFrame implements ActionListener {
             //create instance of the CreateLoginForm  
             LoginPage form = new LoginPage();
             form.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            form.setUndecorated(true);
+//            form.setUndecorated(true);
             System.out.print("gjvhbkjnl;m");
             form.setVisible(true); //make form visible to the use
 

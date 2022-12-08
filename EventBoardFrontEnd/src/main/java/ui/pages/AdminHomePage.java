@@ -54,10 +54,12 @@ public final class AdminHomePage extends javax.swing.JFrame {
     public void active() {
         navPanelAdminUser.setVisible(true);
         navPanelAdminUser.setEnabled(true);
-        jLabel3.setVisible(true);
-        jLabel3.setEnabled(true);
+        jLabel3.setVisible(false);
+        jLabel3.setEnabled(false);
         menu.setVisible(false);
         menu.setEnabled(false);
+        homePanel.setVisible(true);
+        homePanel.setEnabled(true);
         jTable1.setVisible(true);
         jTable1.setEnabled(true);
     }
@@ -91,7 +93,6 @@ public final class AdminHomePage extends javax.swing.JFrame {
         RestAPIHook a = new RestAPIHook();
         JSONObject p = a.invokeGetMethod(url);
         Iterator<String> keys1 = p.keys();
-
         List feeds = new ArrayList();
         while(keys1.hasNext()){
             String key = keys1.next();
@@ -340,7 +341,7 @@ public final class AdminHomePage extends javax.swing.JFrame {
         this.dispose();
         LoginPage form = new LoginPage();
         form.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        form.setUndecorated(true);
+//        form.setUndecorated(true);
         form.setVisible(true);
 
     }//GEN-LAST:event_logoutLabelMouseClicked
@@ -387,7 +388,8 @@ public final class AdminHomePage extends javax.swing.JFrame {
         jTable1.setDefaultEditor(AssociationsFeed.class, new AssociationsFeedCell());
         jTable1.setRowHeight(60);
         jTable1.setModel(jTable1.getModel());
-
+        jTable1.getColumnModel().getColumn(0).setHeaderValue("Pending Approvals for Association");
+        jTable1.getTableHeader().resizeAndRepaint();
         jTable1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jTable1.setFocusable(false);
         jTable1.setOpaque(false);
@@ -401,7 +403,7 @@ public final class AdminHomePage extends javax.swing.JFrame {
         homePanel.setEnabled(true);
         profilePanel.setVisible(false);
         profilePanel.setEnabled(false);
-
+        
     }//GEN-LAST:event_homeAdminButtonActionPerformed
 
     private void profileAssocButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profileAssocButton1ActionPerformed
