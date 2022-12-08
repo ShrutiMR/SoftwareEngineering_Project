@@ -116,38 +116,38 @@ public final class UserHomePage extends javax.swing.JFrame {
         pastFeedsTable = new JTable (new EventsFeedTableModel(pastfeeds));
         upcomEvePanel = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        String Url = "http://localhost:9002/events/?type=feed&user_id="+this.inputJSON.get("user_id");
-        RestAPIHook feedHook = new RestAPIHook();
-        JSONObject feedJSON = feedHook.invokeGetMethod(feedUrl);
-        Iterator<String> feedKeys = feedJSON.keys();
+        String upcomEveUrl = "http://localhost:9002/events/?type=upcoming&user_id="+this.inputJSON.get("user_id");
+        RestAPIHook upcomEveHook = new RestAPIHook();
+        JSONObject upcomEveJSON = upcomEveHook.invokeGetMethod(upcomEveUrl);
+        Iterator<String> upcomEveKeys = upcomEveJSON.keys();
 
-        List homefeeds = new ArrayList();
-        while(feedKeys.hasNext()){
-            String feedKey = feedKeys.next();
+        List upcomEvefeeds = new ArrayList();
+        while(upcomEveKeys.hasNext()){
+            String upcomEveKey = upcomEveKeys.next();
 
-            if("isSuccess".equals(feedKey)){
+            if("isSuccess".equals(upcomEveKey)){
                 continue;
             }
 
             HashMap temp = new HashMap();
 
-            temp.put("event_id", feedKey);
-            JSONObject val = feedJSON.getJSONObject(feedKey);
+            temp.put("event_id", upcomEveKey);
+            JSONObject val = upcomEveJSON.getJSONObject(upcomEveKey);
             Iterator<String> childKeys = val.keys();
             while(childKeys.hasNext()){
                 String childKey = childKeys.next();
                 temp.put(childKey, val.get(childKey));
             }
             temp.put("isRendered", true);
-            temp.put("isFollow", true);
+            temp.put("isFollow", false);
             temp.put("user_id", this.inputJSON.get("user_id").toString());
             System.out.println("Hi2");
             System.out.println(temp);
             System.out.println("Hi3");
-            homefeeds.add(new EventsFeed(temp));
+            upcomEvefeeds.add(new EventsFeed(temp));
 
         }
-        upcomEveFeedsTable = new JTable(new EventsFeedTableModel(homefeeds));
+        upcomEveFeedsTable = new JTable(new EventsFeedTableModel(upcomEvefeeds));
         homePanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -406,7 +406,6 @@ public final class UserHomePage extends javax.swing.JFrame {
         upcomEveFeedsTable.setUpdateSelectionOnSort(false);
         upcomEveFeedsTable.setVerifyInputWhenFocusTarget(false);
         jScrollPane3.setViewportView(upcomEveFeedsTable);
-        homeButton.doClick();
 
         javax.swing.GroupLayout upcomEvePanelLayout = new javax.swing.GroupLayout(upcomEvePanel);
         upcomEvePanel.setLayout(upcomEvePanelLayout);
@@ -570,6 +569,52 @@ public final class UserHomePage extends javax.swing.JFrame {
 
     private void upcomEveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upcomEveButtonActionPerformed
         // TODO add your handling code here:
+        String upcomEveUrl = "http://localhost:9002/events/?type=upcoming&user_id="+this.inputJSON.get("user_id");
+        RestAPIHook upcomEveHook = new RestAPIHook();
+        JSONObject upcomEveJSON = upcomEveHook.invokeGetMethod(upcomEveUrl);
+        Iterator<String> upcomEveKeys = upcomEveJSON.keys();
+
+        List upcomEvefeeds = new ArrayList();
+        while(upcomEveKeys.hasNext()){
+            String upcomEveKey = upcomEveKeys.next();
+
+            if("isSuccess".equals(upcomEveKey)){
+                continue;
+            }
+
+            HashMap temp = new HashMap();
+
+            temp.put("event_id", upcomEveKey);
+            JSONObject val = upcomEveJSON.getJSONObject(upcomEveKey);
+            Iterator<String> childKeys = val.keys();
+            while(childKeys.hasNext()){
+                String childKey = childKeys.next();
+                temp.put(childKey, val.get(childKey));
+            }
+            temp.put("isRendered", true);
+            temp.put("isFollow", false);
+            temp.put("user_id", this.inputJSON.get("user_id").toString());
+            System.out.println("Hi2");
+            System.out.println(temp);
+            System.out.println("Hi3");
+            upcomEvefeeds.add(new EventsFeed(temp));
+
+        }
+        upcomEveFeedsTable = new JTable(new EventsFeedTableModel(upcomEvefeeds));
+        upcomEveFeedsTable.setDefaultRenderer(EventsFeed.class, new EventsFeedCell());
+        upcomEveFeedsTable.setDefaultEditor(EventsFeed.class, new EventsFeedCell());
+        upcomEveFeedsTable.setRowHeight(60);
+        upcomEveFeedsTable.setModel(upcomEveFeedsTable.getModel());
+        upcomEveFeedsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        upcomEveFeedsTable.setFocusable(false);
+        upcomEveFeedsTable.setOpaque(false);
+        upcomEveFeedsTable.setRequestFocusEnabled(false);
+        upcomEveFeedsTable.setRowSelectionAllowed(false);
+        upcomEveFeedsTable.setSurrendersFocusOnKeystroke(true);
+        upcomEveFeedsTable.setUpdateSelectionOnSort(false);
+        upcomEveFeedsTable.setVerifyInputWhenFocusTarget(false);
+        jScrollPane3.setViewportView(upcomEveFeedsTable);
+
         upcomEvePanel.setVisible(true);
         upcomEvePanel.setEnabled(true);
         profilePanel.setVisible(false);
