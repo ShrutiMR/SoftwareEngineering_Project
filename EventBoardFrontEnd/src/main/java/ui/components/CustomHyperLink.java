@@ -23,6 +23,7 @@ import java.net.URISyntaxException;
 
 import javax.swing.JComponent;
 import java.awt.Window.Type;
+import ui.pages.RegistrationPageAssociation;
  
 
 public class CustomHyperLink extends JLabel {
@@ -67,23 +68,30 @@ public class CustomHyperLink extends JLabel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 //Desktop.getDesktop().browse(new URI(JHyperlinkClass.this.url));
-				 if(page == "RegistrationPage") {
-                                        prevPage.dispose();
-					 RegistrationPage registerPage = new RegistrationPage();
-                                         registerPage.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-                registerPage.setUndecorated(true);
-                registerPage.setVisible(true); //make form visible to the use
-				 }              
-				 else if(page == "LoginPage") {
-                                         prevPage.dispose();
-					 LoginPage loginPage = new LoginPage();
-                                         loginPage.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-                loginPage.setUndecorated(true);
-                loginPage.setVisible(true); //make form visible to the use
-				 }
-				 else {
-					 JOptionPane.showInputDialog("Form Loading...");
-				 }
+                if(page == "RegistrationPage"){
+                   prevPage.dispose();
+                   RegistrationPage registerPage = new RegistrationPage();
+                   registerPage.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+                   registerPage.setUndecorated(true);
+                   registerPage.setVisible(true); //make form visible to the use
+                }              
+                else if(page == "LoginPage"){
+                   prevPage.dispose();
+                   LoginPage loginPage = new LoginPage();
+                   loginPage.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+                   loginPage.setUndecorated(true);
+                   loginPage.setVisible(true); //make form visible to the use
+                }
+                else if(page == "RegistrationPageAssociation"){
+                   prevPage.dispose();
+                   RegistrationPageAssociation regPage = new RegistrationPageAssociation();
+                   regPage.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+//                   regPage.setUndecorated(true);
+                   regPage.setVisible(true);
+                }
+                else{
+                    JOptionPane.showInputDialog("Form Loading...");
+                }
 				 
             }
              

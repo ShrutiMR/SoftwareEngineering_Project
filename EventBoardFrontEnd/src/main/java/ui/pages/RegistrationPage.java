@@ -117,10 +117,12 @@ public class RegistrationPage extends JFrame implements ActionListener {
                     String firstName = fistNameTextField.getText();
                     String lastName = lastNameTextField.getText();
                     String email = emailTextField.getText();
+                    Integer userCode = 2;
                     
                     String url = "http://localhost:9000/users/?";
                     RestAPIHook a = new RestAPIHook();
-                    HashMap<String, String> params = new HashMap<>();
+                    HashMap<String,Object> params = new HashMap<>();
+                    params.put("user_code", userCode);
                     params.put("user_name", username);
                     params.put("password", password);
                     params.put("first_name", firstName);
@@ -129,9 +131,19 @@ public class RegistrationPage extends JFrame implements ActionListener {
                     System.out.println(params);
                     JSONObject p = a.invokePostMethod(url, params);
                     System.out.println(p);
+                    if(p.get("isSuccess") == "true"){
+                        LoginPage login = new LoginPage();
+                        login.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                        login.setVisible(true);
+                        dispose();
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(panel, "Error in Registration" + p.toString());
+                    }
                 }
                 System.out.println("Hi");
             }
+
         });
 
         registerButton.setFont(new Font("Arial", Font.PLAIN, 14));
