@@ -113,7 +113,7 @@ import rest.RestAPIHook;
                 if(p.get("user_code").toString().equals("0")){
                     System.out.println("hi muneer1");
                     newPanel.setVisible(false);
-                    AdminHomepage1 adminHP = new AdminHomepage1(p); 
+                    AdminHomePage adminHP = new AdminHomePage(p); 
                     adminHP.setExtendedState(JFrame.MAXIMIZED_BOTH); 
                     adminHP.setVisible(true);
                     System.out.println("hi muneer2");
