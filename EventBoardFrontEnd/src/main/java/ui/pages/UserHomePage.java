@@ -8,9 +8,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import javax.swing.JFrame;
 import javax.swing.JTable;
 import org.json.JSONObject;
 import rest.RestAPIHook;
+import ui.components.Associations.AssociationsFeed;
+import ui.components.Associations.AssociationsFeedCell;
+import ui.components.Associations.AssociationsFeedTableModel;
 import ui.components.Events.EventsFeed;
 import ui.components.Events.EventsFeedCell;
 import ui.components.Events.EventsFeedTableModel;
@@ -73,6 +77,8 @@ public final class UserHomePage extends javax.swing.JFrame {
         pastEveButton = new javax.swing.JButton();
         upcomEveButton = new javax.swing.JButton();
         homeButton = new javax.swing.JButton();
+        myAssociations = new javax.swing.JButton();
+        exploreAssociations = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         titleLabel = new javax.swing.JLabel();
         logoutLabel = new javax.swing.JLabel();
@@ -183,6 +189,78 @@ public final class UserHomePage extends javax.swing.JFrame {
 
         }
         homeFeedsTable = new JTable(new EventsFeedTableModel(homefeeds));
+        myAssociationsPanel = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        String myAssociationsUrl = "http://localhost:9001/associations/?type=oldAssociations&user_id="+this.inputJSON.get("user_id");
+        RestAPIHook myAssociationsHook = new RestAPIHook();
+        JSONObject myAssociationsJSON = myAssociationsHook.invokeGetMethod(myAssociationsUrl);
+        Iterator<String> myAssociationsKeys = myAssociationsJSON.keys();
+
+        List myAssociationsfeeds = new ArrayList();
+        while(myAssociationsKeys.hasNext()){
+            String myAssociationsKey = myAssociationsKeys.next();
+
+            if("isSuccess".equals(myAssociationsKey)){
+                continue;
+            }
+
+            HashMap myAssociationTemp = new HashMap();
+
+            myAssociationTemp.put("event_id", myAssociationsKey);
+            JSONObject myAssociationVal = myAssociationsJSON.getJSONObject(myAssociationsKey);
+            Iterator<String> myAssociationChildKeys = myAssociationVal.keys();
+            while(myAssociationChildKeys.hasNext()){
+                String myAssociationChildKey = myAssociationChildKeys.next();
+                myAssociationTemp.put(myAssociationChildKey, myAssociationVal.get(myAssociationChildKey));
+            }
+            myAssociationTemp.put("isAdmin", false);
+            myAssociationTemp.put("isFollow", false);
+            myAssociationTemp.put("association_id",myAssociationsKey);
+            myAssociationTemp.put("user_id", this.inputJSON.get("user_id").toString());
+            System.out.println("Hi2");
+            System.out.println(myAssociationTemp);
+            System.out.println("Hi3");
+            myAssociationsfeeds.add(new AssociationsFeed(myAssociationTemp));
+
+        }
+        myAssociationsFeedsTable = new JTable(new AssociationsFeedTableModel(myAssociationsfeeds));
+        exploreAssociationsPanel = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        String exploreAssociationsUrl = "http://localhost:9001/associations/?type=newAssociations&user_id="+this.inputJSON.get("user_id");
+        RestAPIHook exploreAssociationsHook = new RestAPIHook();
+        JSONObject exploreAssociationsJSON = exploreAssociationsHook.invokeGetMethod(exploreAssociationsUrl);
+        Iterator<String> exploreAssociationsKeys = exploreAssociationsJSON.keys();
+
+        List exploreAssociationsfeeds = new ArrayList();
+        while(exploreAssociationsKeys.hasNext()){
+            String exploreAssociationsKey = exploreAssociationsKeys.next();
+
+            if("isSuccess".equals(exploreAssociationsKey)){
+                continue;
+            }
+
+            HashMap exploreAssociationTemp = new HashMap();
+
+            exploreAssociationTemp.put("event_id", exploreAssociationsKey);
+            JSONObject exploreAssociationVal = exploreAssociationsJSON.getJSONObject(exploreAssociationsKey);
+            Iterator<String> exploreAssociationChildKeys = exploreAssociationVal.keys();
+            while(exploreAssociationChildKeys.hasNext()){
+                String exploreAssociationChildKey = exploreAssociationChildKeys.next();
+                exploreAssociationTemp.put(exploreAssociationChildKey, exploreAssociationVal.get(exploreAssociationChildKey));
+            }
+            exploreAssociationTemp.put("isAdmin", false);
+            exploreAssociationTemp.put("isFollow", true);
+            exploreAssociationTemp.put("association_id",exploreAssociationsKey);
+            exploreAssociationTemp.put("user_id", this.inputJSON.get("user_id").toString());
+            System.out.println("Hi2");
+            System.out.println(exploreAssociationTemp);
+            System.out.println("Hi3");
+            exploreAssociationsfeeds.add(new AssociationsFeed(exploreAssociationTemp));
+
+        }
+        exploreAssociationsFeedsTable = new JTable(new AssociationsFeedTableModel(exploreAssociationsfeeds));
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
@@ -199,12 +277,6 @@ public final class UserHomePage extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel3MouseClicked(evt);
-            }
-        });
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 70, 870, 560));
 
         navPanel.setBackground(new java.awt.Color(102, 102, 102));
@@ -255,31 +327,63 @@ public final class UserHomePage extends javax.swing.JFrame {
             }
         });
 
+        myAssociations.setBackground(new java.awt.Color(102, 102, 102));
+        myAssociations.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        myAssociations.setForeground(new java.awt.Color(255, 255, 255));
+        myAssociations.setText("My Associations");
+        myAssociations.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        myAssociations.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                myAssociationsActionPerformed(evt);
+            }
+        });
+
+        exploreAssociations.setBackground(new java.awt.Color(102, 102, 102));
+        exploreAssociations.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        exploreAssociations.setForeground(new java.awt.Color(255, 255, 255));
+        exploreAssociations.setText("Explore Associations");
+        exploreAssociations.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        exploreAssociations.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exploreAssociationsActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout navPanelLayout = new javax.swing.GroupLayout(navPanel);
         navPanel.setLayout(navPanelLayout);
         navPanelLayout.setHorizontalGroup(
             navPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(profileButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(pastEveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(upcomEveButton, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
+            .addComponent(upcomEveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(homeButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(myAssociations, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, navPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(exploreAssociations, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
+                .addContainerGap())
         );
         navPanelLayout.setVerticalGroup(
             navPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(navPanelLayout.createSequentialGroup()
-                .addComponent(profileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(profileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(homeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(homeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(upcomEveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(pastEveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(upcomEveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(myAssociations, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pastEveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(exploreAssociations, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(52, Short.MAX_VALUE))
         );
 
         jPanel1.add(navPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 270, 560));
 
         jPanel2.setBackground(new java.awt.Color(204, 0, 0));
+        jPanel2.setPreferredSize(new java.awt.Dimension(1559, 70));
 
         titleLabel.setFont(new java.awt.Font("Arial", 3, 24)); // NOI18N
         titleLabel.setForeground(new java.awt.Color(255, 255, 255));
@@ -308,9 +412,9 @@ public final class UserHomePage extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(46, 46, 46)
                 .addComponent(menu)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 371, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 650, Short.MAX_VALUE)
                 .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(289, 289, 289)
+                .addGap(430, 430, 430)
                 .addComponent(logoutLabel)
                 .addGap(42, 42, 42))
         );
@@ -326,7 +430,9 @@ public final class UserHomePage extends javax.swing.JFrame {
                 .addContainerGap(25, Short.MAX_VALUE))
         );
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1140, 70));
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1560, 70));
+
+        profilePanel.setPreferredSize(new java.awt.Dimension(1560, 560));
 
         jLabel2.setText("User Type :        User");
 
@@ -344,7 +450,7 @@ public final class UserHomePage extends javax.swing.JFrame {
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(544, Short.MAX_VALUE))
+                .addContainerGap(964, Short.MAX_VALUE))
         );
         profilePanelLayout.setVerticalGroup(
             profilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -358,7 +464,9 @@ public final class UserHomePage extends javax.swing.JFrame {
                 .addContainerGap(312, Short.MAX_VALUE))
         );
 
-        jPanel1.add(profilePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1140, 560));
+        jPanel1.add(profilePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1560, 560));
+
+        pastEvePanel.setPreferredSize(new java.awt.Dimension(1560, 560));
 
         pastFeedsTable.setDefaultRenderer(EventsFeed.class, new EventsFeedCell());
         pastFeedsTable.setDefaultEditor(EventsFeed.class, new EventsFeedCell());
@@ -379,19 +487,19 @@ public final class UserHomePage extends javax.swing.JFrame {
         pastEvePanelLayout.setHorizontalGroup(
             pastEvePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pastEvePanelLayout.createSequentialGroup()
-                .addGap(269, 269, 269)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(419, Short.MAX_VALUE))
+                .addGap(327, 327, 327)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1090, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(143, Short.MAX_VALUE))
         );
         pastEvePanelLayout.setVerticalGroup(
             pastEvePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pastEvePanelLayout.createSequentialGroup()
-                .addGap(74, 74, 74)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(84, Short.MAX_VALUE))
+                .addGap(56, 56, 56)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 484, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
-        jPanel1.add(pastEvePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1140, 560));
+        jPanel1.add(pastEvePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1560, 560));
 
         upcomEveFeedsTable.setDefaultRenderer(EventsFeed.class, new EventsFeedCell());
         upcomEveFeedsTable.setDefaultEditor(EventsFeed.class, new EventsFeedCell());
@@ -411,24 +519,24 @@ public final class UserHomePage extends javax.swing.JFrame {
         upcomEvePanel.setLayout(upcomEvePanelLayout);
         upcomEvePanelLayout.setHorizontalGroup(
             upcomEvePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1140, Short.MAX_VALUE)
+            .addGap(0, 1560, Short.MAX_VALUE)
             .addGroup(upcomEvePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(upcomEvePanelLayout.createSequentialGroup()
-                    .addGap(344, 344, 344)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(344, Short.MAX_VALUE)))
+                    .addGap(327, 327, 327)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 1165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(68, Short.MAX_VALUE)))
         );
         upcomEvePanelLayout.setVerticalGroup(
             upcomEvePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 560, Short.MAX_VALUE)
             .addGroup(upcomEvePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(upcomEvePanelLayout.createSequentialGroup()
-                    .addGap(79, 79, 79)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(79, Short.MAX_VALUE)))
+                    .addGap(56, 56, 56)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(15, Short.MAX_VALUE)))
         );
 
-        jPanel1.add(upcomEvePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1140, 560));
+        jPanel1.add(upcomEvePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1560, 560));
 
         jLabel1.setText("Home");
 
@@ -457,21 +565,105 @@ public final class UserHomePage extends javax.swing.JFrame {
                         .addGap(62, 62, 62)
                         .addComponent(jLabel1))
                     .addGroup(homePanelLayout.createSequentialGroup()
-                        .addGap(281, 281, 281)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(407, Short.MAX_VALUE))
+                        .addGap(339, 339, 339)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1090, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(131, Short.MAX_VALUE))
         );
         homePanelLayout.setVerticalGroup(
             homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(homePanelLayout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 466, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(49, 49, 49))
         );
 
-        jPanel1.add(homePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1140, 560));
+        jPanel1.add(homePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1560, 560));
+
+        jLabel6.setText("Home");
+
+        myAssociationsFeedsTable.setDefaultRenderer(AssociationsFeed.class, new AssociationsFeedCell());
+        myAssociationsFeedsTable.setDefaultEditor(AssociationsFeed.class, new AssociationsFeedCell());
+        myAssociationsFeedsTable.setRowHeight(60);
+        myAssociationsFeedsTable.setModel(myAssociationsFeedsTable.getModel());
+        myAssociationsFeedsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        myAssociationsFeedsTable.setFocusable(false);
+        myAssociationsFeedsTable.setOpaque(false);
+        myAssociationsFeedsTable.setRequestFocusEnabled(false);
+        myAssociationsFeedsTable.setRowSelectionAllowed(false);
+        myAssociationsFeedsTable.setSurrendersFocusOnKeystroke(true);
+        myAssociationsFeedsTable.setUpdateSelectionOnSort(false);
+        myAssociationsFeedsTable.setVerifyInputWhenFocusTarget(false);
+        jScrollPane4.setViewportView(myAssociationsFeedsTable);
+
+        javax.swing.GroupLayout myAssociationsPanelLayout = new javax.swing.GroupLayout(myAssociationsPanel);
+        myAssociationsPanel.setLayout(myAssociationsPanelLayout);
+        myAssociationsPanelLayout.setHorizontalGroup(
+            myAssociationsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(myAssociationsPanelLayout.createSequentialGroup()
+                .addGroup(myAssociationsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(myAssociationsPanelLayout.createSequentialGroup()
+                        .addGap(62, 62, 62)
+                        .addComponent(jLabel6))
+                    .addGroup(myAssociationsPanelLayout.createSequentialGroup()
+                        .addGap(339, 339, 339)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 1090, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(131, Short.MAX_VALUE))
+        );
+        myAssociationsPanelLayout.setVerticalGroup(
+            myAssociationsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(myAssociationsPanelLayout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 466, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(49, 49, 49))
+        );
+
+        jPanel1.add(myAssociationsPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1560, 560));
+
+        jLabel7.setText("Home");
+
+        exploreAssociationsFeedsTable.setDefaultRenderer(AssociationsFeed.class, new AssociationsFeedCell());
+        exploreAssociationsFeedsTable.setDefaultEditor(AssociationsFeed.class, new AssociationsFeedCell());
+        exploreAssociationsFeedsTable.setRowHeight(60);
+        exploreAssociationsFeedsTable.setModel(exploreAssociationsFeedsTable.getModel());
+        exploreAssociationsFeedsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        exploreAssociationsFeedsTable.setFocusable(false);
+        exploreAssociationsFeedsTable.setOpaque(false);
+        exploreAssociationsFeedsTable.setRequestFocusEnabled(false);
+        exploreAssociationsFeedsTable.setRowSelectionAllowed(false);
+        exploreAssociationsFeedsTable.setSurrendersFocusOnKeystroke(true);
+        exploreAssociationsFeedsTable.setUpdateSelectionOnSort(false);
+        exploreAssociationsFeedsTable.setVerifyInputWhenFocusTarget(false);
+        jScrollPane5.setViewportView(exploreAssociationsFeedsTable);
+
+        javax.swing.GroupLayout exploreAssociationsPanelLayout = new javax.swing.GroupLayout(exploreAssociationsPanel);
+        exploreAssociationsPanel.setLayout(exploreAssociationsPanelLayout);
+        exploreAssociationsPanelLayout.setHorizontalGroup(
+            exploreAssociationsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(exploreAssociationsPanelLayout.createSequentialGroup()
+                .addGroup(exploreAssociationsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(exploreAssociationsPanelLayout.createSequentialGroup()
+                        .addGap(62, 62, 62)
+                        .addComponent(jLabel7))
+                    .addGroup(exploreAssociationsPanelLayout.createSequentialGroup()
+                        .addGap(339, 339, 339)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 1090, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(131, Short.MAX_VALUE))
+        );
+        exploreAssociationsPanelLayout.setVerticalGroup(
+            exploreAssociationsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(exploreAssociationsPanelLayout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 466, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(49, 49, 49))
+        );
+
+        jPanel1.add(exploreAssociationsPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1560, 560));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -489,17 +681,13 @@ public final class UserHomePage extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
-        // TODO add your handling code here:
-//        nonActive();
-        jLabel3.setVisible(false);
-        jLabel3.setEnabled(false);
-        menu.setVisible(false);
-        menu.setEnabled(false);
-    }//GEN-LAST:event_jLabel3MouseClicked
-
     private void logoutLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutLabelMouseClicked
         // TODO add your handling code here:
+        this.dispose();
+        LoginPage form = new LoginPage();
+        form.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        form.setUndecorated(true);
+        form.setVisible(true);
         
     }//GEN-LAST:event_logoutLabelMouseClicked
 
@@ -555,8 +743,13 @@ public final class UserHomePage extends javax.swing.JFrame {
         homeFeedsTable.setUpdateSelectionOnSort(false);
         homeFeedsTable.setVerifyInputWhenFocusTarget(false);
         jScrollPane1.setViewportView(homeFeedsTable);
+        
         homePanel.setVisible(true);
         homePanel.setEnabled(true);
+        exploreAssociationsPanel.setVisible(false);
+        exploreAssociationsPanel.setEnabled(false);
+        myAssociationsPanel.setVisible(false);
+        myAssociationsPanel.setEnabled(false);
         profilePanel.setVisible(false);
         profilePanel.setEnabled(false);
         upcomEvePanel.setVisible(false);
@@ -614,9 +807,13 @@ public final class UserHomePage extends javax.swing.JFrame {
         upcomEveFeedsTable.setUpdateSelectionOnSort(false);
         upcomEveFeedsTable.setVerifyInputWhenFocusTarget(false);
         jScrollPane3.setViewportView(upcomEveFeedsTable);
-
+        
         upcomEvePanel.setVisible(true);
         upcomEvePanel.setEnabled(true);
+        exploreAssociationsPanel.setVisible(false);
+        exploreAssociationsPanel.setEnabled(false);
+        myAssociationsPanel.setVisible(false);
+        myAssociationsPanel.setEnabled(false);
         profilePanel.setVisible(false);
         profilePanel.setEnabled(false);
         homePanel.setVisible(false);
@@ -631,6 +828,10 @@ public final class UserHomePage extends javax.swing.JFrame {
         // TODO add your handling code here:
         profilePanel.setVisible(true);
         profilePanel.setEnabled(true);
+        exploreAssociationsPanel.setVisible(false);
+        exploreAssociationsPanel.setEnabled(false);
+        myAssociationsPanel.setVisible(false);
+        myAssociationsPanel.setEnabled(false);
         homePanel.setVisible(false);
         homePanel.setEnabled(false);
         upcomEvePanel.setVisible(false);
@@ -690,6 +891,10 @@ public final class UserHomePage extends javax.swing.JFrame {
 
         pastEvePanel.setVisible(true);
         pastEvePanel.setEnabled(true);
+        exploreAssociationsPanel.setVisible(false);
+        exploreAssociationsPanel.setEnabled(false);
+        myAssociationsPanel.setVisible(false);
+        myAssociationsPanel.setEnabled(false);
         profilePanel.setVisible(false);
         profilePanel.setEnabled(false);
         homePanel.setVisible(false);
@@ -699,6 +904,133 @@ public final class UserHomePage extends javax.swing.JFrame {
         homeFeedsTable.setVisible(false);
         homeFeedsTable.setEnabled(false);
     }//GEN-LAST:event_pastEveButtonActionPerformed
+
+    private void myAssociationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_myAssociationsActionPerformed
+        // TODO add your handling code here:
+        String myAssociationsUrl = "http://localhost:9001/associations/?type=oldAssociations&user_id="+this.inputJSON.get("user_id");
+        RestAPIHook myAssociationsHook = new RestAPIHook();
+        JSONObject myAssociationsJSON = myAssociationsHook.invokeGetMethod(myAssociationsUrl);
+        Iterator<String> myAssociationsKeys = myAssociationsJSON.keys();
+
+        List myAssociationsfeeds = new ArrayList();
+        while(myAssociationsKeys.hasNext()){
+            String myAssociationsKey = myAssociationsKeys.next();
+
+            if("isSuccess".equals(myAssociationsKey)){
+                continue;
+            }
+
+            HashMap myAssociationTemp = new HashMap();
+
+            myAssociationTemp.put("event_id", myAssociationsKey);
+            JSONObject myAssociationVal = myAssociationsJSON.getJSONObject(myAssociationsKey);
+            Iterator<String> myAssociationChildKeys = myAssociationVal.keys();
+            while(myAssociationChildKeys.hasNext()){
+                String myAssociationChildKey = myAssociationChildKeys.next();
+                myAssociationTemp.put(myAssociationChildKey, myAssociationVal.get(myAssociationChildKey));
+            }
+            myAssociationTemp.put("isAdmin", false);
+            myAssociationTemp.put("isFollow", false);
+            myAssociationTemp.put("association_id",myAssociationsKey);
+            myAssociationTemp.put("user_id", this.inputJSON.get("user_id").toString());
+            System.out.println("Hi2");
+            System.out.println(myAssociationTemp);
+            System.out.println("Hi3");
+            myAssociationsfeeds.add(new AssociationsFeed(myAssociationTemp));
+
+        }
+        myAssociationsFeedsTable = new JTable(new AssociationsFeedTableModel(myAssociationsfeeds));
+        myAssociationsFeedsTable.setDefaultRenderer(AssociationsFeed.class, new AssociationsFeedCell());
+        myAssociationsFeedsTable.setDefaultEditor(AssociationsFeed.class, new AssociationsFeedCell());
+        myAssociationsFeedsTable.setRowHeight(60);
+        myAssociationsFeedsTable.setModel(myAssociationsFeedsTable.getModel());
+        myAssociationsFeedsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        myAssociationsFeedsTable.setFocusable(false);
+        myAssociationsFeedsTable.setOpaque(false);
+        myAssociationsFeedsTable.setRequestFocusEnabled(false);
+        myAssociationsFeedsTable.setRowSelectionAllowed(false);
+        myAssociationsFeedsTable.setSurrendersFocusOnKeystroke(true);
+        myAssociationsFeedsTable.setUpdateSelectionOnSort(false);
+        myAssociationsFeedsTable.setVerifyInputWhenFocusTarget(false);
+        jScrollPane4.setViewportView(myAssociationsFeedsTable);
+        myAssociationsPanel.setVisible(true);
+        myAssociationsPanel.setEnabled(true);
+        upcomEvePanel.setVisible(false);
+        upcomEvePanel.setEnabled(false);
+        profilePanel.setVisible(false);
+        profilePanel.setEnabled(false);
+        homePanel.setVisible(false);
+        homePanel.setEnabled(false);
+        pastEvePanel.setVisible(false);
+        pastEvePanel.setEnabled(false);
+        homeFeedsTable.setVisible(false);
+        homeFeedsTable.setEnabled(false);
+    }//GEN-LAST:event_myAssociationsActionPerformed
+
+        
+    private void exploreAssociationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exploreAssociationsActionPerformed
+        // TODO add your handling code here:
+        String exploreAssociationsUrl = "http://localhost:9001/associations/?type=newAssociations&user_id="+this.inputJSON.get("user_id");
+        RestAPIHook exploreAssociationsHook = new RestAPIHook();
+        JSONObject exploreAssociationsJSON = exploreAssociationsHook.invokeGetMethod(exploreAssociationsUrl);
+        Iterator<String> exploreAssociationsKeys = exploreAssociationsJSON.keys();
+
+        List exploreAssociationsfeeds = new ArrayList();
+        while(exploreAssociationsKeys.hasNext()){
+            String exploreAssociationsKey = exploreAssociationsKeys.next();
+
+            if("isSuccess".equals(exploreAssociationsKey)){
+                continue;
+            }
+
+            HashMap exploreAssociationTemp = new HashMap();
+
+            exploreAssociationTemp.put("event_id", exploreAssociationsKey);
+            JSONObject exploreAssociationVal = exploreAssociationsJSON.getJSONObject(exploreAssociationsKey);
+            Iterator<String> exploreAssociationChildKeys = exploreAssociationVal.keys();
+            while(exploreAssociationChildKeys.hasNext()){
+                String exploreAssociationChildKey = exploreAssociationChildKeys.next();
+                exploreAssociationTemp.put(exploreAssociationChildKey, exploreAssociationVal.get(exploreAssociationChildKey));
+            }
+            exploreAssociationTemp.put("isAdmin", false);
+            exploreAssociationTemp.put("isFollow", true);
+            exploreAssociationTemp.put("association_id",exploreAssociationsKey);
+            exploreAssociationTemp.put("user_id", this.inputJSON.get("user_id").toString());
+            System.out.println("Hi2");
+            System.out.println(exploreAssociationTemp);
+            System.out.println("Hi3");
+            exploreAssociationsfeeds.add(new AssociationsFeed(exploreAssociationTemp));
+        }
+        exploreAssociationsFeedsTable = new JTable(new AssociationsFeedTableModel(exploreAssociationsfeeds));
+        exploreAssociationsFeedsTable.setDefaultRenderer(AssociationsFeed.class, new AssociationsFeedCell());
+        exploreAssociationsFeedsTable.setDefaultEditor(AssociationsFeed.class, new AssociationsFeedCell());
+        exploreAssociationsFeedsTable.setRowHeight(60);
+        exploreAssociationsFeedsTable.setModel(exploreAssociationsFeedsTable.getModel());
+        exploreAssociationsFeedsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        exploreAssociationsFeedsTable.setFocusable(false);
+        exploreAssociationsFeedsTable.setOpaque(false);
+        exploreAssociationsFeedsTable.setRequestFocusEnabled(false);
+        exploreAssociationsFeedsTable.setRowSelectionAllowed(false);
+        exploreAssociationsFeedsTable.setSurrendersFocusOnKeystroke(true);
+        exploreAssociationsFeedsTable.setUpdateSelectionOnSort(false);
+        exploreAssociationsFeedsTable.setVerifyInputWhenFocusTarget(false);
+        jScrollPane5.setViewportView(exploreAssociationsFeedsTable);
+
+        exploreAssociationsPanel.setVisible(true);
+        exploreAssociationsPanel.setEnabled(true);
+        myAssociationsPanel.setVisible(false);
+        myAssociationsPanel.setEnabled(false);
+        upcomEvePanel.setVisible(false);
+        upcomEvePanel.setEnabled(false);
+        profilePanel.setVisible(false);
+        profilePanel.setEnabled(false);
+        homePanel.setVisible(false);
+        homePanel.setEnabled(false);
+        pastEvePanel.setVisible(false);
+        pastEvePanel.setEnabled(false);
+        homeFeedsTable.setVisible(false);
+        homeFeedsTable.setEnabled(false);
+    }//GEN-LAST:event_exploreAssociationsActionPerformed
     
     
     
@@ -732,6 +1064,9 @@ public final class UserHomePage extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton exploreAssociations;
+    private javax.swing.JTable exploreAssociationsFeedsTable;
+    private javax.swing.JPanel exploreAssociationsPanel;
     private javax.swing.JButton homeButton;
     private javax.swing.JTable homeFeedsTable;
     private javax.swing.JPanel homePanel;
@@ -741,13 +1076,20 @@ public final class UserHomePage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JLabel logoutLabel;
     private javax.swing.JLabel menu;
+    private javax.swing.JButton myAssociations;
+    private javax.swing.JTable myAssociationsFeedsTable;
+    private javax.swing.JPanel myAssociationsPanel;
     private javax.swing.JPanel navPanel;
     private javax.swing.JButton pastEveButton;
     private javax.swing.JPanel pastEvePanel;
