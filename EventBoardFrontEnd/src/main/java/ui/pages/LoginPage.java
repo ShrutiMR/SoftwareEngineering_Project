@@ -110,10 +110,19 @@ import rest.RestAPIHook;
             if (p.get("isSuccess").toString()=="true") {  //if authentic, navigate user to a new page  
                 System.out.println("hi muneer0");
                 System.out.println(p.get("user_code").toString());
-                if(p.get("user_code").toString().equals("1")){
+                if(p.get("user_code").toString().equals("0")){
                     System.out.println("hi muneer1");
                     newPanel.setVisible(false);
-                    adminHomepage adminHP = new adminHomepage();
+                    AdminHomepage adminHP = new AdminHomepage(p); 
+                    adminHP.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+                    adminHP.setVisible(true);
+                    System.out.println("hi muneer2");
+                }
+                else if(p.get("user_code").toString().equals("1")){
+                    System.out.println("hi muneer1");
+                    newPanel.setVisible(false);
+                    AdminHomepage adminHP = new AdminHomepage(p);
+                    adminHP.setExtendedState(JFrame.MAXIMIZED_BOTH); 
                     adminHP.setVisible(true);
                     System.out.println("hi muneer2");
                 }
@@ -137,7 +146,7 @@ import rest.RestAPIHook;
                 LoginPage form = new LoginPage(); 
                 form.setExtendedState(JFrame.MAXIMIZED_BOTH); 
                 form.setUndecorated(true);
-                
+                System.out.print("gjvhbkjnl;m");
                 form.setVisible(true); //make form visible to the use
                 
                 
