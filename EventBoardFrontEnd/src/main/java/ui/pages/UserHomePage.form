@@ -405,14 +405,53 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <EmptySpace min="0" pref="1140" max="32767" attributes="0"/>
+                  <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="344" max="-2" attributes="0"/>
+                          <Component id="jScrollPane3" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace pref="344" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <EmptySpace min="0" pref="560" max="32767" attributes="0"/>
+                  <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="79" max="-2" attributes="0"/>
+                          <Component id="jScrollPane3" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace pref="79" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
               </Group>
             </DimensionLayout>
           </Layout>
+          <SubComponents>
+            <Container class="javax.swing.JScrollPane" name="jScrollPane3">
+              <AuxValues>
+                <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+              </AuxValues>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <SubComponents>
+                <Component class="javax.swing.JTable" name="upcomEveFeedsTable">
+                  <Properties>
+                    <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="upcomEveFeedsTable.getModel()" type="code"/>
+                    </Property>
+                  </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="homeButton.doClick();"/>
+                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JTable(new EventsFeedTableModel(homefeeds))"/>
+                    <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="String Url = &quot;http://localhost:9002/events/?type=feed&amp;user_id=&quot;+this.inputJSON.get(&quot;user_id&quot;);&#xa;RestAPIHook feedHook = new RestAPIHook();&#xa;JSONObject feedJSON = feedHook.invokeGetMethod(feedUrl);&#xa;Iterator&lt;String&gt; feedKeys = feedJSON.keys();&#xa;&#xa;List homefeeds = new ArrayList();&#xa;while(feedKeys.hasNext()){&#xa;    String feedKey = feedKeys.next();&#xa;&#xa;    if(&quot;isSuccess&quot;.equals(feedKey)){&#xa;        continue;&#xa;    }&#xa;&#xa;    HashMap temp = new HashMap();&#xa;&#xa;    temp.put(&quot;event_id&quot;, feedKey);&#xa;    JSONObject val = feedJSON.getJSONObject(feedKey);&#xa;    Iterator&lt;String&gt; childKeys = val.keys();&#xa;    while(childKeys.hasNext()){&#xa;        String childKey = childKeys.next();&#xa;        temp.put(childKey, val.get(childKey));&#xa;    }&#xa;    temp.put(&quot;isRendered&quot;, true);&#xa;    temp.put(&quot;isFollow&quot;, true);&#xa;    temp.put(&quot;user_id&quot;, this.inputJSON.get(&quot;user_id&quot;).toString());&#xa;    System.out.println(&quot;Hi2&quot;);&#xa;    System.out.println(temp);&#xa;    System.out.println(&quot;Hi3&quot;);&#xa;    homefeeds.add(new EventsFeed(temp));&#xa;&#xa;}"/>
+                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="upcomEveFeedsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));&#xa;upcomEveFeedsTable.setFocusable(false);&#xa;upcomEveFeedsTable.setOpaque(false);&#xa;upcomEveFeedsTable.setRequestFocusEnabled(false);&#xa;upcomEveFeedsTable.setRowSelectionAllowed(false);&#xa;upcomEveFeedsTable.setSurrendersFocusOnKeystroke(true);&#xa;upcomEveFeedsTable.setUpdateSelectionOnSort(false);&#xa;upcomEveFeedsTable.setVerifyInputWhenFocusTarget(false);"/>
+                    <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="upcomEveFeedsTable.setDefaultRenderer(EventsFeed.class, new EventsFeedCell());&#xa;upcomEveFeedsTable.setDefaultEditor(EventsFeed.class, new EventsFeedCell());&#xa;upcomEveFeedsTable.setRowHeight(60);"/>
+                  </AuxValues>
+                </Component>
+              </SubComponents>
+            </Container>
+          </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="homePanel">
           <Constraints>

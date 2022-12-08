@@ -115,6 +115,39 @@ public final class UserHomePage extends javax.swing.JFrame {
         }
         pastFeedsTable = new JTable (new EventsFeedTableModel(pastfeeds));
         upcomEvePanel = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        String Url = "http://localhost:9002/events/?type=feed&user_id="+this.inputJSON.get("user_id");
+        RestAPIHook feedHook = new RestAPIHook();
+        JSONObject feedJSON = feedHook.invokeGetMethod(feedUrl);
+        Iterator<String> feedKeys = feedJSON.keys();
+
+        List homefeeds = new ArrayList();
+        while(feedKeys.hasNext()){
+            String feedKey = feedKeys.next();
+
+            if("isSuccess".equals(feedKey)){
+                continue;
+            }
+
+            HashMap temp = new HashMap();
+
+            temp.put("event_id", feedKey);
+            JSONObject val = feedJSON.getJSONObject(feedKey);
+            Iterator<String> childKeys = val.keys();
+            while(childKeys.hasNext()){
+                String childKey = childKeys.next();
+                temp.put(childKey, val.get(childKey));
+            }
+            temp.put("isRendered", true);
+            temp.put("isFollow", true);
+            temp.put("user_id", this.inputJSON.get("user_id").toString());
+            System.out.println("Hi2");
+            System.out.println(temp);
+            System.out.println("Hi3");
+            homefeeds.add(new EventsFeed(temp));
+
+        }
+        upcomEveFeedsTable = new JTable(new EventsFeedTableModel(homefeeds));
         homePanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -360,15 +393,40 @@ public final class UserHomePage extends javax.swing.JFrame {
 
         jPanel1.add(pastEvePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1140, 560));
 
+        upcomEveFeedsTable.setDefaultRenderer(EventsFeed.class, new EventsFeedCell());
+        upcomEveFeedsTable.setDefaultEditor(EventsFeed.class, new EventsFeedCell());
+        upcomEveFeedsTable.setRowHeight(60);
+        upcomEveFeedsTable.setModel(upcomEveFeedsTable.getModel());
+        upcomEveFeedsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        upcomEveFeedsTable.setFocusable(false);
+        upcomEveFeedsTable.setOpaque(false);
+        upcomEveFeedsTable.setRequestFocusEnabled(false);
+        upcomEveFeedsTable.setRowSelectionAllowed(false);
+        upcomEveFeedsTable.setSurrendersFocusOnKeystroke(true);
+        upcomEveFeedsTable.setUpdateSelectionOnSort(false);
+        upcomEveFeedsTable.setVerifyInputWhenFocusTarget(false);
+        jScrollPane3.setViewportView(upcomEveFeedsTable);
+        homeButton.doClick();
+
         javax.swing.GroupLayout upcomEvePanelLayout = new javax.swing.GroupLayout(upcomEvePanel);
         upcomEvePanel.setLayout(upcomEvePanelLayout);
         upcomEvePanelLayout.setHorizontalGroup(
             upcomEvePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 1140, Short.MAX_VALUE)
+            .addGroup(upcomEvePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(upcomEvePanelLayout.createSequentialGroup()
+                    .addGap(344, 344, 344)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(344, Short.MAX_VALUE)))
         );
         upcomEvePanelLayout.setVerticalGroup(
             upcomEvePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 560, Short.MAX_VALUE)
+            .addGroup(upcomEvePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(upcomEvePanelLayout.createSequentialGroup()
+                    .addGap(79, 79, 79)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(79, Short.MAX_VALUE)))
         );
 
         jPanel1.add(upcomEvePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1140, 560));
@@ -642,6 +700,7 @@ public final class UserHomePage extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel logoutLabel;
     private javax.swing.JLabel menu;
     private javax.swing.JPanel navPanel;
@@ -652,6 +711,7 @@ public final class UserHomePage extends javax.swing.JFrame {
     private javax.swing.JPanel profilePanel;
     private javax.swing.JLabel titleLabel;
     private javax.swing.JButton upcomEveButton;
+    private javax.swing.JTable upcomEveFeedsTable;
     private javax.swing.JPanel upcomEvePanel;
     // End of variables declaration//GEN-END:variables
 }
