@@ -159,9 +159,10 @@ public class EventsRequestHandler implements HttpHandler {
                 }
 
                 resp = jo.toString();
-                httpExchange.sendResponseHeaders(200, resp.length());
+                byte[] b = resp.getBytes("UTF-8");
+                httpExchange.sendResponseHeaders(200, b.length);
                 // htmlResponse.getBytes()
-                outputStream.write(resp.getBytes());
+                outputStream.write(b);
 
                 outputStream.flush();
                 outputStream.close();
