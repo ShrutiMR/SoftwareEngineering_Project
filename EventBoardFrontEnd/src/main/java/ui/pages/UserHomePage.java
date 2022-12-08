@@ -434,7 +434,11 @@ public final class UserHomePage extends javax.swing.JFrame {
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
         // TODO add your handling code here:
-        nonActive();
+//        nonActive();
+        jLabel3.setVisible(false);
+        jLabel3.setEnabled(false);
+        menu.setVisible(false);
+        menu.setEnabled(false);
     }//GEN-LAST:event_jLabel3MouseClicked
 
     private void logoutLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutLabelMouseClicked
@@ -536,6 +540,51 @@ public final class UserHomePage extends javax.swing.JFrame {
 
     private void pastEveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pastEveButtonActionPerformed
         // TODO add your handling code here:
+        String pastUrl = "http://localhost:9002/events/?type=past&user_id="+this.inputJSON.get("user_id");
+        RestAPIHook pastHook = new RestAPIHook();
+        JSONObject pastJSON = pastHook.invokeGetMethod(pastUrl);
+        Iterator<String> pastKeys = pastJSON.keys();
+
+        List pastfeeds = new ArrayList();
+        while(pastKeys.hasNext()){
+            String pastKey = pastKeys.next();
+
+            if("isSuccess".equals(pastKey)){
+                continue;
+            }
+
+            HashMap temp = new HashMap();
+
+            temp.put("event_id", pastKey);
+            JSONObject val = pastJSON.getJSONObject(pastKey);
+            Iterator<String> childKeys = val.keys();
+            while(childKeys.hasNext()){
+                String childKey = childKeys.next();
+                temp.put(childKey, val.get(childKey));
+            }
+            temp.put("isRendered", false);
+            temp.put("isFollow", false);
+            temp.put("user_id", this.inputJSON.get("user_id").toString());
+            System.out.println("Hi2");
+            System.out.println(temp);
+            System.out.println("Hi3");
+            pastfeeds.add(new EventsFeed(temp));
+        }
+        pastFeedsTable = new JTable (new EventsFeedTableModel(pastfeeds));
+        pastFeedsTable.setDefaultRenderer(EventsFeed.class, new EventsFeedCell());
+        pastFeedsTable.setDefaultEditor(EventsFeed.class, new EventsFeedCell());
+        pastFeedsTable.setRowHeight(60);
+        pastFeedsTable.setModel(pastFeedsTable.getModel());
+        pastFeedsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        pastFeedsTable.setFocusable(false);
+        pastFeedsTable.setOpaque(false);
+        pastFeedsTable.setRequestFocusEnabled(false);
+        pastFeedsTable.setRowSelectionAllowed(false);
+        pastFeedsTable.setSurrendersFocusOnKeystroke(true);
+        pastFeedsTable.setUpdateSelectionOnSort(false);
+        pastFeedsTable.setVerifyInputWhenFocusTarget(false);
+        jScrollPane2.setViewportView(pastFeedsTable);
+
         pastEvePanel.setVisible(true);
         pastEvePanel.setEnabled(true);
         profilePanel.setVisible(false);

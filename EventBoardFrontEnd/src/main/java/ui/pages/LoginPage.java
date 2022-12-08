@@ -118,6 +118,7 @@ import rest.RestAPIHook;
                     adminHP.setVisible(true);
                     System.out.println("hi muneer2");
                 }
+                //vs
                 else if(p.get("user_code").toString().equals("2")){
                     System.out.println("hi muneer1");
                     newPanel.setVisible(false);
