@@ -22,14 +22,14 @@ import ui.components.Associations.AssociationsFeedTableModel;
  *
  * @author shrut
  */
-public final class AdminHomePage extends javax.swing.JFrame {
+public final class AdminHP extends javax.swing.JFrame {
 
     /**
      * Creates new form HomePage
      */
     private String users;
     private JSONObject inputJSON;
-    public AdminHomePage(JSONObject input) {
+    public AdminHP(JSONObject input) {
         this.inputJSON = input;
         initComponents();
         active();
@@ -393,7 +393,7 @@ public final class AdminHomePage extends javax.swing.JFrame {
 
         //</editor-fold>        
 //        java.awt.EventQueue.invokeLater(() -> {
-//            new AdminHomePage().setVisible(true);
+//            new AdminHP().setVisible(true);
 //        });
     }
 
