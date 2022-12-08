@@ -27,8 +27,10 @@ public class LoginPage extends JFrame implements ActionListener {
     JLabel userLabel, passLabel;
     JTextField textField2 = new JTextField();
     JTextField textField1 = new JTextField();
-    String text = "Sign Up for Free";
+    String text = "Sign Up for User";
+    String text1 = "Sign Up for Association";
     CustomHyperLink hyperLinkSignUp = new CustomHyperLink(text, "RegistrationPage", this);
+    CustomHyperLink hyperLinkAssociationSignUp = new CustomHyperLink(text1, "RegistrationPageAssociation", this);
 
     //calling constructor  
     public LoginPage() {
@@ -80,10 +82,16 @@ public class LoginPage extends JFrame implements ActionListener {
         getContentPane().add(newPanel, BorderLayout.CENTER);
         hyperLinkSignUp.setFont(new Font("Arial", Font.PLAIN, 14));
         newPanel.add(hyperLinkSignUp);
+        hyperLinkAssociationSignUp.setFont(new Font("Arial", Font.PLAIN, 14));
+        newPanel.add(hyperLinkAssociationSignUp);
 
-        hyperLinkSignUp.setToolTipText("Sign Up for Free");
+        hyperLinkSignUp.setToolTipText("Sign Up for User");
         hyperLinkSignUp.setBorder(null);
-        hyperLinkSignUp.setBounds(241, 362, 112, 36);
+        hyperLinkSignUp.setBounds(180, 362, 112, 36);
+        
+        hyperLinkAssociationSignUp.setToolTipText("Sign Up for Association");
+        hyperLinkAssociationSignUp.setBorder(null);
+        hyperLinkAssociationSignUp.setBounds(300, 362, 160, 36);
 
         //perform action on button click   
         b1.addActionListener(this);     //add action listener to button  

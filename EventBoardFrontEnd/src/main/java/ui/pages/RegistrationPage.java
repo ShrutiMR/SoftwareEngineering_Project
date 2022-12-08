@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package ui.pages;
-
+import rest.RestAPIHook;
 /**
  *
  * @author mkonidala
@@ -16,9 +16,10 @@ import java.lang.Exception;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.awt.Window.Type;
+import java.util.HashMap;
+import org.json.JSONObject;
 
 public class RegistrationPage extends JFrame implements ActionListener {
-
     private JTextField fistNameTextField;
     private JTextField lastNameTextField;
     private JTextField userNameTextField;
@@ -107,10 +108,27 @@ public class RegistrationPage extends JFrame implements ActionListener {
 
         JButton registerButton = new JButton("REGISTER");
         registerButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent arg0) {
 
                 if (validations()) {
-
+                    String username = userNameTextField.getText();
+                    String password = passwordTextField.getText();
+                    String firstName = fistNameTextField.getText();
+                    String lastName = lastNameTextField.getText();
+                    String email = emailTextField.getText();
+                    
+                    String url = "http://localhost:9000/users/?";
+                    RestAPIHook a = new RestAPIHook();
+                    HashMap<String, String> params = new HashMap<>();
+                    params.put("user_name", username);
+                    params.put("password", password);
+                    params.put("first_name", firstName);
+                    params.put("last_name", lastName);
+                    params.put("email", email);
+                    System.out.println(params);
+                    JSONObject p = a.invokePostMethod(url, params);
+                    System.out.println(p);
                 }
                 System.out.println("Hi");
             }
