@@ -22,8 +22,8 @@ try
 //                
 //                form.setVisible(true);
                 
-                AssociationHomePage hm = new AssociationHomePage();
-                hm.setVisible(true);
+//                AssociationHomePage hm = new AssociationHomePage();
+//                hm.setVisible(true);
                
 //                NewJFrame test = new NewJFrame();
 //                test.setVisible(true);

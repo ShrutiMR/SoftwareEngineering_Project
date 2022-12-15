@@ -44,7 +44,7 @@ public final class LoginPageNew extends javax.swing.JFrame {
         passwordLabel = new javax.swing.JLabel();
         registerAssoButton = new javax.swing.JButton();
         useridTextField = new javax.swing.JTextField();
-        passwordTextField = new javax.swing.JTextField();
+        passwordTextField = new javax.swing.JPasswordField();
         LoginTitle = new javax.swing.JLabel();
         LoginButton = new javax.swing.JButton();
         registerUserButton = new javax.swing.JButton();
