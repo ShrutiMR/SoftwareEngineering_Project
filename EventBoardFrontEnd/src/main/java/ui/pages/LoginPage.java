@@ -1,132 +1,208 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
 package ui.pages;
 
-//import required classes and packages  
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.IOException;
-import java.lang.Exception;
-import java.net.URI;
-import java.net.URISyntaxException;
-
-import javax.swing.JComponent;
-import java.awt.Window.Type;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import org.json.JSONObject;
-import ui.components.CustomHyperLink;
 import rest.RestAPIHook;
 
-//create the main class  
-//class events_board_gui  
-//{     
-public class LoginPage extends JFrame implements ActionListener {
-    //initialize button, panel, label, and text field  
+/**
+ *
+ * @author shrut
+ */
+public final class LoginPage extends javax.swing.JFrame {
 
-    JButton b1;
-    JPanel newPanel;
-
-    JLabel userLabel, passLabel;
-    JTextField textField2 = new JTextField();
-    JTextField textField1 = new JTextField();
-    String text = "Sign Up for User";
-    String text1 = "Sign Up for Association";
-    CustomHyperLink hyperLinkSignUp = new CustomHyperLink(text, "RegistrationPage", this);
-    CustomHyperLink hyperLinkAssociationSignUp = new CustomHyperLink(text1, "RegistrationPageAssociation", this);
-
-    //calling constructor  
+    /**
+     * Creates new form HomePage
+     */
+ 
     public LoginPage() {
-        setFont(null);
-        setForeground(new Color(139, 0, 0));
-
-        //create label for username   
-        userLabel = new JLabel();
-        userLabel.setForeground(new Color(0, 0, 0));
-        userLabel.setBounds(5, 120, 281, 50);
-        userLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        userLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        userLabel.setBackground(new Color(255, 255, 255));
-        userLabel.setText("USERNAME");      //set label value for textField1  
-
-        //create text field to get username from the user  
-        textField1 = new JTextField(15);    //set length of the text  
-        textField1.setBounds(296, 123, 248, 45);
-
-        //create label for password  
-        passLabel = new JLabel();
-        passLabel.setToolTipText("");
-        passLabel.setBackground(new Color(255, 255, 255));
-        passLabel.setBounds(5, 203, 281, 50);
-        passLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        passLabel.setForeground(new Color(0, 0, 0));
-        passLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        passLabel.setText("PASSWORD");      //set label value for textField2  
-
-        //create text field to get password from the user  
-        textField2 = new JPasswordField(15);    //set length for the password  
-        textField2.setBounds(296, 206, 248, 45);
-
-        //create submit button  
-        b1 = new JButton("LOGIN");
-        b1.setBackground(new Color(255, 255, 255));
-        b1.setBounds(195, 307, 202, 45);
-        b1.setFont(new Font("Arial", Font.PLAIN, 14));
-
-        //create panel to put form elements  
-        newPanel = new JPanel();
-        newPanel.setBackground(new Color(139, 0, 0));
-        newPanel.setLayout(null);
-        newPanel.add(userLabel);    //set username label to panel  
-        newPanel.add(textField1);   //set text field to panel  
-        newPanel.add(passLabel);    //set password label to panel  
-        newPanel.add(textField2);   //set text field to panel  
-        newPanel.add(b1);
-        getContentPane().add(newPanel, BorderLayout.CENTER);
-        hyperLinkSignUp.setFont(new Font("Arial", Font.PLAIN, 14));
-        newPanel.add(hyperLinkSignUp);
-        hyperLinkAssociationSignUp.setFont(new Font("Arial", Font.PLAIN, 14));
-        newPanel.add(hyperLinkAssociationSignUp);
-        hyperLinkSignUp.setToolTipText("Sign Up for User");
-        hyperLinkSignUp.setBorder(null);
-        hyperLinkSignUp.setBounds(180, 362, 112, 36);
-        hyperLinkAssociationSignUp.setToolTipText("Sign Up for Association");
-        hyperLinkAssociationSignUp.setBorder(null);
-        hyperLinkAssociationSignUp.setBounds(300, 362, 160, 36);
-
-        //perform action on button click   
-        b1.addActionListener(this);     //add action listener to button  
-        setTitle("LOGIN FORM");         //set title to the login form 
-
+        initComponents();
     }
 
-    //define abstract method actionPerformed() which will be called on button click   
-    public void actionPerformed(ActionEvent ae) //pass action listener as a parameter  
-    {
-        String userValue = textField1.getText();        //get user entered username from the textField1  
-        String passValue = textField2.getText();        //get user entered pasword from the textField2  
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jFrame1 = new javax.swing.JFrame();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        titleLabel = new javax.swing.JLabel();
+        LoginPanel = new javax.swing.JPanel();
+        useridLabel = new javax.swing.JLabel();
+        passwordLabel = new javax.swing.JLabel();
+        registerAssoButton = new javax.swing.JButton();
+        useridTextField = new javax.swing.JTextField();
+        passwordTextField = new javax.swing.JPasswordField();
+        LoginTitle = new javax.swing.JLabel();
+        LoginButton = new javax.swing.JButton();
+        registerUserButton = new javax.swing.JButton();
+        Border = new javax.swing.JLabel();
+
+        jFrame1.setBackground(new java.awt.Color(255, 255, 255));
+        jFrame1.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+        javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
+        jFrame1.getContentPane().setLayout(jFrame1Layout);
+        jFrame1Layout.setHorizontalGroup(
+            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jFrame1Layout.setVerticalGroup(
+            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setPreferredSize(new java.awt.Dimension(1560, 630));
+
+        jPanel2.setBackground(new java.awt.Color(204, 0, 0));
+
+        titleLabel.setFont(new java.awt.Font("Arial", 3, 24)); // NOI18N
+        titleLabel.setForeground(new java.awt.Color(255, 255, 255));
+        titleLabel.setText("UMASS EVENTS BOARD");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(638, Short.MAX_VALUE)
+                .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(632, 632, 632))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(25, Short.MAX_VALUE))
+        );
+
+        LoginPanel.setBackground(new java.awt.Color(255, 255, 255));
+        LoginPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        useridLabel.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        useridLabel.setText("User ID");
+        LoginPanel.add(useridLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 220, -1, -1));
+
+        passwordLabel.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        passwordLabel.setText("Password");
+        LoginPanel.add(passwordLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 270, -1, -1));
+
+        registerAssoButton.setBackground(new java.awt.Color(204, 204, 255));
+        registerAssoButton.setText("Register as an Association");
+        registerAssoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registerAssoButtonActionPerformed(evt);
+            }
+        });
+        LoginPanel.add(registerAssoButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 400, 170, 30));
+        LoginPanel.add(useridTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 220, 210, -1));
+        LoginPanel.add(passwordTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 270, 210, -1));
+
+        LoginTitle.setFont(new java.awt.Font("Trebuchet MS", 0, 48)); // NOI18N
+        LoginTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        LoginTitle.setText("Login");
+        LoginPanel.add(LoginTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 110, 280, 70));
+
+        LoginButton.setBackground(new java.awt.Color(204, 204, 255));
+        LoginButton.setText("Login");
+        LoginButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LoginButtonActionPerformed(evt);
+            }
+        });
+        LoginPanel.add(LoginButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 330, 100, 40));
+
+        registerUserButton.setBackground(new java.awt.Color(204, 204, 255));
+        registerUserButton.setText("Register as a User");
+        registerUserButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registerUserButtonActionPerformed(evt);
+            }
+        });
+        LoginPanel.add(registerUserButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 400, 170, 30));
+
+        Border.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+        LoginPanel.add(Border, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 90, 430, 390));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(LoginPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 1560, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(LoginPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 788, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void registerAssoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerAssoButtonActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        RegistrationPageAssociation form = new RegistrationPageAssociation();
+        form.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        form.setVisible(true);
+    }//GEN-LAST:event_registerAssoButtonActionPerformed
+
+    private void LoginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginButtonActionPerformed
+        // TODO add your handling code here:
+        String userValue = useridTextField.getText();        //get user entered username from the textField1  
+        String passValue = passwordTextField.getText();        //get user entered pasword from the textField2  
         String url = "http://localhost:9000/users/?user_name=" + userValue + "&password=" + passValue;
         RestAPIHook a = new RestAPIHook();
         JSONObject p = a.invokeGetMethod(url);
-        System.out.println("Hi1");
-        System.out.println(p);
-        System.out.println("Hi2");
 
         //check whether the credentials are authentic or not  
-        if (p.get("isSuccess").toString() == "true") {  //if authentic, navigate user to a new page  
+        if(p.get("isSuccess").toString() == "true") {  //if authentic, navigate user to a new page  
             System.out.println("hi muneer0");
             System.out.println(p.get("user_code").toString());
-            if (p.get("user_code").toString().equals("0")) {
-                System.out.println("hi muneer1");
-                newPanel.setVisible(false);
+            if(p.get("user_code").toString().equals("0")) {
                 AdminHomePage adminHP = new AdminHomePage(p);
                 adminHP.setExtendedState(JFrame.MAXIMIZED_BOTH);
                 adminHP.setVisible(true);
                 this.dispose();
-                System.out.println("hi muneer2");
             }
             else if (p.get("user_code").toString().equals("1")) {
                 url = "http://localhost:9001/associations/?type=single&user_id="+p.get("user_id").toString();
                 JSONObject associationData = a.invokeGetMethod(url);
                 if(associationData.get("approval_status").equals("N")){
-                    JOptionPane.showMessageDialog(newPanel, "Pending Approval");
+                    JOptionPane.showMessageDialog(jPanel1, "Pending Approval");
                 }
                 else{
                     AssociationHomePage associationHP = new AssociationHomePage(p,associationData);
@@ -136,35 +212,75 @@ public class LoginPage extends JFrame implements ActionListener {
                 }
             } 
             else if(p.get("user_code").toString().equals("2")) {
-                System.out.println("hi muneer1");
-                newPanel.setVisible(false);
                 UserHomePage userHP = new UserHomePage(p);
                 userHP.setExtendedState(JFrame.MAXIMIZED_BOTH);
                 userHP.setVisible(true);
                 this.dispose();
-                System.out.println("hi muneer2");
             }
             else {
-                JOptionPane.showMessageDialog(newPanel, "You have successfully logged in!" + p.toString());
+                JOptionPane.showMessageDialog(jPanel1, "You have successfully logged in!" + p.toString());
             }
         } else {
             //show error message  
-            JOptionPane.showMessageDialog(newPanel, "Please enter valid username and password"); 
+            JOptionPane.showMessageDialog(jPanel1, "Please enter valid username and password"); 
         }
-    }
+    }//GEN-LAST:event_LoginButtonActionPerformed
 
-    public static void main(String[] args) {
+    private void registerUserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerUserButtonActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        RegistrationPage form = new RegistrationPage();
+        form.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        form.setVisible(true);
+    }//GEN-LAST:event_registerUserButtonActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
         try {
-            //create instance of the CreateLoginForm  
-            LoginPage form = new LoginPage();
-            form.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            form.setVisible(true); //make form visible to the use
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(HomePage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        
+        //</editor-fold>
+        try {
+            LoginPage loginpage = new LoginPage();
+            loginpage.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            loginpage.setVisible(true); //make form visible to the use
 
         } catch (Exception e) {
             //handle exception   
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
-
     }
-}  
-//}  
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Border;
+    private javax.swing.JButton LoginButton;
+    private javax.swing.JPanel LoginPanel;
+    private javax.swing.JLabel LoginTitle;
+    private javax.swing.JFrame jFrame1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel passwordLabel;
+    private javax.swing.JTextField passwordTextField;
+    private javax.swing.JButton registerAssoButton;
+    private javax.swing.JButton registerUserButton;
+    private javax.swing.JLabel titleLabel;
+    private javax.swing.JLabel useridLabel;
+    private javax.swing.JTextField useridTextField;
+    // End of variables declaration//GEN-END:variables
+}
