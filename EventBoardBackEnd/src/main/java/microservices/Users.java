@@ -8,7 +8,7 @@ package microservices;
  *
  * @author mkonidala
  */
-import routers.UsersRequestHandler;
+import requesthandlers.UsersRequestHandler;
 import java.sql.*;
 import java.net.*;
 import java.io.*;

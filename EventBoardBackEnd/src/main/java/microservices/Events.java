@@ -11,7 +11,7 @@ package microservices;
 import java.sql.*;
 import java.net.*;
 import com.sun.net.httpserver.HttpServer;
-import routers.EventsRequestHandler;
+import requesthandlers.EventsRequestHandler;
 
 public class Events {
 
