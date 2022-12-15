@@ -1,6 +1,3 @@
-microservices/Users.class
-microservices/Associations.class
-routers/EventsRequestHandler.class
-routers/AssociationsRequestHandler.class
-routers/UsersRequestHandler.class
-microservices/Events.class
+microservices\Associations.class
+microservices\Events.class
+microservices\Users.class

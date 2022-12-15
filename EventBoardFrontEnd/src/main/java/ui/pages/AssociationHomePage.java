@@ -54,8 +54,6 @@ public final class AssociationHomePage extends javax.swing.JFrame {
     public void allHidden(){
         navPanelAssocUser.setVisible(true);
         navPanelAssocUser.setEnabled(true);
-        jLabel3.setVisible(false);
-        jLabel3.setEnabled(false);
         menu.setVisible(false);
         menu.setEnabled(false);
         profilePanel.setVisible(false);
@@ -175,7 +173,6 @@ public final class AssociationHomePage extends javax.swing.JFrame {
 
         jFrame1 = new javax.swing.JFrame();
         jPanel1 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
         navPanelAssocUser = new javax.swing.JPanel();
         profileAssocButton = new javax.swing.JButton();
         postEveAssocButton = new javax.swing.JButton();
@@ -231,13 +228,6 @@ public final class AssociationHomePage extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(1560, 630));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel3MouseClicked(evt);
-            }
-        });
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 70, 870, 560));
 
         navPanelAssocUser.setBackground(new java.awt.Color(102, 102, 102));
 
@@ -529,10 +519,6 @@ public final class AssociationHomePage extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel3MouseClicked
-
     private void logoutLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutLabelMouseClicked
         // TODO add your handling code here:
         this.dispose();     
@@ -655,7 +641,6 @@ public final class AssociationHomePage extends javax.swing.JFrame {
     private javax.swing.JFrame jFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
