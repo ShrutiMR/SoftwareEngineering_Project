@@ -35,18 +35,30 @@ public final class UserHomePage extends javax.swing.JFrame {
     public UserHomePage(JSONObject input) {
         this.inputJSON = input;
         initComponents();
-//        nonActive();
         active();
     }
 
-    
-    public void nonActive(){
-        navPanel.setVisible(false);
-        navPanel.setEnabled(false);
+    public void allHidden(){
+        profilePanel.setVisible(false);
+        profilePanel.setEnabled(false);
+        exploreAssociationsPanel.setVisible(false);
+        exploreAssociationsPanel.setEnabled(false);
+        myAssociationsPanel.setVisible(false);
+        myAssociationsPanel.setEnabled(false);
+        homePanel.setVisible(false);
+        homePanel.setEnabled(false);
+        upcomEvePanel.setVisible(false);
+        upcomEvePanel.setEnabled(false);
+        pastEvePanel.setVisible(false);
+        pastEvePanel.setEnabled(false);
+        homeFeedsTable.setVisible(false);
+        homeFeedsTable.setEnabled(false);
+        navPanel.setVisible(true);
+        navPanel.setEnabled(true);
         jLabel3.setVisible(false);
         jLabel3.setEnabled(false);
-        menu.setVisible(true);
-        menu.setEnabled(true);
+        menu.setVisible(false);
+        menu.setEnabled(false);
     }
     
     public void active(){
@@ -56,10 +68,238 @@ public final class UserHomePage extends javax.swing.JFrame {
         jLabel3.setEnabled(true);
         menu.setVisible(false);
         menu.setEnabled(false);
-        homeFeedsTable.setVisible(true);
-        homeFeedsTable.setEnabled(true);
+        homePanel.setVisible(true);
+        homePanel.setEnabled(true);
     }
-
+    
+    public void pastFeedsTable(){
+        String pastUrl = "http://localhost:9002/events/?type=past&user_id="+this.inputJSON.get("user_id");
+        RestAPIHook pastHook = new RestAPIHook();
+        JSONObject pastJSON = pastHook.invokeGetMethod(pastUrl);
+        Iterator<String> pastKeys = pastJSON.keys();
+        List pastfeeds = new ArrayList();
+        while(pastKeys.hasNext()){
+            String pastKey = pastKeys.next();
+            if("isSuccess".equals(pastKey)){
+                continue;
+            }
+            HashMap temp = new HashMap();
+            temp.put("event_id", pastKey);
+            JSONObject val = pastJSON.getJSONObject(pastKey);
+            Iterator<String> childKeys = val.keys();
+            while(childKeys.hasNext()){
+                String childKey = childKeys.next();
+                temp.put(childKey, val.get(childKey));
+            }
+            temp.put("isRendered", false);
+            temp.put("isFollow", false);
+            temp.put("user_id", this.inputJSON.get("user_id").toString());
+            pastfeeds.add(new EventsFeed(temp));
+        }
+        pastFeedsTable = new JTable (new EventsFeedTableModel(pastfeeds));
+        pastFeedsTable.setDefaultRenderer(EventsFeed.class, new EventsFeedCell());
+        pastFeedsTable.setDefaultEditor(EventsFeed.class, new EventsFeedCell());
+        pastFeedsTable.setRowHeight(60);
+        pastFeedsTable.getColumnModel().getColumn(0).setHeaderValue("Past Events");
+        pastFeedsTable.getTableHeader().resizeAndRepaint();
+        pastFeedsTable.setModel(pastFeedsTable.getModel());
+        pastFeedsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        pastFeedsTable.setFocusable(false);
+        pastFeedsTable.setOpaque(false);
+        pastFeedsTable.setRequestFocusEnabled(false);
+        pastFeedsTable.setRowSelectionAllowed(false);
+        pastFeedsTable.setSurrendersFocusOnKeystroke(true);
+        pastFeedsTable.setUpdateSelectionOnSort(false);
+        pastFeedsTable.setVerifyInputWhenFocusTarget(false);
+        jScrollPane2.setViewportView(pastFeedsTable);
+        allHidden();
+        pastEvePanel.setVisible(true);
+        pastEvePanel.setEnabled(true);
+    }
+    
+    public void upcomFeedsTable(){
+        String upcomEveUrl = "http://localhost:9002/events/?type=upcoming&user_id="+this.inputJSON.get("user_id");
+        RestAPIHook upcomEveHook = new RestAPIHook();
+        JSONObject upcomEveJSON = upcomEveHook.invokeGetMethod(upcomEveUrl);
+        Iterator<String> upcomEveKeys = upcomEveJSON.keys();
+        List upcomEvefeeds = new ArrayList();
+        while(upcomEveKeys.hasNext()){
+            String upcomEveKey = upcomEveKeys.next();
+            if("isSuccess".equals(upcomEveKey)){
+                continue;
+            }
+            HashMap temp = new HashMap();
+            temp.put("event_id", upcomEveKey);
+            JSONObject val = upcomEveJSON.getJSONObject(upcomEveKey);
+            Iterator<String> childKeys = val.keys();
+            while(childKeys.hasNext()){
+                String childKey = childKeys.next();
+                temp.put(childKey, val.get(childKey));
+            }
+            temp.put("isRendered", true);
+            temp.put("isFollow", false);
+            temp.put("user_id", this.inputJSON.get("user_id").toString());
+            upcomEvefeeds.add(new EventsFeed(temp));
+        }
+        upcomEveFeedsTable = new JTable(new EventsFeedTableModel(upcomEvefeeds));
+        upcomEveFeedsTable.setDefaultRenderer(EventsFeed.class, new EventsFeedCell());
+        upcomEveFeedsTable.setDefaultEditor(EventsFeed.class, new EventsFeedCell());
+        upcomEveFeedsTable.setRowHeight(60);
+        upcomEveFeedsTable.getColumnModel().getColumn(0).setHeaderValue("Upcoming Events");
+        upcomEveFeedsTable.getTableHeader().resizeAndRepaint();
+        upcomEveFeedsTable.setModel(upcomEveFeedsTable.getModel());
+        upcomEveFeedsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        upcomEveFeedsTable.setFocusable(false);
+        upcomEveFeedsTable.setOpaque(false);
+        upcomEveFeedsTable.setRequestFocusEnabled(false);
+        upcomEveFeedsTable.setRowSelectionAllowed(false);
+        upcomEveFeedsTable.setSurrendersFocusOnKeystroke(true);
+        upcomEveFeedsTable.setUpdateSelectionOnSort(false);
+        upcomEveFeedsTable.setVerifyInputWhenFocusTarget(false);
+        jScrollPane3.setViewportView(upcomEveFeedsTable);
+        allHidden();
+        upcomEvePanel.setVisible(true);
+        upcomEvePanel.setEnabled(true);
+    }
+    
+    public void homeFeedsTable(){
+        String feedUrl = "http://localhost:9002/events/?type=feed&user_id="+this.inputJSON.get("user_id");
+        RestAPIHook a = new RestAPIHook();
+        JSONObject feedJSON = a.invokeGetMethod(feedUrl);
+        Iterator<String> feedKeys = feedJSON.keys();
+        List homefeeds = new ArrayList();
+        while(feedKeys.hasNext()){
+            String feedKey = feedKeys.next();
+            if("isSuccess".equals(feedKey)){
+                continue;
+            }
+            HashMap temp = new HashMap();
+            temp.put("event_id", feedKey);
+            JSONObject val = feedJSON.getJSONObject(feedKey);
+            Iterator<String> childKeys = val.keys();
+            while(childKeys.hasNext()){
+                String childKey = childKeys.next();
+                temp.put(childKey, val.get(childKey));
+            }
+            temp.put("isRendered", true);
+            temp.put("isFollow", true);
+            temp.put("user_id", this.inputJSON.get("user_id").toString());
+            System.out.println(temp);
+            homefeeds.add(new EventsFeed(temp));
+        }
+        homeFeedsTable = new JTable(new EventsFeedTableModel(homefeeds));
+        homeFeedsTable.setDefaultRenderer(EventsFeed.class, new EventsFeedCell());
+        homeFeedsTable.setDefaultEditor(EventsFeed.class, new EventsFeedCell());
+        homeFeedsTable.setRowHeight(60);
+        homeFeedsTable.getColumnModel().getColumn(0).setHeaderValue("Home");
+        homeFeedsTable.getTableHeader().resizeAndRepaint();
+        homeFeedsTable.setModel(homeFeedsTable.getModel());
+        homeFeedsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        homeFeedsTable.setFocusable(false);
+        homeFeedsTable.setOpaque(false);
+        homeFeedsTable.setRequestFocusEnabled(false);
+        homeFeedsTable.setRowSelectionAllowed(false);
+        homeFeedsTable.setSurrendersFocusOnKeystroke(true);
+        homeFeedsTable.setUpdateSelectionOnSort(false);
+        homeFeedsTable.setVerifyInputWhenFocusTarget(false);
+        jScrollPane1.setViewportView(homeFeedsTable);
+        allHidden();
+        homePanel.setVisible(true);
+        homePanel.setEnabled(true);
+    }
+    
+    public void myAssociationsTable(){
+        String myAssociationsUrl = "http://localhost:9001/associations/?type=oldAssociations&user_id="+this.inputJSON.get("user_id");
+        RestAPIHook myAssociationsHook = new RestAPIHook();
+        JSONObject myAssociationsJSON = myAssociationsHook.invokeGetMethod(myAssociationsUrl);
+        Iterator<String> myAssociationsKeys = myAssociationsJSON.keys();
+        List myAssociationsfeeds = new ArrayList();
+        while(myAssociationsKeys.hasNext()){
+            String myAssociationsKey = myAssociationsKeys.next();
+            if("isSuccess".equals(myAssociationsKey)){
+                continue;
+            }
+            HashMap myAssociationTemp = new HashMap();
+            myAssociationTemp.put("event_id", myAssociationsKey);
+            JSONObject myAssociationVal = myAssociationsJSON.getJSONObject(myAssociationsKey);
+            Iterator<String> myAssociationChildKeys = myAssociationVal.keys();
+            while(myAssociationChildKeys.hasNext()){
+                String myAssociationChildKey = myAssociationChildKeys.next();
+                myAssociationTemp.put(myAssociationChildKey, myAssociationVal.get(myAssociationChildKey));
+            }
+            myAssociationTemp.put("isAdmin", false);
+            myAssociationTemp.put("isFollow", false);
+            myAssociationTemp.put("association_id",myAssociationsKey);
+            myAssociationTemp.put("user_id", this.inputJSON.get("user_id").toString());
+            myAssociationsfeeds.add(new AssociationsFeed(myAssociationTemp));
+        }
+        myAssociationsFeedsTable = new JTable(new AssociationsFeedTableModel(myAssociationsfeeds));
+        myAssociationsFeedsTable.setDefaultRenderer(AssociationsFeed.class, new AssociationsFeedCell());
+        myAssociationsFeedsTable.setDefaultEditor(AssociationsFeed.class, new AssociationsFeedCell());
+        myAssociationsFeedsTable.setRowHeight(60);  
+        myAssociationsFeedsTable.getColumnModel().getColumn(0).setHeaderValue("My Associations");
+        myAssociationsFeedsTable.getTableHeader().resizeAndRepaint();      
+        myAssociationsFeedsTable.setModel(myAssociationsFeedsTable.getModel());
+        myAssociationsFeedsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        myAssociationsFeedsTable.setFocusable(false);
+        myAssociationsFeedsTable.setOpaque(false);
+        myAssociationsFeedsTable.setRequestFocusEnabled(false);
+        myAssociationsFeedsTable.setRowSelectionAllowed(false);
+        myAssociationsFeedsTable.setSurrendersFocusOnKeystroke(true);
+        myAssociationsFeedsTable.setUpdateSelectionOnSort(false);
+        myAssociationsFeedsTable.setVerifyInputWhenFocusTarget(false);
+        jScrollPane4.setViewportView(myAssociationsFeedsTable);
+        allHidden();
+        myAssociationsPanel.setVisible(true);
+        myAssociationsPanel.setEnabled(true);
+    }
+    
+    public void exploreAssociationsTable(){
+        String exploreAssociationsUrl = "http://localhost:9001/associations/?type=newAssociations&user_id="+this.inputJSON.get("user_id");
+        RestAPIHook exploreAssociationsHook = new RestAPIHook();
+        JSONObject exploreAssociationsJSON = exploreAssociationsHook.invokeGetMethod(exploreAssociationsUrl);
+        Iterator<String> exploreAssociationsKeys = exploreAssociationsJSON.keys();
+        List exploreAssociationsfeeds = new ArrayList();
+        while(exploreAssociationsKeys.hasNext()){
+            String exploreAssociationsKey = exploreAssociationsKeys.next();
+            if("isSuccess".equals(exploreAssociationsKey)){
+                continue;
+            }
+            HashMap exploreAssociationTemp = new HashMap();
+            exploreAssociationTemp.put("event_id", exploreAssociationsKey);
+            JSONObject exploreAssociationVal = exploreAssociationsJSON.getJSONObject(exploreAssociationsKey);
+            Iterator<String> exploreAssociationChildKeys = exploreAssociationVal.keys();
+            while(exploreAssociationChildKeys.hasNext()){
+                String exploreAssociationChildKey = exploreAssociationChildKeys.next();
+                exploreAssociationTemp.put(exploreAssociationChildKey, exploreAssociationVal.get(exploreAssociationChildKey));
+            }
+            exploreAssociationTemp.put("isAdmin", false);
+            exploreAssociationTemp.put("isFollow", true);
+            exploreAssociationTemp.put("association_id",exploreAssociationsKey);
+            exploreAssociationTemp.put("user_id", this.inputJSON.get("user_id").toString());
+            exploreAssociationsfeeds.add(new AssociationsFeed(exploreAssociationTemp));
+        }
+        exploreAssociationsFeedsTable = new JTable(new AssociationsFeedTableModel(exploreAssociationsfeeds));
+        exploreAssociationsFeedsTable.setDefaultRenderer(AssociationsFeed.class, new AssociationsFeedCell());
+        exploreAssociationsFeedsTable.setDefaultEditor(AssociationsFeed.class, new AssociationsFeedCell());
+        exploreAssociationsFeedsTable.setRowHeight(60);       
+        exploreAssociationsFeedsTable.getColumnModel().getColumn(0).setHeaderValue("Explore Associations");
+        exploreAssociationsFeedsTable.getTableHeader().resizeAndRepaint();       
+        exploreAssociationsFeedsTable.setModel(exploreAssociationsFeedsTable.getModel());
+        exploreAssociationsFeedsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        exploreAssociationsFeedsTable.setFocusable(false);
+        exploreAssociationsFeedsTable.setOpaque(false);
+        exploreAssociationsFeedsTable.setRequestFocusEnabled(false);
+        exploreAssociationsFeedsTable.setRowSelectionAllowed(false);
+        exploreAssociationsFeedsTable.setSurrendersFocusOnKeystroke(true);
+        exploreAssociationsFeedsTable.setUpdateSelectionOnSort(false);
+        exploreAssociationsFeedsTable.setVerifyInputWhenFocusTarget(false);
+        jScrollPane5.setViewportView(exploreAssociationsFeedsTable);
+        allHidden();
+        exploreAssociationsPanel.setVisible(true);
+        exploreAssociationsPanel.setEnabled(true);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -89,178 +329,22 @@ public final class UserHomePage extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         pastEvePanel = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        String pastUrl = "http://localhost:9002/events/?type=past&user_id="+this.inputJSON.get("user_id");
-        RestAPIHook pastHook = new RestAPIHook();
-        JSONObject pastJSON = pastHook.invokeGetMethod(pastUrl);
-        Iterator<String> pastKeys = pastJSON.keys();
-
-        List pastfeeds = new ArrayList();
-        while(pastKeys.hasNext()){
-            String pastKey = pastKeys.next();
-
-            if("isSuccess".equals(pastKey)){
-                continue;
-            }
-
-            HashMap temp = new HashMap();
-
-            temp.put("event_id", pastKey);
-            JSONObject val = pastJSON.getJSONObject(pastKey);
-            Iterator<String> childKeys = val.keys();
-            while(childKeys.hasNext()){
-                String childKey = childKeys.next();
-                temp.put(childKey, val.get(childKey));
-            }
-            temp.put("isRendered", false);
-            temp.put("isFollow", false);
-            temp.put("user_id", this.inputJSON.get("user_id").toString());
-            System.out.println("Hi2");
-            System.out.println(temp);
-            System.out.println("Hi3");
-            pastfeeds.add(new EventsFeed(temp));
-        }
-        pastFeedsTable = new JTable (new EventsFeedTableModel(pastfeeds));
+        pastFeedsTable = new javax.swing.JTable();
         upcomEvePanel = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        String upcomEveUrl = "http://localhost:9002/events/?type=upcoming&user_id="+this.inputJSON.get("user_id");
-        RestAPIHook upcomEveHook = new RestAPIHook();
-        JSONObject upcomEveJSON = upcomEveHook.invokeGetMethod(upcomEveUrl);
-        Iterator<String> upcomEveKeys = upcomEveJSON.keys();
-
-        List upcomEvefeeds = new ArrayList();
-        while(upcomEveKeys.hasNext()){
-            String upcomEveKey = upcomEveKeys.next();
-
-            if("isSuccess".equals(upcomEveKey)){
-                continue;
-            }
-
-            HashMap temp = new HashMap();
-
-            temp.put("event_id", upcomEveKey);
-            JSONObject val = upcomEveJSON.getJSONObject(upcomEveKey);
-            Iterator<String> childKeys = val.keys();
-            while(childKeys.hasNext()){
-                String childKey = childKeys.next();
-                temp.put(childKey, val.get(childKey));
-            }
-            temp.put("isRendered", true);
-            temp.put("isFollow", false);
-            temp.put("user_id", this.inputJSON.get("user_id").toString());
-            System.out.println("Hi2");
-            System.out.println(temp);
-            System.out.println("Hi3");
-            upcomEvefeeds.add(new EventsFeed(temp));
-
-        }
-        upcomEveFeedsTable = new JTable(new EventsFeedTableModel(upcomEvefeeds));
+        upcomEveFeedsTable = new javax.swing.JTable();
         homePanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        String feedUrl = "http://localhost:9002/events/?type=feed&user_id="+this.inputJSON.get("user_id");
-        RestAPIHook feedHook = new RestAPIHook();
-        JSONObject feedJSON = feedHook.invokeGetMethod(feedUrl);
-        Iterator<String> feedKeys = feedJSON.keys();
-
-        List homefeeds = new ArrayList();
-        while(feedKeys.hasNext()){
-            String feedKey = feedKeys.next();
-
-            if("isSuccess".equals(feedKey)){
-                continue;
-            }
-
-            HashMap temp = new HashMap();
-
-            temp.put("event_id", feedKey);
-            JSONObject val = feedJSON.getJSONObject(feedKey);
-            Iterator<String> childKeys = val.keys();
-            while(childKeys.hasNext()){
-                String childKey = childKeys.next();
-                temp.put(childKey, val.get(childKey));
-            }
-            temp.put("isRendered", true);
-            temp.put("isFollow", true);
-            temp.put("user_id", this.inputJSON.get("user_id").toString());
-            System.out.println("Hi2");
-            System.out.println(temp);
-            System.out.println("Hi3");
-            homefeeds.add(new EventsFeed(temp));
-
-        }
-        homeFeedsTable = new JTable(new EventsFeedTableModel(homefeeds));
+        homeFeedsTable = new javax.swing.JTable();
         myAssociationsPanel = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        String myAssociationsUrl = "http://localhost:9001/associations/?type=oldAssociations&user_id="+this.inputJSON.get("user_id");
-        RestAPIHook myAssociationsHook = new RestAPIHook();
-        JSONObject myAssociationsJSON = myAssociationsHook.invokeGetMethod(myAssociationsUrl);
-        Iterator<String> myAssociationsKeys = myAssociationsJSON.keys();
-
-        List myAssociationsfeeds = new ArrayList();
-        while(myAssociationsKeys.hasNext()){
-            String myAssociationsKey = myAssociationsKeys.next();
-
-            if("isSuccess".equals(myAssociationsKey)){
-                continue;
-            }
-
-            HashMap myAssociationTemp = new HashMap();
-
-            myAssociationTemp.put("event_id", myAssociationsKey);
-            JSONObject myAssociationVal = myAssociationsJSON.getJSONObject(myAssociationsKey);
-            Iterator<String> myAssociationChildKeys = myAssociationVal.keys();
-            while(myAssociationChildKeys.hasNext()){
-                String myAssociationChildKey = myAssociationChildKeys.next();
-                myAssociationTemp.put(myAssociationChildKey, myAssociationVal.get(myAssociationChildKey));
-            }
-            myAssociationTemp.put("isAdmin", false);
-            myAssociationTemp.put("isFollow", false);
-            myAssociationTemp.put("association_id",myAssociationsKey);
-            myAssociationTemp.put("user_id", this.inputJSON.get("user_id").toString());
-            System.out.println("Hi2");
-            System.out.println(myAssociationTemp);
-            System.out.println("Hi3");
-            myAssociationsfeeds.add(new AssociationsFeed(myAssociationTemp));
-
-        }
-        myAssociationsFeedsTable = new JTable(new AssociationsFeedTableModel(myAssociationsfeeds));
+        myAssociationsFeedsTable = new javax.swing.JTable();
         exploreAssociationsPanel = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
-        String exploreAssociationsUrl = "http://localhost:9001/associations/?type=newAssociations&user_id="+this.inputJSON.get("user_id");
-        RestAPIHook exploreAssociationsHook = new RestAPIHook();
-        JSONObject exploreAssociationsJSON = exploreAssociationsHook.invokeGetMethod(exploreAssociationsUrl);
-        Iterator<String> exploreAssociationsKeys = exploreAssociationsJSON.keys();
-
-        List exploreAssociationsfeeds = new ArrayList();
-        while(exploreAssociationsKeys.hasNext()){
-            String exploreAssociationsKey = exploreAssociationsKeys.next();
-
-            if("isSuccess".equals(exploreAssociationsKey)){
-                continue;
-            }
-
-            HashMap exploreAssociationTemp = new HashMap();
-
-            exploreAssociationTemp.put("event_id", exploreAssociationsKey);
-            JSONObject exploreAssociationVal = exploreAssociationsJSON.getJSONObject(exploreAssociationsKey);
-            Iterator<String> exploreAssociationChildKeys = exploreAssociationVal.keys();
-            while(exploreAssociationChildKeys.hasNext()){
-                String exploreAssociationChildKey = exploreAssociationChildKeys.next();
-                exploreAssociationTemp.put(exploreAssociationChildKey, exploreAssociationVal.get(exploreAssociationChildKey));
-            }
-            exploreAssociationTemp.put("isAdmin", false);
-            exploreAssociationTemp.put("isFollow", true);
-            exploreAssociationTemp.put("association_id",exploreAssociationsKey);
-            exploreAssociationTemp.put("user_id", this.inputJSON.get("user_id").toString());
-            System.out.println("Hi2");
-            System.out.println(exploreAssociationTemp);
-            System.out.println("Hi3");
-            exploreAssociationsfeeds.add(new AssociationsFeed(exploreAssociationTemp));
-
-        }
-        exploreAssociationsFeedsTable = new JTable(new AssociationsFeedTableModel(exploreAssociationsfeeds));
+        exploreAssociationsFeedsTable = new javax.swing.JTable();
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
@@ -355,13 +439,10 @@ public final class UserHomePage extends javax.swing.JFrame {
             navPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(profileButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(pastEveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(upcomEveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(upcomEveButton, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
             .addComponent(homeButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(myAssociations, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, navPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(exploreAssociations, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(exploreAssociations, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         navPanelLayout.setVerticalGroup(
             navPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -468,19 +549,9 @@ public final class UserHomePage extends javax.swing.JFrame {
 
         pastEvePanel.setPreferredSize(new java.awt.Dimension(1560, 560));
 
-        pastFeedsTable.setDefaultRenderer(EventsFeed.class, new EventsFeedCell());
-        pastFeedsTable.setDefaultEditor(EventsFeed.class, new EventsFeedCell());
-        pastFeedsTable.setRowHeight(60);
         pastFeedsTable.setModel(pastFeedsTable.getModel());
-        pastFeedsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        pastFeedsTable.setFocusable(false);
-        pastFeedsTable.setOpaque(false);
-        pastFeedsTable.setRequestFocusEnabled(false);
-        pastFeedsTable.setRowSelectionAllowed(false);
-        pastFeedsTable.setSurrendersFocusOnKeystroke(true);
-        pastFeedsTable.setUpdateSelectionOnSort(false);
-        pastFeedsTable.setVerifyInputWhenFocusTarget(false);
         jScrollPane2.setViewportView(pastFeedsTable);
+        pastFeedsTable();
 
         javax.swing.GroupLayout pastEvePanelLayout = new javax.swing.GroupLayout(pastEvePanel);
         pastEvePanel.setLayout(pastEvePanelLayout);
@@ -501,19 +572,9 @@ public final class UserHomePage extends javax.swing.JFrame {
 
         jPanel1.add(pastEvePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1560, 560));
 
-        upcomEveFeedsTable.setDefaultRenderer(EventsFeed.class, new EventsFeedCell());
-        upcomEveFeedsTable.setDefaultEditor(EventsFeed.class, new EventsFeedCell());
-        upcomEveFeedsTable.setRowHeight(60);
         upcomEveFeedsTable.setModel(upcomEveFeedsTable.getModel());
-        upcomEveFeedsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        upcomEveFeedsTable.setFocusable(false);
-        upcomEveFeedsTable.setOpaque(false);
-        upcomEveFeedsTable.setRequestFocusEnabled(false);
-        upcomEveFeedsTable.setRowSelectionAllowed(false);
-        upcomEveFeedsTable.setSurrendersFocusOnKeystroke(true);
-        upcomEveFeedsTable.setUpdateSelectionOnSort(false);
-        upcomEveFeedsTable.setVerifyInputWhenFocusTarget(false);
         jScrollPane3.setViewportView(upcomEveFeedsTable);
+        upcomFeedsTable();
 
         javax.swing.GroupLayout upcomEvePanelLayout = new javax.swing.GroupLayout(upcomEvePanel);
         upcomEvePanel.setLayout(upcomEvePanelLayout);
@@ -540,20 +601,9 @@ public final class UserHomePage extends javax.swing.JFrame {
 
         jLabel1.setText("Home");
 
-        homeFeedsTable.setDefaultRenderer(EventsFeed.class, new EventsFeedCell());
-        homeFeedsTable.setDefaultEditor(EventsFeed.class, new EventsFeedCell());
-        homeFeedsTable.setRowHeight(60);
         homeFeedsTable.setModel(homeFeedsTable.getModel());
-        homeFeedsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        homeFeedsTable.setFocusable(false);
-        homeFeedsTable.setOpaque(false);
-        homeFeedsTable.setRequestFocusEnabled(false);
-        homeFeedsTable.setRowSelectionAllowed(false);
-        homeFeedsTable.setSurrendersFocusOnKeystroke(true);
-        homeFeedsTable.setUpdateSelectionOnSort(false);
-        homeFeedsTable.setVerifyInputWhenFocusTarget(false);
         jScrollPane1.setViewportView(homeFeedsTable);
-        homeButton.doClick();
+        homeFeedsTable();
 
         javax.swing.GroupLayout homePanelLayout = new javax.swing.GroupLayout(homePanel);
         homePanel.setLayout(homePanelLayout);
@@ -583,19 +633,9 @@ public final class UserHomePage extends javax.swing.JFrame {
 
         jLabel6.setText("Home");
 
-        myAssociationsFeedsTable.setDefaultRenderer(AssociationsFeed.class, new AssociationsFeedCell());
-        myAssociationsFeedsTable.setDefaultEditor(AssociationsFeed.class, new AssociationsFeedCell());
-        myAssociationsFeedsTable.setRowHeight(60);
         myAssociationsFeedsTable.setModel(myAssociationsFeedsTable.getModel());
-        myAssociationsFeedsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        myAssociationsFeedsTable.setFocusable(false);
-        myAssociationsFeedsTable.setOpaque(false);
-        myAssociationsFeedsTable.setRequestFocusEnabled(false);
-        myAssociationsFeedsTable.setRowSelectionAllowed(false);
-        myAssociationsFeedsTable.setSurrendersFocusOnKeystroke(true);
-        myAssociationsFeedsTable.setUpdateSelectionOnSort(false);
-        myAssociationsFeedsTable.setVerifyInputWhenFocusTarget(false);
         jScrollPane4.setViewportView(myAssociationsFeedsTable);
+        myAssociationsTable();
 
         javax.swing.GroupLayout myAssociationsPanelLayout = new javax.swing.GroupLayout(myAssociationsPanel);
         myAssociationsPanel.setLayout(myAssociationsPanelLayout);
@@ -625,19 +665,9 @@ public final class UserHomePage extends javax.swing.JFrame {
 
         jLabel7.setText("Home");
 
-        exploreAssociationsFeedsTable.setDefaultRenderer(AssociationsFeed.class, new AssociationsFeedCell());
-        exploreAssociationsFeedsTable.setDefaultEditor(AssociationsFeed.class, new AssociationsFeedCell());
-        exploreAssociationsFeedsTable.setRowHeight(60);
         exploreAssociationsFeedsTable.setModel(exploreAssociationsFeedsTable.getModel());
-        exploreAssociationsFeedsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        exploreAssociationsFeedsTable.setFocusable(false);
-        exploreAssociationsFeedsTable.setOpaque(false);
-        exploreAssociationsFeedsTable.setRequestFocusEnabled(false);
-        exploreAssociationsFeedsTable.setRowSelectionAllowed(false);
-        exploreAssociationsFeedsTable.setSurrendersFocusOnKeystroke(true);
-        exploreAssociationsFeedsTable.setUpdateSelectionOnSort(false);
-        exploreAssociationsFeedsTable.setVerifyInputWhenFocusTarget(false);
         jScrollPane5.setViewportView(exploreAssociationsFeedsTable);
+        exploreAssociationsTable();
 
         javax.swing.GroupLayout exploreAssociationsPanelLayout = new javax.swing.GroupLayout(exploreAssociationsPanel);
         exploreAssociationsPanel.setLayout(exploreAssociationsPanelLayout);
@@ -686,7 +716,6 @@ public final class UserHomePage extends javax.swing.JFrame {
         this.dispose();
         LoginPage form = new LoginPage();
         form.setExtendedState(JFrame.MAXIMIZED_BOTH);
-//        form.setUndecorated(true);
         form.setVisible(true);
         
     }//GEN-LAST:event_logoutLabelMouseClicked
@@ -698,137 +727,12 @@ public final class UserHomePage extends javax.swing.JFrame {
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
         // TODO add your handling code here:
-        String feedUrl = "http://localhost:9002/events/?type=feed&user_id="+this.inputJSON.get("user_id");
-        RestAPIHook a = new RestAPIHook();
-        JSONObject feedJSON = a.invokeGetMethod(feedUrl);
-        Iterator<String> feedKeys = feedJSON.keys();
-
-        List homefeeds = new ArrayList();
-        while(feedKeys.hasNext()){
-            String feedKey = feedKeys.next();
-
-            if("isSuccess".equals(feedKey)){
-                continue;
-            }
-
-            HashMap temp = new HashMap();
-
-            temp.put("event_id", feedKey);
-            JSONObject val = feedJSON.getJSONObject(feedKey);
-            Iterator<String> childKeys = val.keys();
-            while(childKeys.hasNext()){
-                String childKey = childKeys.next();
-                temp.put(childKey, val.get(childKey));
-            }
-            temp.put("isRendered", true);
-            temp.put("isFollow", true);
-            temp.put("user_id", this.inputJSON.get("user_id").toString());
-            System.out.println("Hi2");
-            System.out.println(temp);
-            System.out.println("Hi3");
-            homefeeds.add(new EventsFeed(temp));
-
-        }
-        homeFeedsTable = new JTable(new EventsFeedTableModel(homefeeds));
-        homeFeedsTable.setDefaultRenderer(EventsFeed.class, new EventsFeedCell());
-        homeFeedsTable.setDefaultEditor(EventsFeed.class, new EventsFeedCell());
-        homeFeedsTable.setRowHeight(60);
-        
-        homeFeedsTable.getColumnModel().getColumn(0).setHeaderValue("Home");
-        homeFeedsTable.getTableHeader().resizeAndRepaint();
-        
-        homeFeedsTable.setModel(homeFeedsTable.getModel());
-        homeFeedsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        homeFeedsTable.setFocusable(false);
-        homeFeedsTable.setOpaque(false);
-        homeFeedsTable.setRequestFocusEnabled(false);
-        homeFeedsTable.setRowSelectionAllowed(false);
-        homeFeedsTable.setSurrendersFocusOnKeystroke(true);
-        homeFeedsTable.setUpdateSelectionOnSort(false);
-        homeFeedsTable.setVerifyInputWhenFocusTarget(false);
-        jScrollPane1.setViewportView(homeFeedsTable);
-        
-        homePanel.setVisible(true);
-        homePanel.setEnabled(true);
-        exploreAssociationsPanel.setVisible(false);
-        exploreAssociationsPanel.setEnabled(false);
-        myAssociationsPanel.setVisible(false);
-        myAssociationsPanel.setEnabled(false);
-        profilePanel.setVisible(false);
-        profilePanel.setEnabled(false);
-        upcomEvePanel.setVisible(false);
-        upcomEvePanel.setEnabled(false);
-        pastEvePanel.setVisible(false);
-        pastEvePanel.setEnabled(false);
-        homeFeedsTable.setVisible(true);
-        homeFeedsTable.setEnabled(true);
+        homeFeedsTable();
     }//GEN-LAST:event_homeButtonActionPerformed
 
     private void upcomEveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upcomEveButtonActionPerformed
         // TODO add your handling code here:
-        String upcomEveUrl = "http://localhost:9002/events/?type=upcoming&user_id="+this.inputJSON.get("user_id");
-        RestAPIHook upcomEveHook = new RestAPIHook();
-        JSONObject upcomEveJSON = upcomEveHook.invokeGetMethod(upcomEveUrl);
-        Iterator<String> upcomEveKeys = upcomEveJSON.keys();
-
-        List upcomEvefeeds = new ArrayList();
-        while(upcomEveKeys.hasNext()){
-            String upcomEveKey = upcomEveKeys.next();
-
-            if("isSuccess".equals(upcomEveKey)){
-                continue;
-            }
-
-            HashMap temp = new HashMap();
-
-            temp.put("event_id", upcomEveKey);
-            JSONObject val = upcomEveJSON.getJSONObject(upcomEveKey);
-            Iterator<String> childKeys = val.keys();
-            while(childKeys.hasNext()){
-                String childKey = childKeys.next();
-                temp.put(childKey, val.get(childKey));
-            }
-            temp.put("isRendered", true);
-            temp.put("isFollow", false);
-            temp.put("user_id", this.inputJSON.get("user_id").toString());
-            System.out.println("Hi2");
-            System.out.println(temp);
-            System.out.println("Hi3");
-            upcomEvefeeds.add(new EventsFeed(temp));
-
-        }
-        upcomEveFeedsTable = new JTable(new EventsFeedTableModel(upcomEvefeeds));
-        upcomEveFeedsTable.setDefaultRenderer(EventsFeed.class, new EventsFeedCell());
-        upcomEveFeedsTable.setDefaultEditor(EventsFeed.class, new EventsFeedCell());
-        upcomEveFeedsTable.setRowHeight(60);
-        upcomEveFeedsTable.getColumnModel().getColumn(0).setHeaderValue("Upcoming Events");
-        upcomEveFeedsTable.getTableHeader().resizeAndRepaint();
-        
-        upcomEveFeedsTable.setModel(upcomEveFeedsTable.getModel());
-        upcomEveFeedsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        upcomEveFeedsTable.setFocusable(false);
-        upcomEveFeedsTable.setOpaque(false);
-        upcomEveFeedsTable.setRequestFocusEnabled(false);
-        upcomEveFeedsTable.setRowSelectionAllowed(false);
-        upcomEveFeedsTable.setSurrendersFocusOnKeystroke(true);
-        upcomEveFeedsTable.setUpdateSelectionOnSort(false);
-        upcomEveFeedsTable.setVerifyInputWhenFocusTarget(false);
-        jScrollPane3.setViewportView(upcomEveFeedsTable);
-        
-        upcomEvePanel.setVisible(true);
-        upcomEvePanel.setEnabled(true);
-        exploreAssociationsPanel.setVisible(false);
-        exploreAssociationsPanel.setEnabled(false);
-        myAssociationsPanel.setVisible(false);
-        myAssociationsPanel.setEnabled(false);
-        profilePanel.setVisible(false);
-        profilePanel.setEnabled(false);
-        homePanel.setVisible(false);
-        homePanel.setEnabled(false);
-        pastEvePanel.setVisible(false);
-        pastEvePanel.setEnabled(false);
-        homeFeedsTable.setVisible(false);
-        homeFeedsTable.setEnabled(false);
+        upcomFeedsTable();
     }//GEN-LAST:event_upcomEveButtonActionPerformed
 
     private void profileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profileButtonActionPerformed
@@ -851,208 +755,20 @@ public final class UserHomePage extends javax.swing.JFrame {
 
     private void pastEveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pastEveButtonActionPerformed
         // TODO add your handling code here:
-        String pastUrl = "http://localhost:9002/events/?type=past&user_id="+this.inputJSON.get("user_id");
-        RestAPIHook pastHook = new RestAPIHook();
-        JSONObject pastJSON = pastHook.invokeGetMethod(pastUrl);
-        Iterator<String> pastKeys = pastJSON.keys();
-
-        List pastfeeds = new ArrayList();
-        while(pastKeys.hasNext()){
-            String pastKey = pastKeys.next();
-
-            if("isSuccess".equals(pastKey)){
-                continue;
-            }
-
-            HashMap temp = new HashMap();
-
-            temp.put("event_id", pastKey);
-            JSONObject val = pastJSON.getJSONObject(pastKey);
-            Iterator<String> childKeys = val.keys();
-            while(childKeys.hasNext()){
-                String childKey = childKeys.next();
-                temp.put(childKey, val.get(childKey));
-            }
-            temp.put("isRendered", false);
-            temp.put("isFollow", false);
-            temp.put("user_id", this.inputJSON.get("user_id").toString());
-            System.out.println("Hi2");
-            System.out.println(temp);
-            System.out.println("Hi3");
-            pastfeeds.add(new EventsFeed(temp));
-        }
-        pastFeedsTable = new JTable (new EventsFeedTableModel(pastfeeds));
-        pastFeedsTable.setDefaultRenderer(EventsFeed.class, new EventsFeedCell());
-        pastFeedsTable.setDefaultEditor(EventsFeed.class, new EventsFeedCell());
-        pastFeedsTable.setRowHeight(60);
-        
-        pastFeedsTable.getColumnModel().getColumn(0).setHeaderValue("Past Events");
-        pastFeedsTable.getTableHeader().resizeAndRepaint();
-        
-        pastFeedsTable.setModel(pastFeedsTable.getModel());
-        pastFeedsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        pastFeedsTable.setFocusable(false);
-        pastFeedsTable.setOpaque(false);
-        pastFeedsTable.setRequestFocusEnabled(false);
-        pastFeedsTable.setRowSelectionAllowed(false);
-        pastFeedsTable.setSurrendersFocusOnKeystroke(true);
-        pastFeedsTable.setUpdateSelectionOnSort(false);
-        pastFeedsTable.setVerifyInputWhenFocusTarget(false);
-        jScrollPane2.setViewportView(pastFeedsTable);
-
-        pastEvePanel.setVisible(true);
-        pastEvePanel.setEnabled(true);
-        exploreAssociationsPanel.setVisible(false);
-        exploreAssociationsPanel.setEnabled(false);
-        myAssociationsPanel.setVisible(false);
-        myAssociationsPanel.setEnabled(false);
-        profilePanel.setVisible(false);
-        profilePanel.setEnabled(false);
-        homePanel.setVisible(false);
-        homePanel.setEnabled(false);
-        upcomEvePanel.setVisible(false);
-        upcomEvePanel.setEnabled(false);
-        homeFeedsTable.setVisible(false);
-        homeFeedsTable.setEnabled(false);
+        pastFeedsTable();
     }//GEN-LAST:event_pastEveButtonActionPerformed
 
     private void myAssociationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_myAssociationsActionPerformed
         // TODO add your handling code here:
-        String myAssociationsUrl = "http://localhost:9001/associations/?type=oldAssociations&user_id="+this.inputJSON.get("user_id");
-        RestAPIHook myAssociationsHook = new RestAPIHook();
-        JSONObject myAssociationsJSON = myAssociationsHook.invokeGetMethod(myAssociationsUrl);
-        Iterator<String> myAssociationsKeys = myAssociationsJSON.keys();
-
-        List myAssociationsfeeds = new ArrayList();
-        while(myAssociationsKeys.hasNext()){
-            String myAssociationsKey = myAssociationsKeys.next();
-
-            if("isSuccess".equals(myAssociationsKey)){
-                continue;
-            }
-
-            HashMap myAssociationTemp = new HashMap();
-
-            myAssociationTemp.put("event_id", myAssociationsKey);
-            JSONObject myAssociationVal = myAssociationsJSON.getJSONObject(myAssociationsKey);
-            Iterator<String> myAssociationChildKeys = myAssociationVal.keys();
-            while(myAssociationChildKeys.hasNext()){
-                String myAssociationChildKey = myAssociationChildKeys.next();
-                myAssociationTemp.put(myAssociationChildKey, myAssociationVal.get(myAssociationChildKey));
-            }
-            myAssociationTemp.put("isAdmin", false);
-            myAssociationTemp.put("isFollow", false);
-            myAssociationTemp.put("association_id",myAssociationsKey);
-            myAssociationTemp.put("user_id", this.inputJSON.get("user_id").toString());
-            System.out.println("Hi2");
-            System.out.println(myAssociationTemp);
-            System.out.println("Hi3");
-            myAssociationsfeeds.add(new AssociationsFeed(myAssociationTemp));
-
-        }
-        myAssociationsFeedsTable = new JTable(new AssociationsFeedTableModel(myAssociationsfeeds));
-        myAssociationsFeedsTable.setDefaultRenderer(AssociationsFeed.class, new AssociationsFeedCell());
-        myAssociationsFeedsTable.setDefaultEditor(AssociationsFeed.class, new AssociationsFeedCell());
-        myAssociationsFeedsTable.setRowHeight(60);
-        
-        myAssociationsFeedsTable.getColumnModel().getColumn(0).setHeaderValue("My Associations");
-        myAssociationsFeedsTable.getTableHeader().resizeAndRepaint();
-        
-        myAssociationsFeedsTable.setModel(myAssociationsFeedsTable.getModel());
-        myAssociationsFeedsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        myAssociationsFeedsTable.setFocusable(false);
-        myAssociationsFeedsTable.setOpaque(false);
-        myAssociationsFeedsTable.setRequestFocusEnabled(false);
-        myAssociationsFeedsTable.setRowSelectionAllowed(false);
-        myAssociationsFeedsTable.setSurrendersFocusOnKeystroke(true);
-        myAssociationsFeedsTable.setUpdateSelectionOnSort(false);
-        myAssociationsFeedsTable.setVerifyInputWhenFocusTarget(false);
-        jScrollPane4.setViewportView(myAssociationsFeedsTable);
-        myAssociationsPanel.setVisible(true);
-        myAssociationsPanel.setEnabled(true);
-        upcomEvePanel.setVisible(false);
-        upcomEvePanel.setEnabled(false);
-        profilePanel.setVisible(false);
-        profilePanel.setEnabled(false);
-        homePanel.setVisible(false);
-        homePanel.setEnabled(false);
-        pastEvePanel.setVisible(false);
-        pastEvePanel.setEnabled(false);
-        homeFeedsTable.setVisible(false);
-        homeFeedsTable.setEnabled(false);
+        myAssociationsTable();
     }//GEN-LAST:event_myAssociationsActionPerformed
-
-        
+     
     private void exploreAssociationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exploreAssociationsActionPerformed
         // TODO add your handling code here:
-        String exploreAssociationsUrl = "http://localhost:9001/associations/?type=newAssociations&user_id="+this.inputJSON.get("user_id");
-        RestAPIHook exploreAssociationsHook = new RestAPIHook();
-        JSONObject exploreAssociationsJSON = exploreAssociationsHook.invokeGetMethod(exploreAssociationsUrl);
-        Iterator<String> exploreAssociationsKeys = exploreAssociationsJSON.keys();
-
-        List exploreAssociationsfeeds = new ArrayList();
-        while(exploreAssociationsKeys.hasNext()){
-            String exploreAssociationsKey = exploreAssociationsKeys.next();
-
-            if("isSuccess".equals(exploreAssociationsKey)){
-                continue;
-            }
-
-            HashMap exploreAssociationTemp = new HashMap();
-
-            exploreAssociationTemp.put("event_id", exploreAssociationsKey);
-            JSONObject exploreAssociationVal = exploreAssociationsJSON.getJSONObject(exploreAssociationsKey);
-            Iterator<String> exploreAssociationChildKeys = exploreAssociationVal.keys();
-            while(exploreAssociationChildKeys.hasNext()){
-                String exploreAssociationChildKey = exploreAssociationChildKeys.next();
-                exploreAssociationTemp.put(exploreAssociationChildKey, exploreAssociationVal.get(exploreAssociationChildKey));
-            }
-            exploreAssociationTemp.put("isAdmin", false);
-            exploreAssociationTemp.put("isFollow", true);
-            exploreAssociationTemp.put("association_id",exploreAssociationsKey);
-            exploreAssociationTemp.put("user_id", this.inputJSON.get("user_id").toString());
-            System.out.println("Hi2");
-            System.out.println(exploreAssociationTemp);
-            System.out.println("Hi3");
-            exploreAssociationsfeeds.add(new AssociationsFeed(exploreAssociationTemp));
-        }
-        exploreAssociationsFeedsTable = new JTable(new AssociationsFeedTableModel(exploreAssociationsfeeds));
-        exploreAssociationsFeedsTable.setDefaultRenderer(AssociationsFeed.class, new AssociationsFeedCell());
-        exploreAssociationsFeedsTable.setDefaultEditor(AssociationsFeed.class, new AssociationsFeedCell());
-        exploreAssociationsFeedsTable.setRowHeight(60);
-        
-        exploreAssociationsFeedsTable.getColumnModel().getColumn(0).setHeaderValue("Explore Associations");
-        exploreAssociationsFeedsTable.getTableHeader().resizeAndRepaint();
-        
-        exploreAssociationsFeedsTable.setModel(exploreAssociationsFeedsTable.getModel());
-        exploreAssociationsFeedsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        exploreAssociationsFeedsTable.setFocusable(false);
-        exploreAssociationsFeedsTable.setOpaque(false);
-        exploreAssociationsFeedsTable.setRequestFocusEnabled(false);
-        exploreAssociationsFeedsTable.setRowSelectionAllowed(false);
-        exploreAssociationsFeedsTable.setSurrendersFocusOnKeystroke(true);
-        exploreAssociationsFeedsTable.setUpdateSelectionOnSort(false);
-        exploreAssociationsFeedsTable.setVerifyInputWhenFocusTarget(false);
-        jScrollPane5.setViewportView(exploreAssociationsFeedsTable);
-
-        exploreAssociationsPanel.setVisible(true);
-        exploreAssociationsPanel.setEnabled(true);
-        myAssociationsPanel.setVisible(false);
-        myAssociationsPanel.setEnabled(false);
-        upcomEvePanel.setVisible(false);
-        upcomEvePanel.setEnabled(false);
-        profilePanel.setVisible(false);
-        profilePanel.setEnabled(false);
-        homePanel.setVisible(false);
-        homePanel.setEnabled(false);
-        pastEvePanel.setVisible(false);
-        pastEvePanel.setEnabled(false);
-        homeFeedsTable.setVisible(false);
-        homeFeedsTable.setEnabled(false);
+        exploreAssociationsTable();
     }//GEN-LAST:event_exploreAssociationsActionPerformed
     
-    
-    
+     
     /**
      * @param args the command line arguments
      */
@@ -1075,16 +791,11 @@ public final class UserHomePage extends javax.swing.JFrame {
         //</editor-fold>
         
         //</editor-fold>
-
-        /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(() -> {
-//            new UserHomePage().setVisible(true);
-//        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton exploreAssociations;
-    private javax.swing.JTable exploreAssociationsFeedsTable;
+    public javax.swing.JTable exploreAssociationsFeedsTable;
     private javax.swing.JPanel exploreAssociationsPanel;
     private javax.swing.JButton homeButton;
     private javax.swing.JTable homeFeedsTable;
@@ -1107,17 +818,17 @@ public final class UserHomePage extends javax.swing.JFrame {
     private javax.swing.JLabel logoutLabel;
     private javax.swing.JLabel menu;
     private javax.swing.JButton myAssociations;
-    private javax.swing.JTable myAssociationsFeedsTable;
+    public javax.swing.JTable myAssociationsFeedsTable;
     private javax.swing.JPanel myAssociationsPanel;
     private javax.swing.JPanel navPanel;
     private javax.swing.JButton pastEveButton;
     private javax.swing.JPanel pastEvePanel;
-    private javax.swing.JTable pastFeedsTable;
+    public javax.swing.JTable pastFeedsTable;
     private javax.swing.JButton profileButton;
     private javax.swing.JPanel profilePanel;
     private javax.swing.JLabel titleLabel;
     private javax.swing.JButton upcomEveButton;
-    private javax.swing.JTable upcomEveFeedsTable;
+    public javax.swing.JTable upcomEveFeedsTable;
     private javax.swing.JPanel upcomEvePanel;
     // End of variables declaration//GEN-END:variables
 }

@@ -84,11 +84,9 @@ public class LoginPage extends JFrame implements ActionListener {
         newPanel.add(hyperLinkSignUp);
         hyperLinkAssociationSignUp.setFont(new Font("Arial", Font.PLAIN, 14));
         newPanel.add(hyperLinkAssociationSignUp);
-
         hyperLinkSignUp.setToolTipText("Sign Up for User");
         hyperLinkSignUp.setBorder(null);
         hyperLinkSignUp.setBounds(180, 362, 112, 36);
-        
         hyperLinkAssociationSignUp.setToolTipText("Sign Up for Association");
         hyperLinkAssociationSignUp.setBorder(null);
         hyperLinkAssociationSignUp.setBounds(300, 362, 160, 36);
@@ -123,7 +121,7 @@ public class LoginPage extends JFrame implements ActionListener {
                 adminHP.setVisible(true);
                 this.dispose();
                 System.out.println("hi muneer2");
-            } //vs
+            }
             else if (p.get("user_code").toString().equals("1")) {
                 url = "http://localhost:9001/associations/?type=single&user_id="+p.get("user_id").toString();
                 JSONObject associationData = a.invokeGetMethod(url);
@@ -149,12 +147,9 @@ public class LoginPage extends JFrame implements ActionListener {
             else {
                 JOptionPane.showMessageDialog(newPanel, "You have successfully logged in!" + p.toString());
             }
-//              HomePage hFrame = new HomePage();
-//            	hFrame.setVisible(true);
         } else {
             //show error message  
-            JOptionPane.showMessageDialog(newPanel, "Please enter valid username and password");
-//                System.out.println("Please enter valid username and password");  
+            JOptionPane.showMessageDialog(newPanel, "Please enter valid username and password"); 
         }
     }
 
@@ -163,8 +158,6 @@ public class LoginPage extends JFrame implements ActionListener {
             //create instance of the CreateLoginForm  
             LoginPage form = new LoginPage();
             form.setExtendedState(JFrame.MAXIMIZED_BOTH);
-//            form.setUndecorated(true);
-            System.out.print("gjvhbkjnl;m");
             form.setVisible(true); //make form visible to the use
 
         } catch (Exception e) {
