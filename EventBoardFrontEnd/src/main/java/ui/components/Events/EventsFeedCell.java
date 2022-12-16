@@ -108,9 +108,42 @@ public class EventsFeedCell extends AbstractCellEditor implements TableCellEdito
                 }
             }
         }
-
+        
+        
+        int start_hour = Integer.parseInt(feed.start_time.substring(11,13));
+        String start_time = feed.start_time;
+        if(start_hour>12){
+            start_hour -=12;
+            if(start_hour>9){
+                String temp = Integer.toString(start_hour);
+                start_time = start_time.substring(0,11)+ temp + start_time.substring(13)+" PM";
+                
+            } else{
+                String temp = Integer.toString(start_hour);
+                start_time = start_time.substring(0,11)+ "0" + temp + start_time.substring(13)+" PM";    
+            }    
+        } else{
+            start_time+=" AM";
+        }
+        
+        int end_hour = Integer.parseInt(feed.end_time.substring(11,13));
+        String end_time = feed.end_time;
+        if(end_hour>12){
+            end_hour -=12;
+            if(end_hour>9){
+                String temp = Integer.toString(end_hour);
+                end_time = end_time.substring(0,11)+ temp + end_time.substring(13)+" PM";
+                
+            } else{
+                String temp = Integer.toString(end_hour);
+                end_time = end_time.substring(0,11)+ "0" + temp + end_time.substring(13)+" PM";    
+            }    
+        } else{
+            end_time+=" AM";
+        }
+        
         String textString = "<html>Event: " + feed.name + " , Description: " + feed.description + "<br/>"
-                + "Start Time: " + feed.start_time + ", End Time: " + feed.end_time + "<br/>";
+                + "Start Time: " + start_time + ", End Time: " + end_time + "<br/>";
         String venue = feed.venue;
 
         if (venue != null) {
