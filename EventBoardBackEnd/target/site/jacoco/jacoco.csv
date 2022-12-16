@@ -1,0 +1,14 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+EventBoardBackEnd,url_processor,ProcessURL,140,0,8,0,38,0,7,0,3,0
+EventBoardBackEnd,post_requests_handlers,AssociationsPostRequestHandler,501,0,42,0,140,0,23,0,2,0
+EventBoardBackEnd,post_requests_handlers,EventsPostRequestHandler,270,0,22,0,73,0,13,0,2,0
+EventBoardBackEnd,post_requests_handlers,UsersPostRequestHandler,120,0,0,0,34,0,2,0,2,0
+EventBoardBackEnd,routers,UsersRequestRouter,44,0,4,0,13,0,4,0,2,0
+EventBoardBackEnd,routers,EventsRequestRouter,45,0,4,0,13,0,4,0,2,0
+EventBoardBackEnd,routers,AssociationsRequestRouter,40,5,4,0,10,3,3,1,1,1
+EventBoardBackEnd,get_requests_handlers,AssociationsGetRequestHandler,590,0,36,0,135,0,20,0,2,0
+EventBoardBackEnd,get_requests_handlers,EventsGetRequestHandler,637,0,36,0,143,0,20,0,2,0
+EventBoardBackEnd,get_requests_handlers,UsersGetRequestHandler,205,0,6,0,58,0,5,0,2,0
+EventBoardBackEnd,microservices,Users,48,0,0,0,15,0,2,0,2,0
+EventBoardBackEnd,microservices,Events,48,0,0,0,15,0,2,0,2,0
+EventBoardBackEnd,microservices,Associations,8,40,0,0,3,12,1,1,1,1

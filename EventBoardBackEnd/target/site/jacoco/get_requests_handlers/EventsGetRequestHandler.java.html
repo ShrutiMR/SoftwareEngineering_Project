@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EventsGetRequestHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">EventBoardBackEnd</a> &gt; <a href="index.source.html" class="el_package">get_requests_handlers</a> &gt; <span class="el_source">EventsGetRequestHandler.java</span></div><h1>EventsGetRequestHandler.java</h1><pre class="source lang-java linenums">/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package get_requests_handlers;
+
+import com.sun.net.httpserver.HttpExchange;
+import java.io.OutputStream;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.HashMap;
+import org.json.JSONObject;
+import static routers.EventsRequestRouter.connection;
+
+/**
+ *
+ * @author mkonidala
+ */
+public class EventsGetRequestHandler {
+
+    private HttpExchange httpExchange;
+
+<span class="nc" id="L23">    public EventsGetRequestHandler(HttpExchange httpExchange) {</span>
+<span class="nc" id="L24">        this.httpExchange = httpExchange;</span>
+<span class="nc" id="L25">    }</span>
+
+    public void processGetRequest(HashMap urlParameters) {
+
+<span class="nc" id="L29">        OutputStream outputStream = httpExchange.getResponseBody();</span>
+<span class="nc" id="L30">        JSONObject jo = new JSONObject();</span>
+<span class="nc" id="L31">        String resp = null;</span>
+
+<span class="nc" id="L33">        String type = (String) urlParameters.get(&quot;type&quot;);</span>
+<span class="nc" id="L34">        String user_id = (String) urlParameters.get(&quot;user_id&quot;);</span>
+<span class="nc" id="L35">        String association_id = (String) urlParameters.get(&quot;association_id&quot;);</span>
+<span class="nc" id="L36">        String event_id = (String) urlParameters.get(&quot;event_id&quot;);</span>
+
+<span class="nc" id="L38">        ResultSet rs = null;</span>
+        try {
+<span class="nc" id="L40">            Statement st = connection.createStatement();</span>
+
+<span class="nc bnc" id="L42" title="All 4 branches missed.">            if (&quot;upcoming&quot;.equals(type) &amp;&amp; user_id != null) {</span>
+
+                //Rest call to get the all the upcoming events of a user 
+<span class="nc" id="L45">                rs = st.executeQuery(&quot;SELECT B.EVENT_ID, B.START_TIME, B.END_TIME, B.NAME, B.DESCRIPTION, B.VENUE FROM USERS A, &quot;</span>
+                        + &quot;EVENTS B, FOLLOW_EVENTS C WHERE A.USER_ID=C.USER_ID &quot;
+                        + &quot;AND B.EVENT_ID=C.EVENT_ID AND A.USER_ID=&quot; + user_id + &quot; AND B.START_TIME&gt;SYSDATE() ORDER BY B.START_TIME ASC;&quot;);
+
+<span class="nc bnc" id="L49" title="All 2 branches missed.">                while (rs.next()) {</span>
+<span class="nc" id="L50">                    JSONObject temp = new JSONObject();</span>
+<span class="nc" id="L51">                    temp.put(&quot;name&quot;, rs.getString(&quot;NAME&quot;));</span>
+<span class="nc" id="L52">                    temp.put(&quot;start_time&quot;, rs.getString(&quot;START_TIME&quot;));</span>
+<span class="nc" id="L53">                    temp.put(&quot;end_time&quot;, rs.getString(&quot;END_TIME&quot;));</span>
+<span class="nc" id="L54">                    temp.put(&quot;description&quot;, rs.getString(&quot;DESCRIPTION&quot;));</span>
+<span class="nc" id="L55">                    temp.put(&quot;venue&quot;, rs.getString(&quot;VENUE&quot;));</span>
+
+<span class="nc" id="L57">                    jo.put(rs.getString(&quot;EVENT_ID&quot;), temp);</span>
+<span class="nc" id="L58">                }</span>
+
+                //Setting success status in the response
+<span class="nc" id="L61">                jo.put(&quot;isSuccess&quot;, true);</span>
+
+                //Building Response
+<span class="nc" id="L64">                resp = jo.toString();</span>
+<span class="nc" id="L65">                byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
+<span class="nc" id="L66">                httpExchange.sendResponseHeaders(200, b.length);</span>
+
+<span class="nc" id="L68">                outputStream.write(b);</span>
+<span class="nc" id="L69">                outputStream.flush();</span>
+<span class="nc" id="L70">                outputStream.close();</span>
+<span class="nc bnc" id="L71" title="All 4 branches missed.">            } else if (&quot;past&quot;.equals(type) &amp;&amp; user_id != null) {</span>
+
+                //Rest call to get all the past events of a user
+<span class="nc" id="L74">                rs = st.executeQuery(&quot;SELECT B.EVENT_ID, B.START_TIME, B.END_TIME, B.NAME, B.DESCRIPTION, B.VENUE FROM USERS A, &quot;</span>
+                        + &quot;EVENTS B, FOLLOW_EVENTS C WHERE A.USER_ID=C.USER_ID &quot;
+                        + &quot;AND B.EVENT_ID=C.EVENT_ID AND A.USER_ID=&quot; + user_id + &quot; AND B.START_TIME &lt; SYSDATE() ORDER BY B.START_TIME ASC;&quot;);
+
+<span class="nc bnc" id="L78" title="All 2 branches missed.">                while (rs.next()) {</span>
+<span class="nc" id="L79">                    JSONObject temp = new JSONObject();</span>
+<span class="nc" id="L80">                    temp.put(&quot;name&quot;, rs.getString(&quot;NAME&quot;));</span>
+<span class="nc" id="L81">                    temp.put(&quot;start_time&quot;, rs.getString(&quot;START_TIME&quot;));</span>
+<span class="nc" id="L82">                    temp.put(&quot;end_time&quot;, rs.getString(&quot;END_TIME&quot;));</span>
+<span class="nc" id="L83">                    temp.put(&quot;description&quot;, rs.getString(&quot;DESCRIPTION&quot;));</span>
+<span class="nc" id="L84">                    temp.put(&quot;venue&quot;, rs.getString(&quot;VENUE&quot;));</span>
+
+<span class="nc" id="L86">                    jo.put(rs.getString(&quot;EVENT_ID&quot;), temp);</span>
+<span class="nc" id="L87">                }</span>
+
+                //Setting success status in the response
+<span class="nc" id="L90">                jo.put(&quot;isSuccess&quot;, true);</span>
+
+                //Building Response
+<span class="nc" id="L93">                resp = jo.toString();</span>
+<span class="nc" id="L94">                byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
+<span class="nc" id="L95">                httpExchange.sendResponseHeaders(200, b.length);</span>
+
+<span class="nc" id="L97">                outputStream.write(b);</span>
+<span class="nc" id="L98">                outputStream.flush();</span>
+<span class="nc" id="L99">                outputStream.close();</span>
+
+<span class="nc bnc" id="L101" title="All 4 branches missed.">            } else if (&quot;associationUpcoming&quot;.equals(type) &amp;&amp; association_id != null) {</span>
+
+                //Rest call to get all upcoming events of an association
+<span class="nc" id="L104">                rs = st.executeQuery(&quot;SELECT E.EVENT_ID, E.START_TIME, E.END_TIME, E.NAME, E.DESCRIPTION, &quot;</span>
+                        + &quot;E.VENUE FROM ASSOCIATIONS A, EVENTS E WHERE A.ASSOCIATION_ID = E.ASSOCIATION_ID &quot;
+                        + &quot;AND E.ASSOCIATION_ID = &quot; + association_id + &quot; AND E.START_TIME &gt; SYSDATE() ORDER BY E.START_TIME ASC;&quot;);
+
+<span class="nc bnc" id="L108" title="All 2 branches missed.">                while (rs.next()) {</span>
+<span class="nc" id="L109">                    JSONObject temp = new JSONObject();</span>
+<span class="nc" id="L110">                    temp.put(&quot;name&quot;, rs.getString(&quot;NAME&quot;));</span>
+<span class="nc" id="L111">                    temp.put(&quot;start_time&quot;, rs.getString(&quot;START_TIME&quot;));</span>
+<span class="nc" id="L112">                    temp.put(&quot;end_time&quot;, rs.getString(&quot;END_TIME&quot;));</span>
+<span class="nc" id="L113">                    temp.put(&quot;description&quot;, rs.getString(&quot;DESCRIPTION&quot;));</span>
+<span class="nc" id="L114">                    temp.put(&quot;venue&quot;, rs.getString(&quot;VENUE&quot;));</span>
+
+<span class="nc" id="L116">                    jo.put(rs.getString(&quot;EVENT_ID&quot;), temp);</span>
+<span class="nc" id="L117">                }</span>
+
+                //Setting success status in the response
+<span class="nc" id="L120">                jo.put(&quot;isSuccess&quot;, true);</span>
+
+                //Building Response
+<span class="nc" id="L123">                resp = jo.toString();</span>
+<span class="nc" id="L124">                byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
+<span class="nc" id="L125">                httpExchange.sendResponseHeaders(200, b.length);</span>
+
+<span class="nc" id="L127">                outputStream.write(b);</span>
+<span class="nc" id="L128">                outputStream.flush();</span>
+<span class="nc" id="L129">                outputStream.close();</span>
+
+<span class="nc bnc" id="L131" title="All 4 branches missed.">            } else if (&quot;associationPast&quot;.equals(type) &amp;&amp; association_id != null) {</span>
+
+                //Rest call to get all the past events of the association
+<span class="nc" id="L134">                rs = st.executeQuery(&quot;SELECT E.EVENT_ID, E.START_TIME, E.END_TIME, E.NAME, E.DESCRIPTION, &quot;</span>
+                        + &quot;E.VENUE FROM ASSOCIATIONS A, EVENTS E WHERE A.ASSOCIATION_ID = E.ASSOCIATION_ID &quot;
+                        + &quot;AND E.ASSOCIATION_ID = &quot; + association_id + &quot; AND E.START_TIME &lt; SYSDATE() ORDER BY E.START_TIME  ASC;&quot;);
+
+<span class="nc bnc" id="L138" title="All 2 branches missed.">                while (rs.next()) {</span>
+<span class="nc" id="L139">                    JSONObject temp = new JSONObject();</span>
+<span class="nc" id="L140">                    temp.put(&quot;name&quot;, rs.getString(&quot;NAME&quot;));</span>
+<span class="nc" id="L141">                    temp.put(&quot;start_time&quot;, rs.getString(&quot;START_TIME&quot;));</span>
+<span class="nc" id="L142">                    temp.put(&quot;end_time&quot;, rs.getString(&quot;END_TIME&quot;));</span>
+<span class="nc" id="L143">                    temp.put(&quot;description&quot;, rs.getString(&quot;DESCRIPTION&quot;));</span>
+<span class="nc" id="L144">                    temp.put(&quot;venue&quot;, rs.getString(&quot;VENUE&quot;));</span>
+
+<span class="nc" id="L146">                    jo.put(rs.getString(&quot;EVENT_ID&quot;), temp);</span>
+<span class="nc" id="L147">                }</span>
+
+                //Setting success status in the response
+<span class="nc" id="L150">                jo.put(&quot;isSuccess&quot;, true);</span>
+
+                //Building Response
+<span class="nc" id="L153">                resp = jo.toString();</span>
+<span class="nc" id="L154">                byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
+<span class="nc" id="L155">                httpExchange.sendResponseHeaders(200, b.length);</span>
+
+<span class="nc" id="L157">                outputStream.write(b);</span>
+<span class="nc" id="L158">                outputStream.flush();</span>
+<span class="nc" id="L159">                outputStream.close();</span>
+
+<span class="nc bnc" id="L161" title="All 4 branches missed.">            } else if (&quot;feed&quot;.equals(type) &amp;&amp; user_id != null) {</span>
+
+                //Rest call to get the Home feed of the user
+<span class="nc" id="L164">                rs = st.executeQuery(&quot;SELECT E.EVENT_ID, E.START_TIME, E.END_TIME, E.NAME, E.DESCRIPTION, E.VENUE FROM EVENTS E, &quot;</span>
+                        + &quot;FOLLOW_ASSOCIATIONS FA WHERE FA.USER_ID =  &quot; + user_id + &quot; AND E.ASSOCIATION_ID = FA.ASSOCIATION_ID  AND E.START_TIME&gt;SYSDATE() AND &quot;
+                        + &quot;E.EVENT_ID NOT IN (SELECT FE.EVENT_ID FROM FOLLOW_EVENTS FE WHERE FE.USER_ID = &quot; + user_id + &quot;) ORDER BY E.START_TIME ASC;&quot;);
+
+<span class="nc bnc" id="L168" title="All 2 branches missed.">                while (rs.next()) {</span>
+<span class="nc" id="L169">                    JSONObject temp = new JSONObject();</span>
+<span class="nc" id="L170">                    temp.put(&quot;name&quot;, rs.getString(&quot;NAME&quot;));</span>
+<span class="nc" id="L171">                    temp.put(&quot;start_time&quot;, rs.getString(&quot;START_TIME&quot;));</span>
+<span class="nc" id="L172">                    temp.put(&quot;end_time&quot;, rs.getString(&quot;END_TIME&quot;));</span>
+<span class="nc" id="L173">                    temp.put(&quot;description&quot;, rs.getString(&quot;DESCRIPTION&quot;));</span>
+<span class="nc" id="L174">                    temp.put(&quot;venue&quot;, rs.getString(&quot;VENUE&quot;));</span>
+
+<span class="nc" id="L176">                    jo.put(rs.getString(&quot;EVENT_ID&quot;), temp);</span>
+<span class="nc" id="L177">                }</span>
+
+                //Setting success status in the response
+<span class="nc" id="L180">                jo.put(&quot;isSuccess&quot;, true);</span>
+
+                //Building Response
+<span class="nc" id="L183">                resp = jo.toString();</span>
+<span class="nc" id="L184">                byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
+<span class="nc" id="L185">                httpExchange.sendResponseHeaders(200, b.length);</span>
+
+<span class="nc" id="L187">                outputStream.write(b);</span>
+<span class="nc" id="L188">                outputStream.flush();</span>
+<span class="nc" id="L189">                outputStream.close();</span>
+
+<span class="nc bnc" id="L191" title="All 4 branches missed.">            } else if (&quot;all&quot;.equals(type) &amp;&amp; user_id!=null) {</span>
+
+                //Rest call to get the events in the next 5 days that the user can explore
+<span class="nc" id="L194">                rs = st.executeQuery(&quot;SELECT E.EVENT_ID, E.START_TIME, E.END_TIME, E.NAME, E.DESCRIPTION, E.VENUE FROM EVENTS E WHERE E.START_TIME&gt;SYSDATE() AND E.START_TIME&lt; DATE_ADD(SYSDATE(), INTERVAL 5 DAY) AND &quot;</span>
+                        + &quot;E.EVENT_ID NOT IN (SELECT FE.EVENT_ID FROM FOLLOW_EVENTS FE WHERE FE.USER_ID = &quot; + user_id + &quot;) ORDER BY E.START_TIME ASC;&quot;);
+
+<span class="nc bnc" id="L197" title="All 2 branches missed.">                while (rs.next()) {</span>
+<span class="nc" id="L198">                    JSONObject temp = new JSONObject();</span>
+<span class="nc" id="L199">                    temp.put(&quot;name&quot;, rs.getString(&quot;NAME&quot;));</span>
+<span class="nc" id="L200">                    temp.put(&quot;start_time&quot;, rs.getString(&quot;START_TIME&quot;));</span>
+<span class="nc" id="L201">                    temp.put(&quot;end_time&quot;, rs.getString(&quot;END_TIME&quot;));</span>
+<span class="nc" id="L202">                    temp.put(&quot;description&quot;, rs.getString(&quot;DESCRIPTION&quot;));</span>
+<span class="nc" id="L203">                    temp.put(&quot;venue&quot;, rs.getString(&quot;VENUE&quot;));</span>
+
+<span class="nc" id="L205">                    jo.put(rs.getString(&quot;EVENT_ID&quot;), temp);</span>
+<span class="nc" id="L206">                }</span>
+
+                //Setting success status in the response
+<span class="nc" id="L209">                jo.put(&quot;isSuccess&quot;, true);</span>
+                
+                //Building Response
+<span class="nc" id="L212">                resp = jo.toString();</span>
+<span class="nc" id="L213">                byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
+<span class="nc" id="L214">                httpExchange.sendResponseHeaders(200, b.length);</span>
+                
+<span class="nc" id="L216">                outputStream.write(b);</span>
+<span class="nc" id="L217">                outputStream.flush();</span>
+<span class="nc" id="L218">                outputStream.close();</span>
+                
+<span class="nc" id="L220">            } else {</span>
+                //If none of the above conditions were satisfied
+                //Setting success status to false in the response
+<span class="nc" id="L223">                jo.put(&quot;isSuccess&quot;, false);</span>
+                
+                //Building Response
+<span class="nc" id="L226">                resp = jo.toString();</span>
+<span class="nc" id="L227">                byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
+<span class="nc" id="L228">                httpExchange.sendResponseHeaders(200, b.length);</span>
+                
+<span class="nc" id="L230">                outputStream.write(b);</span>
+<span class="nc" id="L231">                outputStream.flush();</span>
+<span class="nc" id="L232">                outputStream.close();</span>
+            }
+<span class="nc" id="L234">            st.close();</span>
+<span class="nc" id="L235">        } catch (Exception e) {</span>
+            //Comes here if anything fails in the entire code above
+            // Logging exception
+<span class="nc" id="L238">            System.out.println(e.getMessage());</span>
+            
+            //Setting success status to false in the response
+<span class="nc" id="L241">            jo.put(&quot;isSuccess&quot;, false);</span>
+
+            try {
+                //Building Response
+<span class="nc" id="L245">                resp = jo.toString();</span>
+<span class="nc" id="L246">                byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
+<span class="nc" id="L247">                httpExchange.sendResponseHeaders(200, b.length);</span>
+                
+<span class="nc" id="L249">                outputStream.write(b);</span>
+<span class="nc" id="L250">                outputStream.flush();</span>
+<span class="nc" id="L251">                outputStream.close();</span>
+<span class="nc" id="L252">            } catch (Exception e1) {</span>
+                // Logging exception
+<span class="nc" id="L254">                System.out.println(e1.getMessage());</span>
+<span class="nc" id="L255">            }</span>
+<span class="nc" id="L256">        }</span>
+
+<span class="nc" id="L258">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
