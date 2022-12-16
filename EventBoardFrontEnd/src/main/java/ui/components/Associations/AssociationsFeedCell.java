@@ -187,10 +187,10 @@ public class AssociationsFeedCell extends AbstractCellEditor implements TableCel
         String contact_info = feed.contact_info;
         String email = feed.email;
         if (address != null) {
-            textString += "Address: " + address;
+            textString += "Address: " + address+" ";
         }
         if (contact_info != null) {
-            textString += "Contact Information: " + contact_info;
+            textString += "Contact Information: " + contact_info+" ";
         }
         if (email != null) {
             textString += "Email: " + email;
