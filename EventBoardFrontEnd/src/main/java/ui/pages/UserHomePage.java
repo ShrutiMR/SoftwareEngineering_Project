@@ -39,6 +39,8 @@ public final class UserHomePage extends javax.swing.JFrame {
     }
 
     public void allHidden(){
+        navPanel.setVisible(true);
+        navPanel.setEnabled(true);
         profilePanel.setVisible(false);
         profilePanel.setEnabled(false);
         exploreAssociationsPanel.setVisible(false);
@@ -51,12 +53,6 @@ public final class UserHomePage extends javax.swing.JFrame {
         upcomEvePanel.setEnabled(false);
         pastEvePanel.setVisible(false);
         pastEvePanel.setEnabled(false);
-//        homeFeedsTable.setVisible(false);
-//        homeFeedsTable.setEnabled(false);
-        navPanel.setVisible(true);
-        navPanel.setEnabled(true);
-        jLabel3.setVisible(false);
-        jLabel3.setEnabled(false);
         menu.setVisible(false);
         menu.setEnabled(false);
         exploreEventsPanel.setVisible(false);
@@ -64,12 +60,7 @@ public final class UserHomePage extends javax.swing.JFrame {
     }
     
     public void active(){
-        navPanel.setVisible(true);
-        navPanel.setEnabled(true);
-        jLabel3.setVisible(true);
-        jLabel3.setEnabled(true);
-        menu.setVisible(false);
-        menu.setEnabled(false);
+        allHidden();
         homePanel.setVisible(true);
         homePanel.setEnabled(true);
     }
@@ -363,7 +354,6 @@ public final class UserHomePage extends javax.swing.JFrame {
 
         jFrame1 = new javax.swing.JFrame();
         jPanel1 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
         navPanel = new javax.swing.JPanel();
         profileButton = new javax.swing.JButton();
         pastEveButton = new javax.swing.JButton();
@@ -418,7 +408,6 @@ public final class UserHomePage extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 70, 870, 560));
 
         navPanel.setBackground(new java.awt.Color(102, 102, 102));
 
@@ -825,7 +814,6 @@ public final class UserHomePage extends javax.swing.JFrame {
 
     private void menuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuMouseClicked
         // TODO add your handling code here:
-        active();
     }//GEN-LAST:event_menuMouseClicked
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
@@ -894,7 +882,7 @@ public final class UserHomePage extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(HomePage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UserHomePage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         
@@ -914,7 +902,6 @@ public final class UserHomePage extends javax.swing.JFrame {
     private javax.swing.JFrame jFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;

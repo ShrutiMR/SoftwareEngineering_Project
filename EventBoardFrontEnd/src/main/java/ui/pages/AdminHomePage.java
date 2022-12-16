@@ -41,8 +41,8 @@ public final class AdminHomePage extends javax.swing.JFrame {
         navPanelAdminUser.setEnabled(true);
         menu.setVisible(false);
         menu.setEnabled(false);
-        homePanel.setVisible(true);
-        homePanel.setEnabled(true);
+        homePanel.setVisible(false);
+        homePanel.setEnabled(false);
         profilePanel.setVisible(false);
         profilePanel.setEnabled(false);
     }
@@ -87,6 +87,7 @@ public final class AdminHomePage extends javax.swing.JFrame {
         jTable1.setRowHeight(60);
         jTable1.setModel(jTable1.getModel());
         jTable1.getColumnModel().getColumn(0).setHeaderValue("Home");
+//        jTable1.getColumnModel().getColumn(1).setCellRenderer(rightRenderer);
         jTable1.getTableHeader().resizeAndRepaint();
         jTable1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jTable1.setFocusable(false);
@@ -127,13 +128,7 @@ public final class AdminHomePage extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         homePanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        try {
-            jTable1 =(javax.swing.JTable)java.beans.Beans.instantiate(getClass().getClassLoader(), "ui/pages.AdminHomePage_jTable1");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (java.io.IOException e) {
-            e.printStackTrace();
-        }
+        jTable1 = new javax.swing.JTable();
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
@@ -282,9 +277,8 @@ public final class AdminHomePage extends javax.swing.JFrame {
             }
         });
 
+        jTable1.setModel(jTable1.getModel());
         jScrollPane1.setViewportView(jTable1);
-        homePanel.revalidate();
-        //homeAdminButton.doClick();
         adminHomeTable();
 
         javax.swing.GroupLayout homePanelLayout = new javax.swing.GroupLayout(homePanel);
@@ -349,9 +343,9 @@ public final class AdminHomePage extends javax.swing.JFrame {
 
     private void homePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homePanelMouseClicked
         // TODO add your handling code here:
-        allHidden();
-        profilePanel.setVisible(true);
-        profilePanel.setEnabled(true);
+//        allHidden();
+//        profilePanel.setVisible(true);
+//        profilePanel.setEnabled(true);
     }//GEN-LAST:event_homePanelMouseClicked
 
     /**
@@ -371,7 +365,7 @@ public final class AdminHomePage extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(HomePage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminHomePage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
