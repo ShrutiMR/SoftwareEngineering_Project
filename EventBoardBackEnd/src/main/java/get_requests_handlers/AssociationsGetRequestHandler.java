@@ -34,6 +34,8 @@ public class AssociationsGetRequestHandler {
         ResultSet rs = null;
         try {
             Statement st = connection.createStatement();
+            
+            // Rest call by admin to get all associations that needs approval 
             if ("administrator".equals(type)) {
                 rs = st.executeQuery("Select * from ASSOCIATIONS WHERE APPROVAL_STATUS='N'");
                 while (rs.next()) {
@@ -46,57 +48,70 @@ public class AssociationsGetRequestHandler {
 
                     jo.put(rs.getString("ASSOCIATION_ID"), temp);
                 }
+                
+                //Setting success status in the response
                 jo.put("isSuccess", true);
+                
+                //Building response
                 resp = jo.toString();
                 byte[] b = resp.getBytes("UTF-8");
                 httpExchange.sendResponseHeaders(200, b.length);
-                // htmlResponse.getBytes()
+                
                 outputStream.write(b);
-
                 outputStream.flush();
                 outputStream.close();
             } else if ("all".equals(type)) {
-
+                
+                // Rest call to list out all associations
                 rs = st.executeQuery("Select * from ASSOCIATIONS WHERE APPROVAL_STATUS='Y'");
 
                 while (rs.next()) {
                     jo.put(rs.getString("ASSOCIATION_ID"), rs.getString("ASSOCIATION_NAME"));
                 }
+                
+                //Setting success status in the response
                 jo.put("isSuccess", true);
+                
+                //Building response
                 resp = jo.toString();
                 byte[] b = resp.getBytes("UTF-8");
                 httpExchange.sendResponseHeaders(200, b.length);
-                // htmlResponse.getBytes()
+                
                 outputStream.write(b);
-
                 outputStream.flush();
                 outputStream.close();
 
             } else if ("tag".equals(type)) {
+                
+                // Rest call to retrive associations based on the tag
                 String query = "Select * from ASSOCIATIONS WHERE APPROVAL_STATUS='Y' AND TAG_ID = " + (String) urlParameters.get("tag_id");
-                System.out.println(query);
                 rs = st.executeQuery(query);
                 while (rs.next()) {
                     jo.put(rs.getString("ASSOCIATION_ID"), rs.getString("ASSOCIATION_NAME"));
                 }
+                
+                //Setting success status in the response
                 jo.put("isSuccess", true);
+                
+                //Building response
                 resp = jo.toString();
                 byte[] b = resp.getBytes("UTF-8");
                 httpExchange.sendResponseHeaders(200, b.length);
-                // htmlResponse.getBytes()
+                
                 outputStream.write(b);
-
                 outputStream.flush();
                 outputStream.close();
 
             } else if ("single".equals(type) && (urlParameters.get("user_id") != null || urlParameters.get("association_id") != null)) {
+                
+                //Rest call to retrive an association's data based on its USER_ID OR ASSOCIATION_ID
                 if (urlParameters.get("user_id") != null) {
                     String query = "Select * from ASSOCIATIONS WHERE USER_ID = " + (String) urlParameters.get("user_id");
-                    System.out.println(query);
+                    
                     rs = st.executeQuery(query);
                 } else if (urlParameters.get("association_id") != null) {
                     String query = "Select * from ASSOCIATIONS WHERE ASSOCIATION_ID = " + (String) urlParameters.get("association_id");
-                    System.out.println(query);
+                    
                     rs = st.executeQuery(query);
                 }
 
@@ -110,21 +125,26 @@ public class AssociationsGetRequestHandler {
                     jo.put("approval_status", rs.getString("APPROVAL_STATUS"));
 
                 }
+                
+                //Setting success status in the response
                 jo.put("isSuccess", true);
+                
+                //Building response
                 resp = jo.toString();
                 byte[] b = resp.getBytes("UTF-8");
                 httpExchange.sendResponseHeaders(200, b.length);
-                // htmlResponse.getBytes()
+                
                 outputStream.write(b);
-
                 outputStream.flush();
                 outputStream.close();
 
             } else if ("newAssociations".equals(type) && urlParameters.get("user_id") != null) {
+                
+                //Rest call to retrive all associations that are approved and that are not followed by the user
                 String query = "SELECT * FROM ASSOCIATIONS A WHERE A.APPROVAL_STATUS='Y' AND A.ASSOCIATION_ID NOT IN "
                         + "(SELECT FE.ASSOCIATION_ID FROM FOLLOW_ASSOCIATIONS FE WHERE FE.USER_ID="
                         + (String) urlParameters.get("user_id") + ");";
-                System.out.println(query);
+                
                 rs = st.executeQuery(query);
 
                 while (rs.next()) {
@@ -136,20 +156,25 @@ public class AssociationsGetRequestHandler {
                     temp.put("email", rs.getString("EMAIL"));
                     jo.put(rs.getString("ASSOCIATION_ID"), temp);
                 }
+                
+                //Setting success status in the response
                 jo.put("isSuccess", true);
+                
+                //Building response
                 resp = jo.toString();
                 byte[] b = resp.getBytes("UTF-8");
                 httpExchange.sendResponseHeaders(200, b.length);
-                // htmlResponse.getBytes()
+               
                 outputStream.write(b);
-
                 outputStream.flush();
                 outputStream.close();
             } else if ("oldAssociations".equals(type) && urlParameters.get("user_id") != null) {
+                
+                //Rest call to retrive all associations that the user is following
                 String query = "SELECT * FROM ASSOCIATIONS A WHERE A.APPROVAL_STATUS='Y' AND A.ASSOCIATION_ID IN "
                         + "(SELECT FE.ASSOCIATION_ID FROM FOLLOW_ASSOCIATIONS FE WHERE FE.USER_ID="
                         + (String) urlParameters.get("user_id") + ");";
-                System.out.println(query);
+                
                 rs = st.executeQuery(query);
 
                 while (rs.next()) {
@@ -161,41 +186,52 @@ public class AssociationsGetRequestHandler {
                     temp.put("email", rs.getString("EMAIL"));
                     jo.put(rs.getString("ASSOCIATION_ID"), temp);
                 }
+                
+                //Setting success status in the response
                 jo.put("isSuccess", true);
+                
+                //Building response
                 resp = jo.toString();
                 byte[] b = resp.getBytes("UTF-8");
                 httpExchange.sendResponseHeaders(200, b.length);
-                // htmlResponse.getBytes()
+                
                 outputStream.write(b);
-
                 outputStream.flush();
                 outputStream.close();
             } else {
+                
+                //Setting success status to false if URL doesn't satisfy any requirements
                 jo.put("isSuccess", false);
+                
+                //Building resopnse
                 resp = jo.toString();
                 byte[] b = resp.getBytes("UTF-8");
                 httpExchange.sendResponseHeaders(200, b.length);
-                // htmlResponse.getBytes()
+               
                 outputStream.write(b);
-
                 outputStream.flush();
                 outputStream.close();
             }
             st.close();
         } catch (Exception e) {
+            //Comes here if anything fails in the entire code above
+            // Logging exception
             System.out.println(e.getMessage());
+            
+            //Setting success status to false
             jo.put("isSuccess", false);
 
             try {
+                //Building Response
                 resp = jo.toString();
                 byte[] b = resp.getBytes("UTF-8");
                 httpExchange.sendResponseHeaders(200, b.length);
-                // htmlResponse.getBytes()
+                
                 outputStream.write(b);
-
                 outputStream.flush();
                 outputStream.close();
             } catch (Exception e1) {
+                //Logging exception
                 System.out.println(e1.getMessage());
             }
         }

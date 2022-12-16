@@ -11,7 +11,6 @@ package microservices;
 import routers.UsersRequestRouter;
 import java.sql.*;
 import java.net.*;
-import java.io.*;
 import com.sun.net.httpserver.HttpServer;
 
 public class Users {
@@ -23,13 +22,17 @@ public class Users {
         String userName = "root";
         String dbpassword = "12345678";
         try {
+            //Connecting to the my-sql database
             Class.forName(driver);
             Connection c = DriverManager.getConnection(url + dbName, userName, dbpassword);
+            
+            //Starting Http Server on port 9000
             HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 9000), 0);
             server.createContext("/users", new UsersRequestRouter(c));
             server.start();
-        } catch (Exception i) {
-            System.out.println(i);
+        } catch (Exception e) {
+            //Logging the exception
+            System.out.println(e.getMessage());
         }
 
     }

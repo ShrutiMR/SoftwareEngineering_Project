@@ -36,6 +36,7 @@ public class UsersGetRequestHandler {
             try {
                 Statement st = connection.createStatement();
 
+                //Rest call to get the details of a user
                 ResultSet rs = st.executeQuery("Select * from Users where user_name = '" + user_name + "' and password = '" + password + "'");
 
                 if (rs.next()) {
@@ -47,45 +48,69 @@ public class UsersGetRequestHandler {
                     jo.put("user_code", user_code);
                     jo.put("first_name", rs.getString("FIRST_NAME"));
                     jo.put("email", rs.getString("EMAIL"));
-
+                    
+                    //Building Response 
                     resp = jo.toString();
                     byte[] b = resp.getBytes("UTF-8");
                     httpExchange.sendResponseHeaders(200, b.length);
-                    // htmlResponse.getBytes()
-                    outputStream.write(b);
 
+                    outputStream.write(b);
                     outputStream.flush();
                     outputStream.close();
 
                 } else {
+                    //Setting success status to false if the user_name and password is not valid
                     jo.put("isSuccess", false);
-
+                    
+                    //Building Response
                     resp = jo.toString();
                     byte[] b = resp.getBytes("UTF-8");
                     httpExchange.sendResponseHeaders(200, b.length);
-                    // htmlResponse.getBytes()
-                    outputStream.write(b);
 
+                    outputStream.write(b);
                     outputStream.flush();
                     outputStream.close();
                 }
                 st.close();
             } catch (Exception e) {
+                //Logging exception
                 System.out.println(e.getMessage());
+
+                try {
+                    //Setting success status to false if any of the code above fails
+                    jo.put("isSuccess", false);
+                    
+                    //Building Response
+                    resp = jo.toString();
+                    byte[] b = resp.getBytes("UTF-8");
+                    httpExchange.sendResponseHeaders(200, b.length);
+
+                    outputStream.write(b);
+                    outputStream.flush();
+                    outputStream.close();
+
+                } catch (Exception e1) {
+                    //Logging exception
+                    System.out.println(e1.getMessage());
+                }
             }
 
         } else {
             try {
+                //Setting success status to false if user_name or password is null
                 jo.put("isSuccess", false);
+                
+                //Building Response
                 resp = jo.toString();
                 byte[] b = resp.getBytes("UTF-8");
                 httpExchange.sendResponseHeaders(200, b.length);
-                // htmlResponse.getBytes()
-                outputStream.write(b);
 
+                outputStream.write(b);
                 outputStream.flush();
                 outputStream.close();
+
             } catch (Exception e) {
+                //Logging exception
                 System.out.println(e.getMessage());
             }
         }
