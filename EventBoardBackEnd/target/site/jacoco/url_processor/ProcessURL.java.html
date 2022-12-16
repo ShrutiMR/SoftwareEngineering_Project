@@ -17,58 +17,56 @@ import org.json.JSONObject;
 public class ProcessURL {
     private HttpExchange httpExchange;
     
-<span class="nc" id="L20">    public ProcessURL(HttpExchange httpExchange){</span>
-<span class="nc" id="L21">        this.httpExchange = httpExchange;</span>
-<span class="nc" id="L22">    }</span>
+<span class="fc" id="L20">    public ProcessURL(HttpExchange httpExchange){</span>
+<span class="fc" id="L21">        this.httpExchange = httpExchange;</span>
+<span class="fc" id="L22">    }</span>
     public HashMap getURLParameters() {
-<span class="nc" id="L24">        HashMap&lt;String, String&gt; parameters = new HashMap();</span>
-<span class="nc" id="L25">        System.out.println(&quot;I am here inside&quot;);</span>
-<span class="nc" id="L26">        String[] parser = httpExchange.</span>
-<span class="nc" id="L27">                getRequestURI()</span>
-<span class="nc" id="L28">                .toString()</span>
-<span class="nc" id="L29">                .split(&quot;\\?&quot;);</span>
-<span class="nc" id="L30">        System.out.println(parser[0]);</span>
-<span class="nc bnc" id="L31" title="All 2 branches missed.">        if (parser.length &gt; 1) {</span>
-<span class="nc" id="L32">            parser = parser[1].split(&quot;[=&amp;]&quot;);</span>
+<span class="fc" id="L24">        HashMap&lt;String, String&gt; parameters = new HashMap();</span>
+        
+<span class="fc" id="L26">        String[] parser = httpExchange.</span>
+<span class="fc" id="L27">                getRequestURI()</span>
+<span class="fc" id="L28">                .toString()</span>
+<span class="fc" id="L29">                .split(&quot;\\?&quot;);</span>
+        
+<span class="fc bfc" id="L31" title="All 2 branches covered.">        if (parser.length &gt; 1) {</span>
+<span class="fc" id="L32">            parser = parser[1].split(&quot;[=&amp;]&quot;);</span>
         } else {
-<span class="nc" id="L34">            return parameters;</span>
+<span class="fc" id="L34">            return parameters;</span>
         }
 
-<span class="nc" id="L37">        System.out.println(&quot;I am here inside 1&quot;);</span>
-
-<span class="nc bnc" id="L39" title="All 2 branches missed.">        for (int i = 0; i &lt; parser.length - 1; i = i + 2) {</span>
-<span class="nc" id="L40">            parameters.put(parser[i], parser[i + 1]);</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">        for (int i = 0; i &lt; parser.length - 1; i = i + 2) {</span>
+<span class="fc" id="L38">            parameters.put(parser[i], parser[i + 1]);</span>
         }
-<span class="nc" id="L42">        return parameters;</span>
+<span class="fc" id="L40">        return parameters;</span>
 
     }
     
     public HashMap getURLBody() {
-<span class="nc" id="L47">        StringBuilder sb = new StringBuilder();</span>
-<span class="nc" id="L48">        InputStream inputStream = httpExchange.getRequestBody();</span>
+<span class="fc" id="L45">        StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L46">        InputStream inputStream = httpExchange.getRequestBody();</span>
         int i;
-<span class="nc" id="L50">        JSONObject jo = null;</span>
-<span class="nc" id="L51">        HashMap parameters = null;</span>
+<span class="fc" id="L48">        JSONObject jo = null;</span>
+<span class="fc" id="L49">        HashMap parameters = null;</span>
         try {
-<span class="nc" id="L53">            System.out.println(&quot;I am here&quot;);</span>
-<span class="nc bnc" id="L54" title="All 2 branches missed.">            while ((i = inputStream.read()) != -1) {</span>
-<span class="nc" id="L55">                sb.append((char) i);</span>
+            
+<span class="fc bfc" id="L52" title="All 2 branches covered.">            while ((i = inputStream.read()) != -1) {</span>
+<span class="fc" id="L53">                sb.append((char) i);</span>
             }
-<span class="nc" id="L57">            System.out.println(sb.toString());</span>
-<span class="nc" id="L58">            jo = new JSONObject(sb.toString());</span>
-<span class="nc" id="L59">            System.out.println(jo);</span>
-<span class="nc" id="L60">            Iterator&lt;String&gt; keys = jo.keys();</span>
-<span class="nc" id="L61">            parameters = new HashMap();</span>
+            
+<span class="fc" id="L56">            jo = new JSONObject(sb.toString());</span>
+            
+<span class="fc" id="L58">            Iterator&lt;String&gt; keys = jo.keys();</span>
+<span class="fc" id="L59">            parameters = new HashMap();</span>
 
-<span class="nc bnc" id="L63" title="All 2 branches missed.">            while (keys.hasNext()) {</span>
-<span class="nc" id="L64">                String key = keys.next();</span>
-<span class="nc" id="L65">                parameters.put(key, jo.get(key));</span>
-<span class="nc" id="L66">            }</span>
-<span class="nc" id="L67">        } catch (Exception e) {</span>
-<span class="nc" id="L68">            System.out.println(e.getMessage());</span>
-<span class="nc" id="L69">        }</span>
-<span class="nc" id="L70">        System.out.println(parameters);</span>
-<span class="nc" id="L71">        return parameters;</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">            while (keys.hasNext()) {</span>
+<span class="fc" id="L62">                String key = keys.next();</span>
+<span class="fc" id="L63">                parameters.put(key, jo.get(key));</span>
+<span class="fc" id="L64">            }</span>
+<span class="nc" id="L65">        } catch (Exception e) {</span>
+<span class="nc" id="L66">            System.out.println(e.getMessage());</span>
+<span class="fc" id="L67">        }</span>
+        
+<span class="fc" id="L69">        return parameters;</span>
 
     }
 }

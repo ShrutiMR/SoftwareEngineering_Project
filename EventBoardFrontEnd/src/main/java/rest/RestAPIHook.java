@@ -7,12 +7,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 public class RestAPIHook {
-    // initialize socket and input output streams
-
-    private Socket socket = null;
-    private DataInputStream input = null;
-    private DataOutputStream out = null;
-
+    
     // constructor to put ip address and port
     public JSONObject invokeGetMethod(String url) {
         JSONObject ret = null;

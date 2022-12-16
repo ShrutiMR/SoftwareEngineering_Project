@@ -20,24 +20,24 @@ public class AssociationsRequestRouter implements HttpHandler {
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         
-<span class="nc" id="L23">        ProcessURL processURL = new ProcessURL(httpExchange);</span>
+<span class="fc" id="L23">        ProcessURL processURL = new ProcessURL(httpExchange);</span>
         
         //Getting URL parameters
-<span class="nc" id="L26">        HashMap urlParameters = processURL.getURLParameters();</span>
-<span class="nc bnc" id="L27" title="All 2 branches missed.">        if (&quot;GET&quot;.equals(httpExchange.getRequestMethod())) {</span>
+<span class="fc" id="L26">        HashMap urlParameters = processURL.getURLParameters();</span>
+<span class="fc bfc" id="L27" title="All 2 branches covered.">        if (&quot;GET&quot;.equals(httpExchange.getRequestMethod())) {</span>
             
             //Routing to process the GET Request
-<span class="nc" id="L30">            AssociationsGetRequestHandler getRequestHandler= new AssociationsGetRequestHandler(httpExchange);</span>
-<span class="nc" id="L31">            getRequestHandler.processGetRequest(urlParameters);</span>
-<span class="nc bnc" id="L32" title="All 2 branches missed.">        } else if (&quot;POST&quot;.equals(httpExchange.getRequestMethod())) {</span>
+<span class="fc" id="L30">            AssociationsGetRequestHandler getRequestHandler= new AssociationsGetRequestHandler(httpExchange);</span>
+<span class="fc" id="L31">            getRequestHandler.processGetRequest(urlParameters);</span>
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">        } else if (&quot;POST&quot;.equals(httpExchange.getRequestMethod())) {</span>
             
             //Getting Request Body parameters
-<span class="nc" id="L35">            HashMap urlBody = processURL.getURLBody();</span>
+<span class="fc" id="L35">            HashMap urlBody = processURL.getURLBody();</span>
             
             //Routing to process the POST Request
-<span class="nc" id="L38">            AssociationsPostRequestHandler postRequestHandler = new AssociationsPostRequestHandler(httpExchange);</span>
-<span class="nc" id="L39">            postRequestHandler.processPostRequest(urlParameters, urlBody);</span>
+<span class="fc" id="L38">            AssociationsPostRequestHandler postRequestHandler = new AssociationsPostRequestHandler(httpExchange);</span>
+<span class="fc" id="L39">            postRequestHandler.processPostRequest(urlParameters, urlBody);</span>
         }
-<span class="nc" id="L41">    }</span>
+<span class="fc" id="L41">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

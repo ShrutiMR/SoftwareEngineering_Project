@@ -17,224 +17,237 @@ import static routers.AssociationsRequestRouter.connection;
  * @author mkonidala
  */
 public class AssociationsGetRequestHandler {
+
     private HttpExchange httpExchange;
-    
-<span class="nc" id="L22">    public AssociationsGetRequestHandler(HttpExchange httpExchange){</span>
-<span class="nc" id="L23">        this.httpExchange = httpExchange;</span>
-<span class="nc" id="L24">    }</span>
-    
-    public void processGetRequest(HashMap urlParameters) {
-        
-<span class="nc" id="L28">        OutputStream outputStream = httpExchange.getResponseBody();</span>
-<span class="nc" id="L29">        JSONObject jo = new JSONObject();</span>
-<span class="nc" id="L30">        String resp = null;</span>
 
-<span class="nc" id="L32">        String type = (String) urlParameters.get(&quot;type&quot;);</span>
+<span class="fc" id="L23">    public AssociationsGetRequestHandler(HttpExchange httpExchange) {</span>
+<span class="fc" id="L24">        this.httpExchange = httpExchange;</span>
+<span class="fc" id="L25">    }</span>
 
-<span class="nc" id="L34">        ResultSet rs = null;</span>
+    public boolean checkInteger(Object obj) {
+<span class="fc" id="L28">        boolean check = true;</span>
         try {
-<span class="nc" id="L36">            Statement st = connection.createStatement();</span>
-            
+<span class="fc" id="L30">            int temp = Integer.parseInt((String) obj);</span>
+<span class="fc" id="L31">        } catch (Exception e) {</span>
+<span class="fc" id="L32">            check = false;</span>
+<span class="fc" id="L33">        }</span>
+<span class="fc" id="L34">        return check;</span>
+    }
+
+    public void processGetRequest(HashMap urlParameters) {
+
+<span class="fc" id="L39">        OutputStream outputStream = httpExchange.getResponseBody();</span>
+<span class="fc" id="L40">        JSONObject jo = new JSONObject();</span>
+<span class="fc" id="L41">        String resp = null;</span>
+
+<span class="fc" id="L43">        String type = (String) urlParameters.get(&quot;type&quot;);</span>
+
+<span class="fc" id="L45">        ResultSet rs = null;</span>
+        try {
+<span class="fc" id="L47">            Statement st = connection.createStatement();</span>
+
             // Rest call by admin to get all associations that needs approval 
-<span class="nc bnc" id="L39" title="All 2 branches missed.">            if (&quot;administrator&quot;.equals(type)) {</span>
-<span class="nc" id="L40">                rs = st.executeQuery(&quot;Select * from ASSOCIATIONS WHERE APPROVAL_STATUS='N'&quot;);</span>
-<span class="nc bnc" id="L41" title="All 2 branches missed.">                while (rs.next()) {</span>
-<span class="nc" id="L42">                    JSONObject temp = new JSONObject();</span>
-<span class="nc" id="L43">                    temp.put(&quot;association_name&quot;, rs.getString(&quot;ASSOCIATION_NAME&quot;));</span>
-<span class="nc" id="L44">                    temp.put(&quot;description&quot;, rs.getString(&quot;DESCRIPTION&quot;));</span>
-<span class="nc" id="L45">                    temp.put(&quot;address&quot;, rs.getString(&quot;ADDRESS&quot;));</span>
-<span class="nc" id="L46">                    temp.put(&quot;contact_info&quot;, rs.getString(&quot;CONTACT_INFO&quot;));</span>
-<span class="nc" id="L47">                    temp.put(&quot;email&quot;, rs.getString(&quot;EMAIL&quot;));</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">            if (&quot;administrator&quot;.equals(type)) {</span>
+<span class="fc" id="L51">                rs = st.executeQuery(&quot;Select * from ASSOCIATIONS WHERE APPROVAL_STATUS='N'&quot;);</span>
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">                while (rs.next()) {</span>
+<span class="nc" id="L53">                    JSONObject temp = new JSONObject();</span>
+<span class="nc" id="L54">                    temp.put(&quot;association_name&quot;, rs.getString(&quot;ASSOCIATION_NAME&quot;));</span>
+<span class="nc" id="L55">                    temp.put(&quot;description&quot;, rs.getString(&quot;DESCRIPTION&quot;));</span>
+<span class="nc" id="L56">                    temp.put(&quot;address&quot;, rs.getString(&quot;ADDRESS&quot;));</span>
+<span class="nc" id="L57">                    temp.put(&quot;contact_info&quot;, rs.getString(&quot;CONTACT_INFO&quot;));</span>
+<span class="nc" id="L58">                    temp.put(&quot;email&quot;, rs.getString(&quot;EMAIL&quot;));</span>
 
-<span class="nc" id="L49">                    jo.put(rs.getString(&quot;ASSOCIATION_ID&quot;), temp);</span>
-<span class="nc" id="L50">                }</span>
-                
+<span class="nc" id="L60">                    jo.put(rs.getString(&quot;ASSOCIATION_ID&quot;), temp);</span>
+<span class="nc" id="L61">                }</span>
+
                 //Setting success status in the response
-<span class="nc" id="L53">                jo.put(&quot;isSuccess&quot;, true);</span>
-                
+<span class="fc" id="L64">                jo.put(&quot;isSuccess&quot;, true);</span>
+
                 //Building response
-<span class="nc" id="L56">                resp = jo.toString();</span>
-<span class="nc" id="L57">                byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
-<span class="nc" id="L58">                httpExchange.sendResponseHeaders(200, b.length);</span>
-                
-<span class="nc" id="L60">                outputStream.write(b);</span>
-<span class="nc" id="L61">                outputStream.flush();</span>
-<span class="nc" id="L62">                outputStream.close();</span>
-<span class="nc bnc" id="L63" title="All 2 branches missed.">            } else if (&quot;all&quot;.equals(type)) {</span>
-                
+<span class="fc" id="L67">                resp = jo.toString();</span>
+<span class="fc" id="L68">                byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
+<span class="fc" id="L69">                httpExchange.sendResponseHeaders(200, b.length);</span>
+
+<span class="fc" id="L71">                outputStream.write(b);</span>
+<span class="fc" id="L72">                outputStream.flush();</span>
+<span class="fc" id="L73">                outputStream.close();</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">            } else if (&quot;all&quot;.equals(type)) {</span>
+
                 // Rest call to list out all associations
-<span class="nc" id="L66">                rs = st.executeQuery(&quot;Select * from ASSOCIATIONS WHERE APPROVAL_STATUS='Y'&quot;);</span>
+<span class="fc" id="L77">                rs = st.executeQuery(&quot;Select * from ASSOCIATIONS WHERE APPROVAL_STATUS='Y'&quot;);</span>
 
-<span class="nc bnc" id="L68" title="All 2 branches missed.">                while (rs.next()) {</span>
-<span class="nc" id="L69">                    jo.put(rs.getString(&quot;ASSOCIATION_ID&quot;), rs.getString(&quot;ASSOCIATION_NAME&quot;));</span>
+<span class="fc bfc" id="L79" title="All 2 branches covered.">                while (rs.next()) {</span>
+<span class="fc" id="L80">                    jo.put(rs.getString(&quot;ASSOCIATION_ID&quot;), rs.getString(&quot;ASSOCIATION_NAME&quot;));</span>
                 }
-                
-                //Setting success status in the response
-<span class="nc" id="L73">                jo.put(&quot;isSuccess&quot;, true);</span>
-                
-                //Building response
-<span class="nc" id="L76">                resp = jo.toString();</span>
-<span class="nc" id="L77">                byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
-<span class="nc" id="L78">                httpExchange.sendResponseHeaders(200, b.length);</span>
-                
-<span class="nc" id="L80">                outputStream.write(b);</span>
-<span class="nc" id="L81">                outputStream.flush();</span>
-<span class="nc" id="L82">                outputStream.close();</span>
 
-<span class="nc bnc" id="L84" title="All 2 branches missed.">            } else if (&quot;tag&quot;.equals(type)) {</span>
-                
+                //Setting success status in the response
+<span class="fc" id="L84">                jo.put(&quot;isSuccess&quot;, true);</span>
+
+                //Building response
+<span class="fc" id="L87">                resp = jo.toString();</span>
+<span class="fc" id="L88">                byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
+<span class="fc" id="L89">                httpExchange.sendResponseHeaders(200, b.length);</span>
+
+<span class="fc" id="L91">                outputStream.write(b);</span>
+<span class="fc" id="L92">                outputStream.flush();</span>
+<span class="fc" id="L93">                outputStream.close();</span>
+
+<span class="pc bpc" id="L95" title="1 of 6 branches missed.">            } else if (&quot;tag&quot;.equals(type) &amp;&amp; urlParameters.get(&quot;tag_id&quot;) != null &amp;&amp; checkInteger(urlParameters.get(&quot;tag_id&quot;))) {</span>
+
                 // Rest call to retrive associations based on the tag
-<span class="nc" id="L87">                String query = &quot;Select * from ASSOCIATIONS WHERE APPROVAL_STATUS='Y' AND TAG_ID = &quot; + (String) urlParameters.get(&quot;tag_id&quot;);</span>
-<span class="nc" id="L88">                rs = st.executeQuery(query);</span>
-<span class="nc bnc" id="L89" title="All 2 branches missed.">                while (rs.next()) {</span>
-<span class="nc" id="L90">                    jo.put(rs.getString(&quot;ASSOCIATION_ID&quot;), rs.getString(&quot;ASSOCIATION_NAME&quot;));</span>
+<span class="fc" id="L98">                String query = &quot;Select * from ASSOCIATIONS WHERE APPROVAL_STATUS='Y' AND TAG_ID = &quot; + (String) urlParameters.get(&quot;tag_id&quot;);</span>
+<span class="fc" id="L99">                rs = st.executeQuery(query);</span>
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">                while (rs.next()) {</span>
+<span class="nc" id="L101">                    jo.put(rs.getString(&quot;ASSOCIATION_ID&quot;), rs.getString(&quot;ASSOCIATION_NAME&quot;));</span>
                 }
-                
-                //Setting success status in the response
-<span class="nc" id="L94">                jo.put(&quot;isSuccess&quot;, true);</span>
-                
-                //Building response
-<span class="nc" id="L97">                resp = jo.toString();</span>
-<span class="nc" id="L98">                byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
-<span class="nc" id="L99">                httpExchange.sendResponseHeaders(200, b.length);</span>
-                
-<span class="nc" id="L101">                outputStream.write(b);</span>
-<span class="nc" id="L102">                outputStream.flush();</span>
-<span class="nc" id="L103">                outputStream.close();</span>
 
-<span class="nc bnc" id="L105" title="All 6 branches missed.">            } else if (&quot;single&quot;.equals(type) &amp;&amp; (urlParameters.get(&quot;user_id&quot;) != null || urlParameters.get(&quot;association_id&quot;) != null)) {</span>
-                
+                //Setting success status in the response
+<span class="fc" id="L105">                jo.put(&quot;isSuccess&quot;, true);</span>
+
+                //Building response
+<span class="fc" id="L108">                resp = jo.toString();</span>
+<span class="fc" id="L109">                byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
+<span class="fc" id="L110">                httpExchange.sendResponseHeaders(200, b.length);</span>
+
+<span class="fc" id="L112">                outputStream.write(b);</span>
+<span class="fc" id="L113">                outputStream.flush();</span>
+<span class="fc" id="L114">                outputStream.close();</span>
+
+<span class="fc bfc" id="L116" title="All 2 branches covered.">            } else if (&quot;single&quot;.equals(type)</span>
+<span class="fc bfc" id="L117" title="All 4 branches covered.">                    &amp;&amp; ((urlParameters.get(&quot;user_id&quot;) != null &amp;&amp; checkInteger(urlParameters.get(&quot;user_id&quot;)))</span>
+<span class="fc bfc" id="L118" title="All 4 branches covered.">                    || (urlParameters.get(&quot;association_id&quot;) != null &amp;&amp; checkInteger(urlParameters.get(&quot;association_id&quot;))))) {</span>
+
                 //Rest call to retrive an association's data based on its USER_ID OR ASSOCIATION_ID
-<span class="nc bnc" id="L108" title="All 2 branches missed.">                if (urlParameters.get(&quot;user_id&quot;) != null) {</span>
-<span class="nc" id="L109">                    String query = &quot;Select * from ASSOCIATIONS WHERE USER_ID = &quot; + (String) urlParameters.get(&quot;user_id&quot;);</span>
-                    
-<span class="nc" id="L111">                    rs = st.executeQuery(query);</span>
-<span class="nc bnc" id="L112" title="All 2 branches missed.">                } else if (urlParameters.get(&quot;association_id&quot;) != null) {</span>
-<span class="nc" id="L113">                    String query = &quot;Select * from ASSOCIATIONS WHERE ASSOCIATION_ID = &quot; + (String) urlParameters.get(&quot;association_id&quot;);</span>
-                    
-<span class="nc" id="L115">                    rs = st.executeQuery(query);</span>
+<span class="fc bfc" id="L121" title="All 2 branches covered.">                if (urlParameters.get(&quot;user_id&quot;) != null) {</span>
+<span class="fc" id="L122">                    String query = &quot;Select * from ASSOCIATIONS WHERE USER_ID = &quot; + (String) urlParameters.get(&quot;user_id&quot;);</span>
+
+<span class="fc" id="L124">                    rs = st.executeQuery(query);</span>
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">                } else if (urlParameters.get(&quot;association_id&quot;) != null) {</span>
+<span class="fc" id="L126">                    String query = &quot;Select * from ASSOCIATIONS WHERE ASSOCIATION_ID = &quot; + (String) urlParameters.get(&quot;association_id&quot;);</span>
+
+<span class="fc" id="L128">                    rs = st.executeQuery(query);</span>
                 }
 
-<span class="nc bnc" id="L118" title="All 2 branches missed.">                if (rs.next()) {</span>
-<span class="nc" id="L119">                    jo.put(&quot;association_id&quot;, rs.getString(&quot;ASSOCIATION_ID&quot;));</span>
-<span class="nc" id="L120">                    jo.put(&quot;association_name&quot;, rs.getString(&quot;ASSOCIATION_NAME&quot;));</span>
-<span class="nc" id="L121">                    jo.put(&quot;description&quot;, rs.getString(&quot;DESCRIPTION&quot;));</span>
-<span class="nc" id="L122">                    jo.put(&quot;address&quot;, rs.getString(&quot;ADDRESS&quot;));</span>
-<span class="nc" id="L123">                    jo.put(&quot;contact_info&quot;, rs.getString(&quot;CONTACT_INFO&quot;));</span>
-<span class="nc" id="L124">                    jo.put(&quot;email&quot;, rs.getString(&quot;EMAIL&quot;));</span>
-<span class="nc" id="L125">                    jo.put(&quot;approval_status&quot;, rs.getString(&quot;APPROVAL_STATUS&quot;));</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">                if (rs.next()) {</span>
+<span class="nc" id="L132">                    jo.put(&quot;association_id&quot;, rs.getString(&quot;ASSOCIATION_ID&quot;));</span>
+<span class="nc" id="L133">                    jo.put(&quot;association_name&quot;, rs.getString(&quot;ASSOCIATION_NAME&quot;));</span>
+<span class="nc" id="L134">                    jo.put(&quot;description&quot;, rs.getString(&quot;DESCRIPTION&quot;));</span>
+<span class="nc" id="L135">                    jo.put(&quot;address&quot;, rs.getString(&quot;ADDRESS&quot;));</span>
+<span class="nc" id="L136">                    jo.put(&quot;contact_info&quot;, rs.getString(&quot;CONTACT_INFO&quot;));</span>
+<span class="nc" id="L137">                    jo.put(&quot;email&quot;, rs.getString(&quot;EMAIL&quot;));</span>
+<span class="nc" id="L138">                    jo.put(&quot;approval_status&quot;, rs.getString(&quot;APPROVAL_STATUS&quot;));</span>
 
                 }
-                
+
                 //Setting success status in the response
-<span class="nc" id="L130">                jo.put(&quot;isSuccess&quot;, true);</span>
-                
-                //Building response
-<span class="nc" id="L133">                resp = jo.toString();</span>
-<span class="nc" id="L134">                byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
-<span class="nc" id="L135">                httpExchange.sendResponseHeaders(200, b.length);</span>
-                
-<span class="nc" id="L137">                outputStream.write(b);</span>
-<span class="nc" id="L138">                outputStream.flush();</span>
-<span class="nc" id="L139">                outputStream.close();</span>
+<span class="fc" id="L143">                jo.put(&quot;isSuccess&quot;, true);</span>
 
-<span class="nc bnc" id="L141" title="All 4 branches missed.">            } else if (&quot;newAssociations&quot;.equals(type) &amp;&amp; urlParameters.get(&quot;user_id&quot;) != null) {</span>
-                
+                //Building response
+<span class="fc" id="L146">                resp = jo.toString();</span>
+<span class="fc" id="L147">                byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
+<span class="fc" id="L148">                httpExchange.sendResponseHeaders(200, b.length);</span>
+
+<span class="fc" id="L150">                outputStream.write(b);</span>
+<span class="fc" id="L151">                outputStream.flush();</span>
+<span class="fc" id="L152">                outputStream.close();</span>
+
+<span class="fc bfc" id="L154" title="All 6 branches covered.">            } else if (&quot;newAssociations&quot;.equals(type) &amp;&amp; urlParameters.get(&quot;user_id&quot;) != null &amp;&amp; checkInteger(urlParameters.get(&quot;user_id&quot;))) {</span>
+
                 //Rest call to retrive all associations that are approved and that are not followed by the user
-<span class="nc" id="L144">                String query = &quot;SELECT * FROM ASSOCIATIONS A WHERE A.APPROVAL_STATUS='Y' AND A.ASSOCIATION_ID NOT IN &quot;</span>
+<span class="fc" id="L157">                String query = &quot;SELECT * FROM ASSOCIATIONS A WHERE A.APPROVAL_STATUS='Y' AND A.ASSOCIATION_ID NOT IN &quot;</span>
                         + &quot;(SELECT FE.ASSOCIATION_ID FROM FOLLOW_ASSOCIATIONS FE WHERE FE.USER_ID=&quot;
-<span class="nc" id="L146">                        + (String) urlParameters.get(&quot;user_id&quot;) + &quot;);&quot;;</span>
-                
-<span class="nc" id="L148">                rs = st.executeQuery(query);</span>
+<span class="fc" id="L159">                        + (String) urlParameters.get(&quot;user_id&quot;) + &quot;);&quot;;</span>
 
-<span class="nc bnc" id="L150" title="All 2 branches missed.">                while (rs.next()) {</span>
-<span class="nc" id="L151">                    JSONObject temp = new JSONObject();</span>
-<span class="nc" id="L152">                    temp.put(&quot;association_name&quot;, rs.getString(&quot;ASSOCIATION_NAME&quot;));</span>
-<span class="nc" id="L153">                    temp.put(&quot;description&quot;, rs.getString(&quot;DESCRIPTION&quot;));</span>
-<span class="nc" id="L154">                    temp.put(&quot;address&quot;, rs.getString(&quot;ADDRESS&quot;));</span>
-<span class="nc" id="L155">                    temp.put(&quot;contact_info&quot;, rs.getString(&quot;CONTACT_INFO&quot;));</span>
-<span class="nc" id="L156">                    temp.put(&quot;email&quot;, rs.getString(&quot;EMAIL&quot;));</span>
-<span class="nc" id="L157">                    jo.put(rs.getString(&quot;ASSOCIATION_ID&quot;), temp);</span>
-<span class="nc" id="L158">                }</span>
-                
+<span class="fc" id="L161">                rs = st.executeQuery(query);</span>
+
+<span class="fc bfc" id="L163" title="All 2 branches covered.">                while (rs.next()) {</span>
+<span class="fc" id="L164">                    JSONObject temp = new JSONObject();</span>
+<span class="fc" id="L165">                    temp.put(&quot;association_name&quot;, rs.getString(&quot;ASSOCIATION_NAME&quot;));</span>
+<span class="fc" id="L166">                    temp.put(&quot;description&quot;, rs.getString(&quot;DESCRIPTION&quot;));</span>
+<span class="fc" id="L167">                    temp.put(&quot;address&quot;, rs.getString(&quot;ADDRESS&quot;));</span>
+<span class="fc" id="L168">                    temp.put(&quot;contact_info&quot;, rs.getString(&quot;CONTACT_INFO&quot;));</span>
+<span class="fc" id="L169">                    temp.put(&quot;email&quot;, rs.getString(&quot;EMAIL&quot;));</span>
+<span class="fc" id="L170">                    jo.put(rs.getString(&quot;ASSOCIATION_ID&quot;), temp);</span>
+<span class="fc" id="L171">                }</span>
+
                 //Setting success status in the response
-<span class="nc" id="L161">                jo.put(&quot;isSuccess&quot;, true);</span>
-                
+<span class="fc" id="L174">                jo.put(&quot;isSuccess&quot;, true);</span>
+
                 //Building response
-<span class="nc" id="L164">                resp = jo.toString();</span>
-<span class="nc" id="L165">                byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
-<span class="nc" id="L166">                httpExchange.sendResponseHeaders(200, b.length);</span>
-               
-<span class="nc" id="L168">                outputStream.write(b);</span>
-<span class="nc" id="L169">                outputStream.flush();</span>
-<span class="nc" id="L170">                outputStream.close();</span>
-<span class="nc bnc" id="L171" title="All 4 branches missed.">            } else if (&quot;oldAssociations&quot;.equals(type) &amp;&amp; urlParameters.get(&quot;user_id&quot;) != null) {</span>
-                
+<span class="fc" id="L177">                resp = jo.toString();</span>
+<span class="fc" id="L178">                byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
+<span class="fc" id="L179">                httpExchange.sendResponseHeaders(200, b.length);</span>
+
+<span class="fc" id="L181">                outputStream.write(b);</span>
+<span class="fc" id="L182">                outputStream.flush();</span>
+<span class="fc" id="L183">                outputStream.close();</span>
+<span class="fc bfc" id="L184" title="All 6 branches covered.">            } else if (&quot;oldAssociations&quot;.equals(type) &amp;&amp; urlParameters.get(&quot;user_id&quot;) != null &amp;&amp; checkInteger(urlParameters.get(&quot;user_id&quot;))) {</span>
+
                 //Rest call to retrive all associations that the user is following
-<span class="nc" id="L174">                String query = &quot;SELECT * FROM ASSOCIATIONS A WHERE A.APPROVAL_STATUS='Y' AND A.ASSOCIATION_ID IN &quot;</span>
+<span class="fc" id="L187">                String query = &quot;SELECT * FROM ASSOCIATIONS A WHERE A.APPROVAL_STATUS='Y' AND A.ASSOCIATION_ID IN &quot;</span>
                         + &quot;(SELECT FE.ASSOCIATION_ID FROM FOLLOW_ASSOCIATIONS FE WHERE FE.USER_ID=&quot;
-<span class="nc" id="L176">                        + (String) urlParameters.get(&quot;user_id&quot;) + &quot;);&quot;;</span>
-                
-<span class="nc" id="L178">                rs = st.executeQuery(query);</span>
+<span class="fc" id="L189">                        + (String) urlParameters.get(&quot;user_id&quot;) + &quot;);&quot;;</span>
 
-<span class="nc bnc" id="L180" title="All 2 branches missed.">                while (rs.next()) {</span>
-<span class="nc" id="L181">                    JSONObject temp = new JSONObject();</span>
-<span class="nc" id="L182">                    temp.put(&quot;association_name&quot;, rs.getString(&quot;ASSOCIATION_NAME&quot;));</span>
-<span class="nc" id="L183">                    temp.put(&quot;description&quot;, rs.getString(&quot;DESCRIPTION&quot;));</span>
-<span class="nc" id="L184">                    temp.put(&quot;address&quot;, rs.getString(&quot;ADDRESS&quot;));</span>
-<span class="nc" id="L185">                    temp.put(&quot;contact_info&quot;, rs.getString(&quot;CONTACT_INFO&quot;));</span>
-<span class="nc" id="L186">                    temp.put(&quot;email&quot;, rs.getString(&quot;EMAIL&quot;));</span>
-<span class="nc" id="L187">                    jo.put(rs.getString(&quot;ASSOCIATION_ID&quot;), temp);</span>
-<span class="nc" id="L188">                }</span>
-                
+<span class="fc" id="L191">                rs = st.executeQuery(query);</span>
+
+<span class="pc bpc" id="L193" title="1 of 2 branches missed.">                while (rs.next()) {</span>
+<span class="nc" id="L194">                    JSONObject temp = new JSONObject();</span>
+<span class="nc" id="L195">                    temp.put(&quot;association_name&quot;, rs.getString(&quot;ASSOCIATION_NAME&quot;));</span>
+<span class="nc" id="L196">                    temp.put(&quot;description&quot;, rs.getString(&quot;DESCRIPTION&quot;));</span>
+<span class="nc" id="L197">                    temp.put(&quot;address&quot;, rs.getString(&quot;ADDRESS&quot;));</span>
+<span class="nc" id="L198">                    temp.put(&quot;contact_info&quot;, rs.getString(&quot;CONTACT_INFO&quot;));</span>
+<span class="nc" id="L199">                    temp.put(&quot;email&quot;, rs.getString(&quot;EMAIL&quot;));</span>
+<span class="nc" id="L200">                    jo.put(rs.getString(&quot;ASSOCIATION_ID&quot;), temp);</span>
+<span class="nc" id="L201">                }</span>
+
                 //Setting success status in the response
-<span class="nc" id="L191">                jo.put(&quot;isSuccess&quot;, true);</span>
-                
+<span class="fc" id="L204">                jo.put(&quot;isSuccess&quot;, true);</span>
+
                 //Building response
-<span class="nc" id="L194">                resp = jo.toString();</span>
-<span class="nc" id="L195">                byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
-<span class="nc" id="L196">                httpExchange.sendResponseHeaders(200, b.length);</span>
-                
-<span class="nc" id="L198">                outputStream.write(b);</span>
-<span class="nc" id="L199">                outputStream.flush();</span>
-<span class="nc" id="L200">                outputStream.close();</span>
-<span class="nc" id="L201">            } else {</span>
-                
+<span class="fc" id="L207">                resp = jo.toString();</span>
+<span class="fc" id="L208">                byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
+<span class="fc" id="L209">                httpExchange.sendResponseHeaders(200, b.length);</span>
+
+<span class="fc" id="L211">                outputStream.write(b);</span>
+<span class="fc" id="L212">                outputStream.flush();</span>
+<span class="fc" id="L213">                outputStream.close();</span>
+<span class="fc" id="L214">            } else {</span>
+
                 //Setting success status to false if URL doesn't satisfy any requirements
-<span class="nc" id="L204">                jo.put(&quot;isSuccess&quot;, false);</span>
-                
+<span class="fc" id="L217">                jo.put(&quot;isSuccess&quot;, false);</span>
+
                 //Building resopnse
-<span class="nc" id="L207">                resp = jo.toString();</span>
-<span class="nc" id="L208">                byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
-<span class="nc" id="L209">                httpExchange.sendResponseHeaders(200, b.length);</span>
-               
-<span class="nc" id="L211">                outputStream.write(b);</span>
-<span class="nc" id="L212">                outputStream.flush();</span>
-<span class="nc" id="L213">                outputStream.close();</span>
+<span class="fc" id="L220">                resp = jo.toString();</span>
+<span class="fc" id="L221">                byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
+<span class="fc" id="L222">                httpExchange.sendResponseHeaders(200, b.length);</span>
+
+<span class="fc" id="L224">                outputStream.write(b);</span>
+<span class="fc" id="L225">                outputStream.flush();</span>
+<span class="fc" id="L226">                outputStream.close();</span>
             }
-<span class="nc" id="L215">            st.close();</span>
-<span class="nc" id="L216">        } catch (Exception e) {</span>
+<span class="fc" id="L228">            st.close();</span>
+<span class="nc" id="L229">        } catch (Exception e) {</span>
             //Comes here if anything fails in the entire code above
             // Logging exception
-<span class="nc" id="L219">            System.out.println(e.getMessage());</span>
-            
+<span class="nc" id="L232">            System.out.println(e.getMessage());</span>
+
             //Setting success status to false
-<span class="nc" id="L222">            jo.put(&quot;isSuccess&quot;, false);</span>
+<span class="nc" id="L235">            jo.put(&quot;isSuccess&quot;, false);</span>
 
             try {
                 //Building Response
-<span class="nc" id="L226">                resp = jo.toString();</span>
-<span class="nc" id="L227">                byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
-<span class="nc" id="L228">                httpExchange.sendResponseHeaders(200, b.length);</span>
-                
-<span class="nc" id="L230">                outputStream.write(b);</span>
-<span class="nc" id="L231">                outputStream.flush();</span>
-<span class="nc" id="L232">                outputStream.close();</span>
-<span class="nc" id="L233">            } catch (Exception e1) {</span>
+<span class="nc" id="L239">                resp = jo.toString();</span>
+<span class="nc" id="L240">                byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
+<span class="nc" id="L241">                httpExchange.sendResponseHeaders(200, b.length);</span>
+
+<span class="nc" id="L243">                outputStream.write(b);</span>
+<span class="nc" id="L244">                outputStream.flush();</span>
+<span class="nc" id="L245">                outputStream.close();</span>
+<span class="nc" id="L246">            } catch (Exception e1) {</span>
                 //Logging exception
-<span class="nc" id="L235">                System.out.println(e1.getMessage());</span>
-<span class="nc" id="L236">            }</span>
-<span class="nc" id="L237">        }</span>
-<span class="nc" id="L238">    }</span>
+<span class="nc" id="L248">                System.out.println(e1.getMessage());</span>
+<span class="nc" id="L249">            }</span>
+<span class="fc" id="L250">        }</span>
+<span class="fc" id="L251">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

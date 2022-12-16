@@ -20,26 +20,26 @@ public class UsersGetRequestHandler {
 
     private HttpExchange httpExchange;
 
-<span class="nc" id="L23">    public UsersGetRequestHandler(HttpExchange httpExchange) {</span>
-<span class="nc" id="L24">        this.httpExchange = httpExchange;</span>
-<span class="nc" id="L25">    }</span>
+<span class="fc" id="L23">    public UsersGetRequestHandler(HttpExchange httpExchange) {</span>
+<span class="fc" id="L24">        this.httpExchange = httpExchange;</span>
+<span class="fc" id="L25">    }</span>
 
     public void processGetRequest(HashMap urlParameters) {
 
-<span class="nc" id="L29">        String user_name = (String) urlParameters.get(&quot;user_name&quot;);</span>
-<span class="nc" id="L30">        String password = (String) urlParameters.get(&quot;password&quot;);</span>
-<span class="nc" id="L31">        OutputStream outputStream = httpExchange.getResponseBody();</span>
-<span class="nc" id="L32">        JSONObject jo = new JSONObject();</span>
-<span class="nc" id="L33">        String resp = null;</span>
+<span class="fc" id="L29">        String user_name = (String) urlParameters.get(&quot;user_name&quot;);</span>
+<span class="fc" id="L30">        String password = (String) urlParameters.get(&quot;password&quot;);</span>
+<span class="fc" id="L31">        OutputStream outputStream = httpExchange.getResponseBody();</span>
+<span class="fc" id="L32">        JSONObject jo = new JSONObject();</span>
+<span class="fc" id="L33">        String resp = null;</span>
 
-<span class="nc bnc" id="L35" title="All 4 branches missed.">        if (user_name != null &amp;&amp; password != null) {</span>
+<span class="fc bfc" id="L35" title="All 4 branches covered.">        if (user_name != null &amp;&amp; password != null) {</span>
             try {
-<span class="nc" id="L37">                Statement st = connection.createStatement();</span>
+<span class="fc" id="L37">                Statement st = connection.createStatement();</span>
 
                 //Rest call to get the details of a user
-<span class="nc" id="L40">                ResultSet rs = st.executeQuery(&quot;Select * from Users where user_name = '&quot; + user_name + &quot;' and password = '&quot; + password + &quot;'&quot;);</span>
+<span class="fc" id="L40">                ResultSet rs = st.executeQuery(&quot;Select * from Users where user_name = '&quot; + user_name + &quot;' and password = '&quot; + password + &quot;'&quot;);</span>
 
-<span class="nc bnc" id="L42" title="All 2 branches missed.">                if (rs.next()) {</span>
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">                if (rs.next()) {</span>
 <span class="nc" id="L43">                    int user_id = Integer.valueOf(rs.getString(&quot;USER_ID&quot;));</span>
 <span class="nc" id="L44">                    int user_code = Integer.valueOf(rs.getString(&quot;USER_CODE&quot;));</span>
 
@@ -60,18 +60,18 @@ public class UsersGetRequestHandler {
 
 <span class="nc" id="L61">                } else {</span>
                     //Setting success status to false if the user_name and password is not valid
-<span class="nc" id="L63">                    jo.put(&quot;isSuccess&quot;, false);</span>
+<span class="fc" id="L63">                    jo.put(&quot;isSuccess&quot;, false);</span>
                     
                     //Building Response
-<span class="nc" id="L66">                    resp = jo.toString();</span>
-<span class="nc" id="L67">                    byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
-<span class="nc" id="L68">                    httpExchange.sendResponseHeaders(200, b.length);</span>
+<span class="fc" id="L66">                    resp = jo.toString();</span>
+<span class="fc" id="L67">                    byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
+<span class="fc" id="L68">                    httpExchange.sendResponseHeaders(200, b.length);</span>
 
-<span class="nc" id="L70">                    outputStream.write(b);</span>
-<span class="nc" id="L71">                    outputStream.flush();</span>
-<span class="nc" id="L72">                    outputStream.close();</span>
+<span class="fc" id="L70">                    outputStream.write(b);</span>
+<span class="fc" id="L71">                    outputStream.flush();</span>
+<span class="fc" id="L72">                    outputStream.close();</span>
                 }
-<span class="nc" id="L74">                st.close();</span>
+<span class="fc" id="L74">                st.close();</span>
 <span class="nc" id="L75">            } catch (Exception e) {</span>
                 //Logging exception
 <span class="nc" id="L77">                System.out.println(e.getMessage());</span>
@@ -93,28 +93,28 @@ public class UsersGetRequestHandler {
                     //Logging exception
 <span class="nc" id="L94">                    System.out.println(e1.getMessage());</span>
 <span class="nc" id="L95">                }</span>
-<span class="nc" id="L96">            }</span>
+<span class="pc" id="L96">            }</span>
 
         } else {
             try {
                 //Setting success status to false if user_name or password is null
-<span class="nc" id="L101">                jo.put(&quot;isSuccess&quot;, false);</span>
+<span class="fc" id="L101">                jo.put(&quot;isSuccess&quot;, false);</span>
                 
                 //Building Response
-<span class="nc" id="L104">                resp = jo.toString();</span>
-<span class="nc" id="L105">                byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
-<span class="nc" id="L106">                httpExchange.sendResponseHeaders(200, b.length);</span>
+<span class="fc" id="L104">                resp = jo.toString();</span>
+<span class="fc" id="L105">                byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
+<span class="fc" id="L106">                httpExchange.sendResponseHeaders(200, b.length);</span>
 
-<span class="nc" id="L108">                outputStream.write(b);</span>
-<span class="nc" id="L109">                outputStream.flush();</span>
-<span class="nc" id="L110">                outputStream.close();</span>
+<span class="fc" id="L108">                outputStream.write(b);</span>
+<span class="fc" id="L109">                outputStream.flush();</span>
+<span class="fc" id="L110">                outputStream.close();</span>
 
 <span class="nc" id="L112">            } catch (Exception e) {</span>
                 //Logging exception
 <span class="nc" id="L114">                System.out.println(e.getMessage());</span>
-<span class="nc" id="L115">            }</span>
+<span class="fc" id="L115">            }</span>
         }
 
-<span class="nc" id="L118">    }</span>
+<span class="fc" id="L118">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

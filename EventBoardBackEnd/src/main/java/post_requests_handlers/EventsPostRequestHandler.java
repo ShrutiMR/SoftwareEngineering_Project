@@ -23,6 +23,16 @@ public class EventsPostRequestHandler {
     public EventsPostRequestHandler(HttpExchange httpExchange) {
         this.httpExchange = httpExchange;
     }
+    
+    public boolean checkInteger(Object obj) {
+        boolean check = true;
+        try {
+            int temp = Integer.parseInt((String) obj);
+        } catch (Exception e) {
+            check = false;
+        }
+        return check;
+    }
 
     public void processPostRequest(HashMap urlParameters, HashMap urlBody) {
 
@@ -38,7 +48,8 @@ public class EventsPostRequestHandler {
         try {
             Statement st = connection.createStatement();
 
-            if (follow != null && user_id != null && event_id != null) {
+            if (follow != null && user_id != null && event_id != null
+                    && checkInteger(user_id) && checkInteger(event_id)) {
                 
                 // Rest call for an user to follow or unfollow an event
                 if ("Y".equals(follow)) {

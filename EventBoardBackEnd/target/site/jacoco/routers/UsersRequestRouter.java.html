@@ -13,33 +13,33 @@ public class UsersRequestRouter implements HttpHandler {
 
     public static Connection connection;
 
-<span class="nc" id="L16">    public UsersRequestRouter(Connection c) {</span>
-<span class="nc" id="L17">        connection = c;</span>
-<span class="nc" id="L18">    }</span>
+<span class="fc" id="L16">    public UsersRequestRouter(Connection c) {</span>
+<span class="fc" id="L17">        connection = c;</span>
+<span class="fc" id="L18">    }</span>
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         
         
-<span class="nc" id="L24">        ProcessURL processURL = new ProcessURL(httpExchange);</span>
-<span class="nc bnc" id="L25" title="All 2 branches missed.">        if (&quot;GET&quot;.equals(httpExchange.getRequestMethod())) {</span>
+<span class="fc" id="L24">        ProcessURL processURL = new ProcessURL(httpExchange);</span>
+<span class="fc bfc" id="L25" title="All 2 branches covered.">        if (&quot;GET&quot;.equals(httpExchange.getRequestMethod())) {</span>
             
             //Getting URL parameters
-<span class="nc" id="L28">            HashMap urlParameters = processURL.getURLParameters();</span>
+<span class="fc" id="L28">            HashMap urlParameters = processURL.getURLParameters();</span>
          
             //Routing to process the GET Request
-<span class="nc" id="L31">            UsersGetRequestHandler getRequestHandler = new UsersGetRequestHandler(httpExchange);</span>
-<span class="nc" id="L32">            getRequestHandler.processGetRequest(urlParameters);</span>
+<span class="fc" id="L31">            UsersGetRequestHandler getRequestHandler = new UsersGetRequestHandler(httpExchange);</span>
+<span class="fc" id="L32">            getRequestHandler.processGetRequest(urlParameters);</span>
 
-<span class="nc bnc" id="L34" title="All 2 branches missed.">        } else if (&quot;POST&quot;.equals(httpExchange.getRequestMethod())) {</span>
+<span class="pc bpc" id="L34" title="1 of 2 branches missed.">        } else if (&quot;POST&quot;.equals(httpExchange.getRequestMethod())) {</span>
             
             //Getting Request Body parameters
-<span class="nc" id="L37">            HashMap urlBody = processURL.getURLBody();</span>
+<span class="fc" id="L37">            HashMap urlBody = processURL.getURLBody();</span>
             
             //Routing to process the POST Request
-<span class="nc" id="L40">            UsersPostRequestHandler postRequestHandler = new UsersPostRequestHandler(httpExchange);</span>
-<span class="nc" id="L41">            postRequestHandler.processPostRequest(urlBody);</span>
+<span class="fc" id="L40">            UsersPostRequestHandler postRequestHandler = new UsersPostRequestHandler(httpExchange);</span>
+<span class="fc" id="L41">            postRequestHandler.processPostRequest(urlBody);</span>
         }
-<span class="nc" id="L43">    }</span>
+<span class="fc" id="L43">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

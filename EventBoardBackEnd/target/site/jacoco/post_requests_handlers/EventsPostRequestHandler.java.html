@@ -20,129 +20,140 @@ public class EventsPostRequestHandler {
 
     private HttpExchange httpExchange;
 
-<span class="nc" id="L23">    public EventsPostRequestHandler(HttpExchange httpExchange) {</span>
-<span class="nc" id="L24">        this.httpExchange = httpExchange;</span>
-<span class="nc" id="L25">    }</span>
+<span class="fc" id="L23">    public EventsPostRequestHandler(HttpExchange httpExchange) {</span>
+<span class="fc" id="L24">        this.httpExchange = httpExchange;</span>
+<span class="fc" id="L25">    }</span>
+    
+    public boolean checkInteger(Object obj) {
+<span class="fc" id="L28">        boolean check = true;</span>
+        try {
+<span class="fc" id="L30">            int temp = Integer.parseInt((String) obj);</span>
+<span class="fc" id="L31">        } catch (Exception e) {</span>
+<span class="fc" id="L32">            check = false;</span>
+<span class="fc" id="L33">        }</span>
+<span class="fc" id="L34">        return check;</span>
+    }
 
     public void processPostRequest(HashMap urlParameters, HashMap urlBody) {
 
-<span class="nc" id="L29">        OutputStream outputStream = httpExchange.getResponseBody();</span>
-<span class="nc" id="L30">        JSONObject jo = new JSONObject();</span>
-<span class="nc" id="L31">        String resp = null;</span>
-<span class="nc" id="L32">        ResultSet rs = null;</span>
+<span class="fc" id="L39">        OutputStream outputStream = httpExchange.getResponseBody();</span>
+<span class="fc" id="L40">        JSONObject jo = new JSONObject();</span>
+<span class="fc" id="L41">        String resp = null;</span>
+<span class="fc" id="L42">        ResultSet rs = null;</span>
 
-<span class="nc" id="L34">        String follow = (String) urlParameters.get(&quot;follow&quot;);</span>
-<span class="nc" id="L35">        String user_id = (String) urlParameters.get(&quot;user_id&quot;);</span>
-<span class="nc" id="L36">        String event_id = (String) urlParameters.get(&quot;event_id&quot;);</span>
+<span class="fc" id="L44">        String follow = (String) urlParameters.get(&quot;follow&quot;);</span>
+<span class="fc" id="L45">        String user_id = (String) urlParameters.get(&quot;user_id&quot;);</span>
+<span class="fc" id="L46">        String event_id = (String) urlParameters.get(&quot;event_id&quot;);</span>
 
         try {
-<span class="nc" id="L39">            Statement st = connection.createStatement();</span>
+<span class="fc" id="L49">            Statement st = connection.createStatement();</span>
 
-<span class="nc bnc" id="L41" title="All 6 branches missed.">            if (follow != null &amp;&amp; user_id != null &amp;&amp; event_id != null) {</span>
+<span class="pc bpc" id="L51" title="1 of 6 branches missed.">            if (follow != null &amp;&amp; user_id != null &amp;&amp; event_id != null</span>
+<span class="fc bfc" id="L52" title="All 4 branches covered.">                    &amp;&amp; checkInteger(user_id) &amp;&amp; checkInteger(event_id)) {</span>
                 
                 // Rest call for an user to follow or unfollow an event
-<span class="nc bnc" id="L44" title="All 2 branches missed.">                if (&quot;Y&quot;.equals(follow)) {</span>
+<span class="pc bpc" id="L55" title="1 of 2 branches missed.">                if (&quot;Y&quot;.equals(follow)) {</span>
                     
-<span class="nc" id="L46">                    st.executeUpdate(&quot;INSERT INTO FOLLOW_EVENTS  (EVENT_ID, USER_ID) VALUES ( &quot; + event_id + &quot;  , &quot; + user_id + &quot;)&quot;);</span>
-                    
-                    //Setting success status in the response
-<span class="nc" id="L49">                    jo.put(&quot;isSuccess&quot;, true);</span>
-<span class="nc bnc" id="L50" title="All 2 branches missed.">                } else if (&quot;N&quot;.equals(follow)) {</span>
-                    
-<span class="nc" id="L52">                    st.executeUpdate(&quot;DELETE FROM FOLLOW_EVENTS WHERE EVENT_ID = &quot; + event_id + &quot; AND USER_ID = &quot; + user_id);</span>
+<span class="nc" id="L57">                    st.executeUpdate(&quot;INSERT INTO FOLLOW_EVENTS  (EVENT_ID, USER_ID) VALUES ( &quot; + event_id + &quot;  , &quot; + user_id + &quot;)&quot;);</span>
                     
                     //Setting success status in the response
-<span class="nc" id="L55">                    jo.put(&quot;isSuccess&quot;, true);</span>
+<span class="nc" id="L60">                    jo.put(&quot;isSuccess&quot;, true);</span>
+<span class="pc bpc" id="L61" title="1 of 2 branches missed.">                } else if (&quot;N&quot;.equals(follow)) {</span>
+                    
+<span class="nc" id="L63">                    st.executeUpdate(&quot;DELETE FROM FOLLOW_EVENTS WHERE EVENT_ID = &quot; + event_id + &quot; AND USER_ID = &quot; + user_id);</span>
+                    
+                    //Setting success status in the response
+<span class="nc" id="L66">                    jo.put(&quot;isSuccess&quot;, true);</span>
                 } else {
                     
                     //Setting success status to false if the follow parameter is not Y or N
-<span class="nc" id="L59">                    jo.put(&quot;isSuccess&quot;, false);</span>
+<span class="fc" id="L70">                    jo.put(&quot;isSuccess&quot;, false);</span>
                 }
                 
                 //Building Response
-<span class="nc" id="L63">                resp = jo.toString();</span>
-<span class="nc" id="L64">                byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
-<span class="nc" id="L65">                httpExchange.sendResponseHeaders(200, b.length);</span>
+<span class="fc" id="L74">                resp = jo.toString();</span>
+<span class="fc" id="L75">                byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
+<span class="fc" id="L76">                httpExchange.sendResponseHeaders(200, b.length);</span>
                 
-<span class="nc" id="L67">                outputStream.write(b);</span>
-<span class="nc" id="L68">                outputStream.flush();</span>
-<span class="nc" id="L69">                outputStream.close();</span>
-<span class="nc" id="L70">            } else {</span>
+<span class="fc" id="L78">                outputStream.write(b);</span>
+<span class="fc" id="L79">                outputStream.flush();</span>
+<span class="fc" id="L80">                outputStream.close();</span>
+<span class="fc" id="L81">            } else {</span>
                 
                 //Rest call to create a new event
-<span class="nc" id="L73">                String description = (String) urlBody.get(&quot;description&quot;);</span>
-<span class="nc" id="L74">                String name = (String) urlBody.get(&quot;name&quot;);</span>
-<span class="nc" id="L75">                String association_id = (String) urlBody.get(&quot;association_id&quot;);</span>
-<span class="nc" id="L76">                String start_time = (String) urlBody.get(&quot;start_time&quot;);</span>
-<span class="nc" id="L77">                String end_time = (String) urlBody.get(&quot;end_time&quot;);</span>
-<span class="nc" id="L78">                String venue = (String) urlBody.get(&quot;venue&quot;);</span>
+<span class="fc" id="L84">                String description = (String) urlBody.get(&quot;description&quot;);</span>
+<span class="fc" id="L85">                String name = (String) urlBody.get(&quot;name&quot;);</span>
+<span class="fc" id="L86">                String association_id = (String) urlBody.get(&quot;association_id&quot;);</span>
+<span class="fc" id="L87">                String start_time = (String) urlBody.get(&quot;start_time&quot;);</span>
+<span class="fc" id="L88">                String end_time = (String) urlBody.get(&quot;end_time&quot;);</span>
+<span class="fc" id="L89">                String venue = (String) urlBody.get(&quot;venue&quot;);</span>
 
-<span class="nc bnc" id="L80" title="All 10 branches missed.">                if (name != null &amp;&amp; description != null &amp;&amp; start_time != null &amp;&amp; end_time != null &amp;&amp; association_id != null) {</span>
-<span class="nc" id="L81">                    name = &quot;'&quot; + name + &quot;'&quot;;</span>
-<span class="nc" id="L82">                    start_time = &quot;'&quot; + start_time + &quot;'&quot;;</span>
-<span class="nc" id="L83">                    end_time = &quot;'&quot; + end_time + &quot;'&quot;;</span>
-<span class="nc" id="L84">                    association_id = &quot;'&quot; + association_id + &quot;'&quot;;</span>
-<span class="nc" id="L85">                    description = &quot;'&quot; + description + &quot;'&quot;;</span>
+<span class="pc bpc" id="L91" title="6 of 10 branches missed.">                if (name != null &amp;&amp; description != null &amp;&amp; start_time != null &amp;&amp; end_time != null &amp;&amp; association_id != null) {</span>
+<span class="nc" id="L92">                    name = &quot;'&quot; + name + &quot;'&quot;;</span>
+<span class="nc" id="L93">                    start_time = &quot;'&quot; + start_time + &quot;'&quot;;</span>
+<span class="nc" id="L94">                    end_time = &quot;'&quot; + end_time + &quot;'&quot;;</span>
+<span class="nc" id="L95">                    association_id = &quot;'&quot; + association_id + &quot;'&quot;;</span>
+<span class="nc" id="L96">                    description = &quot;'&quot; + description + &quot;'&quot;;</span>
 
-<span class="nc bnc" id="L87" title="All 2 branches missed.">                    if (venue == null) {</span>
-<span class="nc" id="L88">                        venue = &quot;NULL&quot;;</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">                    if (venue == null) {</span>
+<span class="nc" id="L99">                        venue = &quot;NULL&quot;;</span>
                     } else {
-<span class="nc" id="L90">                        venue = &quot;'&quot; + venue + &quot;'&quot;;</span>
+<span class="nc" id="L101">                        venue = &quot;'&quot; + venue + &quot;'&quot;;</span>
                     }
 
-<span class="nc" id="L93">                    String query = &quot;INSERT INTO EVENTS (ASSOCIATION_ID, NAME, START_TIME, END_TIME, VENUE, DESCRIPTION)  &quot;</span>
+<span class="nc" id="L104">                    String query = &quot;INSERT INTO EVENTS (ASSOCIATION_ID, NAME, START_TIME, END_TIME, VENUE, DESCRIPTION)  &quot;</span>
                             + &quot;values(&quot; + association_id + &quot;,&quot; + name + &quot;,&quot; + start_time + &quot;,&quot; + end_time + &quot;,&quot; + venue + &quot;,&quot; + description + &quot;);&quot;;
                     
-<span class="nc" id="L96">                    st.executeUpdate(query);</span>
+<span class="nc" id="L107">                    st.executeUpdate(query);</span>
                     
                     //Setting success status in the response
-<span class="nc" id="L99">                    jo.put(&quot;isSuccess&quot;, true);</span>
+<span class="nc" id="L110">                    jo.put(&quot;isSuccess&quot;, true);</span>
                     
                     //Building Response
-<span class="nc" id="L102">                    resp = jo.toString();</span>
-<span class="nc" id="L103">                    byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
-<span class="nc" id="L104">                    httpExchange.sendResponseHeaders(200, b.length);</span>
+<span class="nc" id="L113">                    resp = jo.toString();</span>
+<span class="nc" id="L114">                    byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
+<span class="nc" id="L115">                    httpExchange.sendResponseHeaders(200, b.length);</span>
                     
-<span class="nc" id="L106">                    outputStream.write(b);</span>
-<span class="nc" id="L107">                    outputStream.flush();</span>
-<span class="nc" id="L108">                    outputStream.close();</span>
-<span class="nc" id="L109">                } else {</span>
+<span class="nc" id="L117">                    outputStream.write(b);</span>
+<span class="nc" id="L118">                    outputStream.flush();</span>
+<span class="nc" id="L119">                    outputStream.close();</span>
+<span class="nc" id="L120">                } else {</span>
                     //Setting success status to false in the response, if requires params are not passed
-<span class="nc" id="L111">                    jo.put(&quot;isSuccess&quot;, false);</span>
+<span class="fc" id="L122">                    jo.put(&quot;isSuccess&quot;, false);</span>
                     
                     //Building Response
-<span class="nc" id="L114">                    resp = jo.toString();</span>
-<span class="nc" id="L115">                    byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
-<span class="nc" id="L116">                    httpExchange.sendResponseHeaders(200, b.length);</span>
+<span class="fc" id="L125">                    resp = jo.toString();</span>
+<span class="fc" id="L126">                    byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
+<span class="fc" id="L127">                    httpExchange.sendResponseHeaders(200, b.length);</span>
                     
-<span class="nc" id="L118">                    outputStream.write(b);</span>
-<span class="nc" id="L119">                    outputStream.flush();</span>
-<span class="nc" id="L120">                    outputStream.close();</span>
+<span class="fc" id="L129">                    outputStream.write(b);</span>
+<span class="fc" id="L130">                    outputStream.flush();</span>
+<span class="fc" id="L131">                    outputStream.close();</span>
                 }
             }
-<span class="nc" id="L123">            st.close();</span>
-<span class="nc" id="L124">        } catch (Exception e) {</span>
+<span class="fc" id="L134">            st.close();</span>
+<span class="nc" id="L135">        } catch (Exception e) {</span>
             //Logging exception
-<span class="nc" id="L126">            System.out.println(e.getMessage());</span>
+<span class="nc" id="L137">            System.out.println(e.getMessage());</span>
             
             //Setting success status to false if above code fails to execute 
-<span class="nc" id="L129">            jo.put(&quot;isSuccess&quot;, false);</span>
+<span class="nc" id="L140">            jo.put(&quot;isSuccess&quot;, false);</span>
 
             try {
-<span class="nc" id="L132">                resp = jo.toString();</span>
-<span class="nc" id="L133">                byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
-<span class="nc" id="L134">                httpExchange.sendResponseHeaders(200, b.length);</span>
+<span class="nc" id="L143">                resp = jo.toString();</span>
+<span class="nc" id="L144">                byte[] b = resp.getBytes(&quot;UTF-8&quot;);</span>
+<span class="nc" id="L145">                httpExchange.sendResponseHeaders(200, b.length);</span>
                 
-<span class="nc" id="L136">                outputStream.write(b);</span>
-<span class="nc" id="L137">                outputStream.flush();</span>
-<span class="nc" id="L138">                outputStream.close();</span>
+<span class="nc" id="L147">                outputStream.write(b);</span>
+<span class="nc" id="L148">                outputStream.flush();</span>
+<span class="nc" id="L149">                outputStream.close();</span>
                 
-<span class="nc" id="L140">            } catch (Exception e1) {</span>
-<span class="nc" id="L141">                System.out.println(e1.getMessage());</span>
-<span class="nc" id="L142">            }</span>
-<span class="nc" id="L143">        }</span>
+<span class="nc" id="L151">            } catch (Exception e1) {</span>
+<span class="nc" id="L152">                System.out.println(e1.getMessage());</span>
+<span class="nc" id="L153">            }</span>
+<span class="fc" id="L154">        }</span>
 
-<span class="nc" id="L145">    }</span>
+<span class="fc" id="L156">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

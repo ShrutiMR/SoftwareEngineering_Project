@@ -23,6 +23,16 @@ public class EventsGetRequestHandler {
     public EventsGetRequestHandler(HttpExchange httpExchange) {
         this.httpExchange = httpExchange;
     }
+    
+    public boolean checkInteger(Object obj) {
+        boolean check = true;
+        try {
+            int temp = Integer.parseInt((String) obj);
+        } catch (Exception e) {
+            check = false;
+        }
+        return check;
+    }
 
     public void processGetRequest(HashMap urlParameters) {
 
@@ -39,7 +49,7 @@ public class EventsGetRequestHandler {
         try {
             Statement st = connection.createStatement();
 
-            if ("upcoming".equals(type) && user_id != null) {
+            if ("upcoming".equals(type) && user_id != null && checkInteger(user_id)) {
 
                 //Rest call to get the all the upcoming events of a user 
                 rs = st.executeQuery("SELECT B.EVENT_ID, B.START_TIME, B.END_TIME, B.NAME, B.DESCRIPTION, B.VENUE FROM USERS A, "
@@ -68,7 +78,7 @@ public class EventsGetRequestHandler {
                 outputStream.write(b);
                 outputStream.flush();
                 outputStream.close();
-            } else if ("past".equals(type) && user_id != null) {
+            } else if ("past".equals(type) && user_id != null && checkInteger(user_id)) {
 
                 //Rest call to get all the past events of a user
                 rs = st.executeQuery("SELECT B.EVENT_ID, B.START_TIME, B.END_TIME, B.NAME, B.DESCRIPTION, B.VENUE FROM USERS A, "
@@ -98,7 +108,7 @@ public class EventsGetRequestHandler {
                 outputStream.flush();
                 outputStream.close();
 
-            } else if ("associationUpcoming".equals(type) && association_id != null) {
+            } else if ("associationUpcoming".equals(type) && association_id != null && checkInteger(association_id)) {
 
                 //Rest call to get all upcoming events of an association
                 rs = st.executeQuery("SELECT E.EVENT_ID, E.START_TIME, E.END_TIME, E.NAME, E.DESCRIPTION, "
@@ -128,7 +138,7 @@ public class EventsGetRequestHandler {
                 outputStream.flush();
                 outputStream.close();
 
-            } else if ("associationPast".equals(type) && association_id != null) {
+            } else if ("associationPast".equals(type) && association_id != null && checkInteger(association_id)) {
 
                 //Rest call to get all the past events of the association
                 rs = st.executeQuery("SELECT E.EVENT_ID, E.START_TIME, E.END_TIME, E.NAME, E.DESCRIPTION, "
@@ -158,7 +168,7 @@ public class EventsGetRequestHandler {
                 outputStream.flush();
                 outputStream.close();
 
-            } else if ("feed".equals(type) && user_id != null) {
+            } else if ("feed".equals(type) && user_id != null && checkInteger(user_id)) {
 
                 //Rest call to get the Home feed of the user
                 rs = st.executeQuery("SELECT E.EVENT_ID, E.START_TIME, E.END_TIME, E.NAME, E.DESCRIPTION, E.VENUE FROM EVENTS E, "
@@ -188,7 +198,7 @@ public class EventsGetRequestHandler {
                 outputStream.flush();
                 outputStream.close();
 
-            } else if ("all".equals(type) && user_id!=null) {
+            } else if ("all".equals(type) && user_id!=null && checkInteger(user_id)) {
 
                 //Rest call to get the events in the next 5 days that the user can explore
                 rs = st.executeQuery("SELECT E.EVENT_ID, E.START_TIME, E.END_TIME, E.NAME, E.DESCRIPTION, E.VENUE FROM EVENTS E WHERE E.START_TIME>SYSDATE() AND E.START_TIME< DATE_ADD(SYSDATE(), INTERVAL 5 DAY) AND "
