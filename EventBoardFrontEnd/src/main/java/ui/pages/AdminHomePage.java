@@ -27,20 +27,20 @@ public final class AdminHomePage extends javax.swing.JFrame {
     /**
      * Creates new form HomePage
      */
-    private String users;
     private JSONObject inputJSON;
 
     public AdminHomePage(JSONObject input) {
+        //fetching the JSON file which contains information about user loging in.
+        //Also initializing the UI components calling the panels to be hidden and visible.
         this.inputJSON = input;
         initComponents();
         active();
     }
 
     public void allHidden(){
-        navPanelAdminUser.setVisible(true);
-        navPanelAdminUser.setEnabled(true);
-        menu.setVisible(false);
-        menu.setEnabled(false);
+        //Hidding all the panels and only setting the navigation panels to be visible and enabling them.
+        navigationPanel.setVisible(true);
+        navigationPanel.setEnabled(true);
         homePanel.setVisible(false);
         homePanel.setEnabled(false);
         profilePanel.setVisible(false);
@@ -48,60 +48,63 @@ public final class AdminHomePage extends javax.swing.JFrame {
     }
 
     public void active() {
-        navPanelAdminUser.setVisible(true);
-        navPanelAdminUser.setEnabled(true);
-        menu.setVisible(false);
-        menu.setEnabled(false);
+        //Hidding all the panels and setting navigation and home panel to be visible.
+        allHidden();
         homePanel.setVisible(true);
         homePanel.setEnabled(true);
     }
     
     public void adminHomeTable(){
-        String url = "http://localhost:9001/associations/?type=administrator";
-        RestAPIHook a = new RestAPIHook();
-        JSONObject p = a.invokeGetMethod(url);
-        Iterator<String> keys1 = p.keys();
-        List feeds = new ArrayList();
-        while(keys1.hasNext()){
-            String key = keys1.next();
-            if("isSuccess".equals(key)){
+        //function to fetch and populate the data of approvals for associations.
+        String adminUrl = "http://localhost:9001/associations/?type=administrator";
+        //initializing the RestAPI an fetching the data as a JSON file.
+        RestAPIHook adminHook = new RestAPIHook();
+        JSONObject adminData = adminHook.invokeGetMethod(adminUrl);
+        //iterating over the JSON file.
+        Iterator<String> adminKeys = adminData.keys();
+        List adminFeeds = new ArrayList();
+        while(adminKeys.hasNext()){
+            //continuing id isSuccess parameter is true.
+            String adminKey = adminKeys.next();
+            if("isSuccess".equals(adminKey)){
                 continue;
             }
-            HashMap temp = new HashMap();
-            temp.put("association_id", key);
-            temp.put("isAdmin",true);
-            JSONObject val = p.getJSONObject(key);
-            Iterator<String> childKeys = val.keys();
-            while(childKeys.hasNext()){
-                String childKey = childKeys.next();
-                temp.put(childKey, val.get(childKey));
+            //initializing hashmap and populating the data from the JSON.
+            HashMap adminTemp = new HashMap();
+            adminTemp.put("association_id", adminKey);
+            adminTemp.put("isAdmin",true);
+            //creating a JSON and appending data to be displayed in the table.
+            JSONObject adminVal = adminData.getJSONObject(adminKey);
+            Iterator<String> adminChildKeys = adminVal.keys();
+            while(adminChildKeys.hasNext()){
+                String adminChildKey = adminChildKeys.next();
+                adminTemp.put(adminChildKey, adminVal.get(adminChildKey));
             }
-            System.out.println("Hi2");
-            System.out.println(temp);
-            System.out.println("Hi3");
-            feeds.add(new AssociationsFeed(temp));
+            //adding the data to the arraylist to create the table.
+            adminFeeds.add(new AssociationsFeed(adminTemp));
         }
-        jTable1 = new JTable(new AssociationsFeedTableModel(feeds));
-        jTable1.setDefaultRenderer(AssociationsFeed.class, new AssociationsFeedCell());
-        jTable1.setDefaultEditor(AssociationsFeed.class, new AssociationsFeedCell());
-        jTable1.setRowHeight(60);
-        jTable1.setModel(jTable1.getModel());
-        jTable1.getColumnModel().getColumn(0).setHeaderValue("Home");
-//        jTable1.getColumnModel().getColumn(1).setCellRenderer(rightRenderer);
-        jTable1.getTableHeader().resizeAndRepaint();
-        jTable1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jTable1.setFocusable(false);
-        jTable1.setOpaque(false);
-        jTable1.setRequestFocusEnabled(false);
-        jTable1.setRowSelectionAllowed(false);
-        jTable1.setSurrendersFocusOnKeystroke(true);
-        jTable1.setUpdateSelectionOnSort(false);
-        jTable1.setVerifyInputWhenFocusTarget(false);
-        jScrollPane1.setViewportView(jTable1);
+        //creating a new Jtable with custom render and editor methods
+        adminHomeTable = new JTable(new AssociationsFeedTableModel(adminFeeds));
+        adminHomeTable.setDefaultRenderer(AssociationsFeed.class, new AssociationsFeedCell());
+        adminHomeTable.setDefaultEditor(AssociationsFeed.class, new AssociationsFeedCell());
+        //setting properties for the table
+        adminHomeTable.setRowHeight(60);
+        adminHomeTable.setModel(adminHomeTable.getModel());
+        adminHomeTable.getColumnModel().getColumn(0).setHeaderValue("Home");
+        adminHomeTable.getTableHeader().resizeAndRepaint();
+        adminHomeTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        adminHomeTable.setFocusable(false);
+        adminHomeTable.setOpaque(false);
+        adminHomeTable.setRequestFocusEnabled(false);
+        adminHomeTable.setRowSelectionAllowed(false);
+        adminHomeTable.setSurrendersFocusOnKeystroke(true);
+        adminHomeTable.setUpdateSelectionOnSort(false);
+        adminHomeTable.setVerifyInputWhenFocusTarget(false);
+        jScrollPane1.setViewportView(adminHomeTable);
+        //hidding all the panels and only making the home panel visible.
+        allHidden();
         homePanel.setVisible(true);
         homePanel.setEnabled(true);
-        profilePanel.setVisible(false);
-        profilePanel.setEnabled(false);
     }
 
     /**
@@ -109,26 +112,26 @@ public final class AdminHomePage extends javax.swing.JFrame {
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
      */
+    //defining the UI
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jFrame1 = new javax.swing.JFrame();
         jPanel1 = new javax.swing.JPanel();
-        navPanelAdminUser = new javax.swing.JPanel();
+        navigationPanel = new javax.swing.JPanel();
         homeAdminButton = new javax.swing.JButton();
         profileAssocButton1 = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
+        headerPanel = new javax.swing.JPanel();
         titleLabel = new javax.swing.JLabel();
         logoutLabel = new javax.swing.JLabel();
-        menu = new javax.swing.JLabel();
         profilePanel = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        userType = new javax.swing.JLabel();
+        description = new javax.swing.JLabel();
+        fname = new javax.swing.JLabel();
         homePanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        adminHomeTable = new javax.swing.JTable();
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
@@ -146,7 +149,7 @@ public final class AdminHomePage extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        navPanelAdminUser.setBackground(new java.awt.Color(102, 102, 102));
+        navigationPanel.setBackground(new java.awt.Color(102, 102, 102));
 
         homeAdminButton.setBackground(new java.awt.Color(102, 102, 102));
         homeAdminButton.setForeground(new java.awt.Color(255, 255, 255));
@@ -162,7 +165,7 @@ public final class AdminHomePage extends javax.swing.JFrame {
 
         profileAssocButton1.setBackground(new java.awt.Color(102, 102, 102));
         profileAssocButton1.setForeground(new java.awt.Color(255, 255, 255));
-        profileAssocButton1.setText("Profile Settings");
+        profileAssocButton1.setText("Profile");
         profileAssocButton1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         profileAssocButton1.setMaximumSize(new java.awt.Dimension(140, 29));
         profileAssocButton1.setMinimumSize(new java.awt.Dimension(140, 29));
@@ -172,25 +175,25 @@ public final class AdminHomePage extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout navPanelAdminUserLayout = new javax.swing.GroupLayout(navPanelAdminUser);
-        navPanelAdminUser.setLayout(navPanelAdminUserLayout);
-        navPanelAdminUserLayout.setHorizontalGroup(
-            navPanelAdminUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout navigationPanelLayout = new javax.swing.GroupLayout(navigationPanel);
+        navigationPanel.setLayout(navigationPanelLayout);
+        navigationPanelLayout.setHorizontalGroup(
+            navigationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(homeAdminButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(profileAssocButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
         );
-        navPanelAdminUserLayout.setVerticalGroup(
-            navPanelAdminUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, navPanelAdminUserLayout.createSequentialGroup()
+        navigationPanelLayout.setVerticalGroup(
+            navigationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, navigationPanelLayout.createSequentialGroup()
                 .addComponent(profileAssocButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(homeAdminButton, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(365, 365, 365))
         );
 
-        jPanel1.add(navPanelAdminUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 270, 560));
+        jPanel1.add(navigationPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 270, 560));
 
-        jPanel2.setBackground(new java.awt.Color(51, 51, 255));
+        headerPanel.setBackground(new java.awt.Color(51, 51, 255));
 
         titleLabel.setFont(new java.awt.Font("Arial", 3, 24)); // NOI18N
         titleLabel.setForeground(new java.awt.Color(255, 255, 255));
@@ -205,45 +208,34 @@ public final class AdminHomePage extends javax.swing.JFrame {
             }
         });
 
-        menu.setText("test");
-        menu.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                menuMouseClicked(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(46, 46, 46)
-                .addComponent(menu)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 560, Short.MAX_VALUE)
+        javax.swing.GroupLayout headerPanelLayout = new javax.swing.GroupLayout(headerPanel);
+        headerPanel.setLayout(headerPanelLayout);
+        headerPanelLayout.setHorizontalGroup(
+            headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(headerPanelLayout.createSequentialGroup()
+                .addContainerGap(625, Short.MAX_VALUE)
                 .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(520, 520, 520)
                 .addComponent(logoutLabel)
                 .addGap(42, 42, 42))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        headerPanelLayout.setVerticalGroup(
+            headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(headerPanelLayout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(logoutLabel))
-                    .addComponent(menu))
+                .addGroup(headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(logoutLabel))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1560, 70));
+        jPanel1.add(headerPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1560, 70));
 
-        jLabel1.setText("User Type :        Admin");
+        userType.setText("User Type :        Admin");
 
-        jLabel2.setText("Email :        "+ this.inputJSON.get("email").toString());
+        description.setText("Email :        "+ this.inputJSON.get("email").toString());
 
-        jLabel4.setText("First Name :       "+this.inputJSON.get("first_name").toString());
+        fname.setText("First Name :       "+this.inputJSON.get("first_name").toString());
 
         javax.swing.GroupLayout profilePanelLayout = new javax.swing.GroupLayout(profilePanel);
         profilePanel.setLayout(profilePanelLayout);
@@ -252,33 +244,27 @@ public final class AdminHomePage extends javax.swing.JFrame {
             .addGroup(profilePanelLayout.createSequentialGroup()
                 .addGap(291, 291, 291)
                 .addGroup(profilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(description, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
+                    .addComponent(fname, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(userType, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(964, Short.MAX_VALUE))
         );
         profilePanelLayout.setVerticalGroup(
             profilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(profilePanelLayout.createSequentialGroup()
                 .addGap(60, 60, 60)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(userType, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(14, 14, 14)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(fname, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(description, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(312, Short.MAX_VALUE))
         );
 
         jPanel1.add(profilePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1560, 560));
 
-        homePanel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                homePanelMouseClicked(evt);
-            }
-        });
-
-        jTable1.setModel(jTable1.getModel());
-        jScrollPane1.setViewportView(jTable1);
+        adminHomeTable.setModel(adminHomeTable.getModel());
+        jScrollPane1.setViewportView(adminHomeTable);
         adminHomeTable();
 
         javax.swing.GroupLayout homePanelLayout = new javax.swing.GroupLayout(homePanel);
@@ -318,35 +304,30 @@ public final class AdminHomePage extends javax.swing.JFrame {
 
     private void logoutLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutLabelMouseClicked
         // TODO add your handling code here:
+        //disposing the current frame and creating a new login page.
         this.dispose();
-        LoginPage form = new LoginPage();
-        form.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        form.setVisible(true);
+        LoginPage newLoginPage = new LoginPage();
+        newLoginPage.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        newLoginPage.setVisible(true);
     }//GEN-LAST:event_logoutLabelMouseClicked
 
     private void menuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuMouseClicked
         // TODO add your handling code here:
-        active();
     }//GEN-LAST:event_menuMouseClicked
 
     private void homeAdminButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeAdminButtonActionPerformed
         // TODO add your handling code here:
+        //calling the home table when clicking the home button. 
         adminHomeTable();
     }//GEN-LAST:event_homeAdminButtonActionPerformed
 
     private void profileAssocButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profileAssocButton1ActionPerformed
         // TODO add your handling code here:
+        //hidding all the panels and setting the profile panel to visible.
         allHidden();
         profilePanel.setVisible(true);
         profilePanel.setEnabled(true);
     }//GEN-LAST:event_profileAssocButton1ActionPerformed
-
-    private void homePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homePanelMouseClicked
-        // TODO add your handling code here:
-//        allHidden();
-//        profilePanel.setVisible(true);
-//        profilePanel.setEnabled(true);
-    }//GEN-LAST:event_homePanelMouseClicked
 
     /**
      * @param args the command line arguments
@@ -372,21 +353,20 @@ public final class AdminHomePage extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JTable adminHomeTable;
+    private javax.swing.JLabel description;
+    private javax.swing.JLabel fname;
+    private javax.swing.JPanel headerPanel;
     private javax.swing.JButton homeAdminButton;
     public javax.swing.JPanel homePanel;
     private javax.swing.JFrame jFrame1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    public javax.swing.JTable jTable1;
     private javax.swing.JLabel logoutLabel;
-    private javax.swing.JLabel menu;
-    private javax.swing.JPanel navPanelAdminUser;
+    private javax.swing.JPanel navigationPanel;
     private javax.swing.JButton profileAssocButton1;
     private javax.swing.JPanel profilePanel;
     private javax.swing.JLabel titleLabel;
+    private javax.swing.JLabel userType;
     // End of variables declaration//GEN-END:variables
 }
