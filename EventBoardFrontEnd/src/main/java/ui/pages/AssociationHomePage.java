@@ -655,7 +655,9 @@ public final class AssociationHomePage extends javax.swing.JFrame {
                     params.put("start_time", startDateTime);
                     params.put("end_time", endDateTime);
                     params.put("name", name);
-                    params.put("venue", venue);
+                    if(!"".equals(venue)){
+                        params.put("venue", venue);
+                    }
                     params.put("description", desc);
                     System.out.println(params);
                     JSONObject p = a.invokePostMethod(url, params);

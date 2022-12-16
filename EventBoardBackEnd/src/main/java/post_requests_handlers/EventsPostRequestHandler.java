@@ -125,7 +125,7 @@ public class EventsPostRequestHandler {
             //Logging exception
             System.out.println(e.getMessage());
             
-            ////Setting success status to false if above code fails to execute 
+            //Setting success status to false if above code fails to execute 
             jo.put("isSuccess", false);
 
             try {
