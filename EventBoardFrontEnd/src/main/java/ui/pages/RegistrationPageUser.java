@@ -15,45 +15,44 @@ import rest.RestAPIHook;
  *
  * @author shrut
  */
-public final class RegistrationPageAssociation extends javax.swing.JFrame {
+public final class RegistrationPageUser extends javax.swing.JFrame {
 
     /**
      * Creates new form HomePage
      */
+ 
     //Constructor to be called on initialization
-    public RegistrationPageAssociation() {
+    public RegistrationPageUser() {
         initComponents();
     }
 
     //Validate Input Fields
     public boolean validations() {
-        String username = userNameTextField.getText();
-        String name = nameTextField.getText();
-        String desc = descTextArea.getText();
-        String address = addressTextField.getText();
-        String contact = contactTextField.getText();
-        String email = emailTextField.getText();
-        String password = passwordTextField.getText();
-        String verifyPassword = verifyPasswordTextField.getText();
-        
         boolean isValid = true;
-        nameTextField.setBackground(Color.white);
+        firstNameTextField.setBackground(Color.white);
+        lastNameTextField.setBackground(Color.white);
         userNameTextField.setBackground(Color.white);
-        descTextArea.setBackground(Color.white);
+        emailTextField.setBackground(Color.white);
         passwordTextField.setBackground(Color.white);
         verifyPasswordTextField.setBackground(Color.white);
+        System.out.println(firstNameTextField.getText());
+        System.out.println("Hi"+lastNameTextField.getText());
+        System.out.println(userNameTextField.getText());
         
-        //Validate not null conditions
-        if (userNameTextField.getText().length() == 0) {
+        if (firstNameTextField.getText().length() == 0) {
+            firstNameTextField.setBackground(Color.red);
+            isValid = false;
+        }
+        if (this.lastNameTextField.getText().length() == 0) {
+            lastNameTextField.setBackground(Color.red);
+            isValid = false;
+        }
+        if (this.emailTextField.getText().length() == 0) {
+            emailTextField.setBackground(Color.red);
+            isValid = false;
+        }
+        if (this.userNameTextField.getText().length() == 0) {
             userNameTextField.setBackground(Color.red);
-            isValid = false;
-        }
-        if (nameTextField.getText().length() == 0) {
-            nameTextField.setBackground(Color.red);
-            isValid = false;
-        }
-        if (this.descTextArea.getText().length() == 0) {
-            descTextArea.setBackground(Color.red);
             isValid = false;
         }
         if (this.passwordTextField.getText().length() == 0) {
@@ -64,14 +63,13 @@ public final class RegistrationPageAssociation extends javax.swing.JFrame {
             verifyPasswordTextField.setBackground(Color.red);
             isValid = false;
         }
-        //Validate password and Verify Password fields such that they are equal
-        if(!password.equals(verifyPassword)){
-//            JOptionPane.showMessageDialog(jPanel1, "Both Password and Verify Password must match!");
+        //Validate if both Password and Verify Password fields are equal
+        if (!this.passwordTextField.getText().equals(this.verifyPasswordTextField.getText())){
             passwordTextField.setBackground(Color.red);
             verifyPasswordTextField.setBackground(Color.red);
             isValid = false;
         }
-        
+
         return isValid;
     }
     /**
@@ -90,30 +88,25 @@ public final class RegistrationPageAssociation extends javax.swing.JFrame {
         backPageLabel = new javax.swing.JLabel();
         registrationPanel = new javax.swing.JPanel();
         verifyPasswordLabel = new javax.swing.JLabel();
-        userNameLabel = new javax.swing.JLabel();
-        nameTextField = new javax.swing.JTextField();
+        lastNameLabel = new javax.swing.JLabel();
+        firstNameTextField = new javax.swing.JTextField();
         verifyPasswordTextField = new javax.swing.JPasswordField();
         RegistrationTitle = new javax.swing.JLabel();
         RegistrationButton = new javax.swing.JButton();
-        nameLabel = new javax.swing.JLabel();
-        descLabel = new javax.swing.JLabel();
+        firstNameLabel = new javax.swing.JLabel();
+        userNameLabel = new javax.swing.JLabel();
         emailLabel = new javax.swing.JLabel();
         passwordLabel = new javax.swing.JLabel();
+        lastNameTextField = new javax.swing.JTextField();
         userNameTextField = new javax.swing.JTextField();
         emailTextField = new javax.swing.JTextField();
         passwordTextField = new javax.swing.JPasswordField();
         firstNameLabel1 = new javax.swing.JLabel();
         firstNameLabel2 = new javax.swing.JLabel();
         firstNameLabel3 = new javax.swing.JLabel();
+        firstNameLabel4 = new javax.swing.JLabel();
         firstNameLabel5 = new javax.swing.JLabel();
         firstNameLabel6 = new javax.swing.JLabel();
-        contactLabel = new javax.swing.JLabel();
-        firstNameLabel7 = new javax.swing.JLabel();
-        contactTextField = new javax.swing.JTextField();
-        addressLabel = new javax.swing.JLabel();
-        addressTextField = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        descTextArea = new javax.swing.JTextArea();
 
         jFrame1.setBackground(new java.awt.Color(255, 255, 255));
         jFrame1.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -142,7 +135,7 @@ public final class RegistrationPageAssociation extends javax.swing.JFrame {
         titleLabel.setForeground(new java.awt.Color(255, 255, 255));
         titleLabel.setText("UMASS EVENTS BOARD");
 
-        backPageLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        backPageLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         backPageLabel.setForeground(new java.awt.Color(255, 255, 255));
         backPageLabel.setText("BACK");
         backPageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -156,11 +149,11 @@ public final class RegistrationPageAssociation extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(61, 61, 61)
+                .addGap(58, 58, 58)
                 .addComponent(backPageLabel)
-                .addGap(519, 519, 519)
+                .addGap(528, 528, 528)
                 .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(652, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -178,12 +171,12 @@ public final class RegistrationPageAssociation extends javax.swing.JFrame {
         verifyPasswordLabel.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         verifyPasswordLabel.setText("Verify Password");
 
-        userNameLabel.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        userNameLabel.setText("User Name");
+        lastNameLabel.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        lastNameLabel.setText("Last Name");
 
         RegistrationTitle.setFont(new java.awt.Font("Trebuchet MS", 0, 24)); // NOI18N
         RegistrationTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        RegistrationTitle.setText("ASSOCIATION REGISTRATION");
+        RegistrationTitle.setText("USER REGISTRATION");
 
         RegistrationButton.setBackground(new java.awt.Color(204, 204, 255));
         RegistrationButton.setText("Register");
@@ -193,11 +186,11 @@ public final class RegistrationPageAssociation extends javax.swing.JFrame {
             }
         });
 
-        nameLabel.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        nameLabel.setText("Name");
+        firstNameLabel.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        firstNameLabel.setText("First Name");
 
-        descLabel.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        descLabel.setText("Description");
+        userNameLabel.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        userNameLabel.setText("User Name");
 
         emailLabel.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         emailLabel.setText("Email");
@@ -217,6 +210,10 @@ public final class RegistrationPageAssociation extends javax.swing.JFrame {
         firstNameLabel3.setForeground(new java.awt.Color(255, 0, 0));
         firstNameLabel3.setText("*");
 
+        firstNameLabel4.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        firstNameLabel4.setForeground(new java.awt.Color(255, 0, 0));
+        firstNameLabel4.setText("*");
+
         firstNameLabel5.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         firstNameLabel5.setForeground(new java.awt.Color(255, 0, 0));
         firstNameLabel5.setText("*");
@@ -224,19 +221,6 @@ public final class RegistrationPageAssociation extends javax.swing.JFrame {
         firstNameLabel6.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         firstNameLabel6.setForeground(new java.awt.Color(255, 0, 0));
         firstNameLabel6.setText("*");
-
-        contactLabel.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        contactLabel.setText("Contact");
-
-        firstNameLabel7.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        firstNameLabel7.setForeground(new java.awt.Color(255, 0, 0));
-
-        addressLabel.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        addressLabel.setText("Address");
-
-        descTextArea.setColumns(20);
-        descTextArea.setRows(5);
-        jScrollPane1.setViewportView(descTextArea);
 
         javax.swing.GroupLayout registrationPanelLayout = new javax.swing.GroupLayout(registrationPanel);
         registrationPanel.setLayout(registrationPanelLayout);
@@ -253,49 +237,47 @@ public final class RegistrationPageAssociation extends javax.swing.JFrame {
                     .addGroup(registrationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, registrationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(registrationPanelLayout.createSequentialGroup()
-                                .addGap(288, 288, 288)
-                                .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(254, 254, 254)
+                                .addComponent(firstNameLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(firstNameLabel1)
-                                .addGap(39, 39, 39)
-                                .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(32, 32, 32)
+                                .addComponent(firstNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, registrationPanelLayout.createSequentialGroup()
                                 .addGap(205, 205, 205)
-                                .addGroup(registrationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(passwordLabel)
-                                    .addComponent(verifyPasswordLabel)
-                                    .addComponent(contactLabel)
-                                    .addComponent(addressLabel)
-                                    .addComponent(emailLabel))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(registrationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(addressTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(registrationPanelLayout.createSequentialGroup()
-                                        .addComponent(firstNameLabel7)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(contactTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(registrationPanelLayout.createSequentialGroup()
-                                        .addComponent(firstNameLabel6)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
-                                        .addComponent(verifyPasswordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(registrationPanelLayout.createSequentialGroup()
-                                        .addComponent(firstNameLabel5)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(passwordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(emailTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGroup(registrationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, registrationPanelLayout.createSequentialGroup()
+                                        .addGroup(registrationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(passwordLabel)
+                                            .addComponent(emailLabel))
+                                        .addGap(52, 52, 52)
+                                        .addGroup(registrationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(passwordTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(emailTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, registrationPanelLayout.createSequentialGroup()
+                                        .addComponent(verifyPasswordLabel)
+                                        .addGap(52, 52, 52)
+                                        .addComponent(verifyPasswordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, registrationPanelLayout.createSequentialGroup()
                             .addGap(243, 243, 243)
                             .addGroup(registrationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(descLabel)
-                                .addComponent(userNameLabel))
+                                .addComponent(userNameLabel)
+                                .addComponent(lastNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addGroup(registrationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(firstNameLabel2)
-                                .addComponent(firstNameLabel3))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(registrationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(userNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(firstNameLabel6)
+                                .addGroup(registrationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(firstNameLabel4)
+                                    .addGroup(registrationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(registrationPanelLayout.createSequentialGroup()
+                                            .addComponent(firstNameLabel3)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(userNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(registrationPanelLayout.createSequentialGroup()
+                                            .addComponent(firstNameLabel2)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(lastNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(firstNameLabel5))))))
                 .addContainerGap(177, Short.MAX_VALUE))
         );
         registrationPanelLayout.setVerticalGroup(
@@ -303,51 +285,39 @@ public final class RegistrationPageAssociation extends javax.swing.JFrame {
             .addGroup(registrationPanelLayout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addComponent(RegistrationTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38)
+                .addGap(28, 28, 28)
                 .addGroup(registrationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(firstNameLabel1)
-                    .addComponent(nameLabel))
-                .addGap(18, 18, 18)
+                    .addComponent(firstNameLabel)
+                    .addComponent(firstNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(firstNameLabel1))
+                .addGap(28, 28, 28)
+                .addGroup(registrationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lastNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lastNameLabel)
+                    .addComponent(firstNameLabel2))
+                .addGap(29, 29, 29)
                 .addGroup(registrationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(userNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(userNameLabel)
-                    .addComponent(firstNameLabel2))
-                .addGroup(registrationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(registrationPanelLayout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addGroup(registrationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(descLabel)
-                            .addComponent(firstNameLabel3)))
-                    .addGroup(registrationPanelLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, Short.MAX_VALUE)
+                    .addComponent(firstNameLabel3))
+                .addGap(28, 28, 28)
                 .addGroup(registrationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(emailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(emailLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(emailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(firstNameLabel4))
+                .addGap(26, 26, 26)
                 .addGroup(registrationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addressLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(addressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(registrationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(contactLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(firstNameLabel7)
-                    .addComponent(contactTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(registrationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(passwordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(passwordLabel)
+                    .addComponent(passwordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(firstNameLabel5))
-                .addGap(15, 15, 15)
+                .addGap(25, 25, 25)
                 .addGroup(registrationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(verifyPasswordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(verifyPasswordLabel)
-                    .addComponent(firstNameLabel6))
-                .addGap(31, 31, 31)
+                    .addComponent(firstNameLabel6)
+                    .addComponent(verifyPasswordLabel))
+                .addGap(61, 61, 61)
                 .addComponent(RegistrationButton, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28))
+                .addContainerGap(87, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -356,9 +326,9 @@ public final class RegistrationPageAssociation extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(333, 333, 333)
+                .addGap(351, 351, 351)
                 .addComponent(registrationPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(394, Short.MAX_VALUE))
+                .addContainerGap(376, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -366,7 +336,7 @@ public final class RegistrationPageAssociation extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(registrationPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(55, Short.MAX_VALUE))
+                .addContainerGap(60, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -385,52 +355,49 @@ public final class RegistrationPageAssociation extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    //Actions Performed when Register button is clicked
+    //Actions to be performed when user click Register button
     private void RegistrationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrationButtonActionPerformed
-        // TODO add your handling code here:
-        String username = userNameTextField.getText();
-        String name = nameTextField.getText();
-        String desc = descTextArea.getText();
-        String address = addressTextField.getText();
-        String contact = contactTextField.getText();
-        String email = emailTextField.getText();
-        String password = passwordTextField.getText();
-        String verifyPassword = verifyPasswordTextField.getText();
-        
-        //Enter loop if all validations are passed
+        //Enter loop if all validations are met
         if (validations()) {
-            
-            //Call a POST service to create new association
-            String url = "http://localhost:9001/associations/?";
+            String username = userNameTextField.getText();
+            String password = passwordTextField.getText();
+            String firstName = firstNameTextField.getText();
+            String lastName = lastNameTextField.getText();
+            String email = emailTextField.getText();
+            Integer userCode = 2;
+
+            //Create a POST call to insert a new user
+            String url = "http://localhost:9000/users/?";
             RestAPIHook a = new RestAPIHook();
-            HashMap<String, Object> params = new HashMap<>();
-            params.put("association_id", 1);
+            HashMap<String,Object> params = new HashMap<>();
+            params.put("user_code", userCode);
             params.put("user_name", username);
             params.put("password", password);
-            params.put("description", desc);
-            params.put("association_name", name);
+            params.put("first_name", firstName);
+            params.put("last_name", lastName);
+            params.put("email", email);
             System.out.println(params);
             JSONObject p = a.invokePostMethod(url, params);
             System.out.println(p);
-            
-            //Redirect to login page if POST call is a success
-            if(p.get("isSuccess").toString() == "true"){
-                this.dispose();
+            //Redirect to the Login page if the new user is created
+            if(p.get("isSuccess").toString().equals("true")){
+                dispose();
                 LoginPage login = new LoginPage();
                 login.setExtendedState(JFrame.MAXIMIZED_BOTH);
                 login.setVisible(true);
             }
             else{
-                JOptionPane.showMessageDialog(jPanel1, "Please try again", "Error in Registration!", JOptionPane.ERROR_MESSAGE);
+                //Throw error if new user is not created
+                JOptionPane.showMessageDialog(registrationPanel, "Please try again", "Error in Registration!", JOptionPane.ERROR_MESSAGE);
                 dispose();
-                RegistrationPageAssociation registerAssociationLogin = new RegistrationPageAssociation();
-                registerAssociationLogin.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                registerAssociationLogin.setVisible(true);
+                RegistrationPageUser registerLogin = new RegistrationPageUser();
+                registerLogin.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                registerLogin.setVisible(true);
             }
         }
     }//GEN-LAST:event_RegistrationButtonActionPerformed
 
-    //Redirect to Login page when BACK is clicked
+    //Redirect to Login Page when BACK is clicked
     private void backPageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backPageLabelMouseClicked
         // TODO add your handling code here:
         this.dispose();
@@ -456,18 +423,15 @@ public final class RegistrationPageAssociation extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(RegistrationPageAssociation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegistrationPageUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
         
         //</editor-fold>
         try {
-            RegistrationPageAssociation regPage = new RegistrationPageAssociation();
+            RegistrationPageUser regPage = new RegistrationPageUser();
             regPage.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            regPage.setVisible(true); //make form visible to the user
+            regPage.setVisible(true); //make form visible to the use
 
         } catch (Exception e) {
             //handle exception   
@@ -478,27 +442,22 @@ public final class RegistrationPageAssociation extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton RegistrationButton;
     private javax.swing.JLabel RegistrationTitle;
-    private javax.swing.JLabel addressLabel;
-    private javax.swing.JTextField addressTextField;
     private javax.swing.JLabel backPageLabel;
-    private javax.swing.JLabel contactLabel;
-    private javax.swing.JTextField contactTextField;
-    private javax.swing.JLabel descLabel;
-    private javax.swing.JTextArea descTextArea;
     private javax.swing.JLabel emailLabel;
     private javax.swing.JTextField emailTextField;
+    private javax.swing.JLabel firstNameLabel;
     private javax.swing.JLabel firstNameLabel1;
     private javax.swing.JLabel firstNameLabel2;
     private javax.swing.JLabel firstNameLabel3;
+    private javax.swing.JLabel firstNameLabel4;
     private javax.swing.JLabel firstNameLabel5;
     private javax.swing.JLabel firstNameLabel6;
-    private javax.swing.JLabel firstNameLabel7;
+    private javax.swing.JTextField firstNameTextField;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel nameLabel;
-    private javax.swing.JTextField nameTextField;
+    private javax.swing.JLabel lastNameLabel;
+    private javax.swing.JTextField lastNameTextField;
     private javax.swing.JLabel passwordLabel;
     private javax.swing.JTextField passwordTextField;
     private javax.swing.JPanel registrationPanel;

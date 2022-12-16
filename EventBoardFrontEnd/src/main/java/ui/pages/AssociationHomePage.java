@@ -4,6 +4,7 @@
  */
 package ui.pages;
 
+import java.awt.Color;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -54,8 +55,8 @@ public final class AssociationHomePage extends javax.swing.JFrame {
     public void allHidden(){
         navPanelAssocUser.setVisible(true);
         navPanelAssocUser.setEnabled(true);
-        menu.setVisible(false);
-        menu.setEnabled(false);
+//        menu.setVisible(false);
+//        menu.setEnabled(false);
         profilePanel.setVisible(false);
         profilePanel.setEnabled(false);
         upcomEvePanel.setVisible(false);
@@ -181,7 +182,6 @@ public final class AssociationHomePage extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         titleLabel = new javax.swing.JLabel();
         logoutLabel = new javax.swing.JLabel();
-        menu = new javax.swing.JLabel();
         profilePanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -211,6 +211,10 @@ public final class AssociationHomePage extends javax.swing.JFrame {
         Date date1 = new Date();
         SpinnerDateModel endModel = new SpinnerDateModel(date, null, null, Calendar.HOUR_OF_DAY);
         jSpinner2 = new javax.swing.JSpinner(endModel);
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
@@ -322,21 +326,12 @@ public final class AssociationHomePage extends javax.swing.JFrame {
             }
         });
 
-        menu.setText("test");
-        menu.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                menuMouseClicked(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(46, 46, 46)
-                .addComponent(menu)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 573, Short.MAX_VALUE)
+                .addContainerGap(638, Short.MAX_VALUE)
                 .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(507, 507, 507)
                 .addComponent(logoutLabel)
@@ -346,11 +341,9 @@ public final class AssociationHomePage extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(logoutLabel))
-                    .addComponent(menu))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(logoutLabel))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
 
@@ -469,7 +462,7 @@ public final class AssociationHomePage extends javax.swing.JFrame {
 
         jLabel6.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel6.setText("End Time");
-        postEvePanel.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 370, -1, -1));
+        postEvePanel.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 370, 70, -1));
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -488,9 +481,11 @@ public final class AssociationHomePage extends javax.swing.JFrame {
         postEvePanel.add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 270, 210, -1));
 
         jDateChooser1.setDateFormatString("yyyy-MM-dd");
+        jDateChooser1.setMinSelectableDate(new Date());
         postEvePanel.add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 320, 210, -1));
 
         jDateChooser2.setDateFormatString("yyyy-MM-dd");
+        jDateChooser2.setMinSelectableDate(new Date());
         postEvePanel.add(jDateChooser2, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 370, 210, -1));
 
         JSpinner.DateEditor startEditor = new JSpinner.DateEditor(jSpinner1, "HH:mm:ss");
@@ -500,6 +495,22 @@ public final class AssociationHomePage extends javax.swing.JFrame {
         JSpinner.DateEditor endEditor = new JSpinner.DateEditor(jSpinner2, "HH:mm:ss");
         jSpinner2.setEditor(endEditor);
         postEvePanel.add(jSpinner2, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 370, 90, -1));
+
+        jLabel11.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel11.setText("*");
+        postEvePanel.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 370, 30, 10));
+
+        jLabel12.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel12.setText("*");
+        postEvePanel.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 90, 20, 10));
+
+        jLabel13.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel13.setText("*");
+        postEvePanel.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 130, 20, 20));
+
+        jLabel14.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel14.setText("*");
+        postEvePanel.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 320, 30, 10));
 
         jPanel1.add(postEvePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1560, 560));
 
@@ -556,6 +567,54 @@ public final class AssociationHomePage extends javax.swing.JFrame {
         profilePanel.setEnabled(true);
     }//GEN-LAST:event_profileAssocButtonActionPerformed
 
+    //The date fields should not be null
+    public boolean validateDate(Date start, Date end){
+        boolean isValid = true;
+        jDateChooser1.setBackground(Color.white);
+        jDateChooser2.setBackground(Color.white);
+        
+        if(start == null){
+            jDateChooser1.setBackground(Color.red);
+            isValid = false;
+        }
+        if(end == null){
+            jDateChooser2.setBackground(Color.red);
+            isValid = false;
+        }
+        
+        return isValid;
+    }
+    
+    public boolean validations(String startDateTime, String endDateTime) throws ParseException{
+        boolean isValid = true;
+        jTextField1.setBackground(Color.white);
+        jTextArea1.setBackground(Color.white);
+        jDateChooser1.setBackground(Color.white);
+        jDateChooser2.setBackground(Color.white);
+
+        Date startDate = new SimpleDateFormat("yyyy-MM-dd HH:MM:SS").parse(startDateTime);
+        Date endDate = new SimpleDateFormat("yyyy-MM-dd HH:MM:SS").parse(endDateTime);
+
+        //Check for any empty fields
+        if(jTextField1.getText().length() == 0){
+            jTextField1.setBackground(Color.red);
+            isValid = false;
+        }
+        if(jTextArea1.getText().length() == 0){
+            jTextArea1.setBackground(Color.red);
+            isValid = false;
+        }
+        //Check if start date is before end date
+        if(startDate.after(endDate)){
+            jDateChooser1.setBackground(Color.red);
+            jDateChooser2.setBackground(Color.red);
+            isValid = false;
+        }
+
+        return isValid;
+    }
+    
+    //Actions performed to Create a new Event
     private void postButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_postButtonActionPerformed
         // TODO add your handling code here:
         String name = jTextField1.getText();
@@ -563,51 +622,55 @@ public final class AssociationHomePage extends javax.swing.JFrame {
         String venue = jTextField7.getText();
         Date start = jDateChooser1.getDate();
         Date end = jDateChooser2.getDate();
-        //Check if all fields are populated
-        if(name.isEmpty() || desc.isEmpty() || venue.isEmpty()){
-            JOptionPane.showMessageDialog(postEvePanel, "Please fill all fields");
-        }
-        else if(start == null){
-            JOptionPane.showMessageDialog(postEvePanel, "Please fill the start time!");
-        }
-        else if(end == null){
-            JOptionPane.showMessageDialog(postEvePanel, "Please fill the end time!");
-        }
-        //Format the start date and time  
-        SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
-        String startDate = dateFormat1.format(start);
-        String startTime = jSpinner1.getValue().toString().split(" ",6)[3];
-        String startDateTime = startDate+" "+startTime;
-        System.out.println("startDateTime -- "+startDateTime);
-        //Format the end date and time
-        String endDate = dateFormat1.format(end);
-        String endTime = jSpinner2.getValue().toString().split(" ",6)[3];
-        String endDateTime = endDate+" "+endTime;
-        System.out.println("startDateTime -- "+endDateTime);
         
-        //Clear the fields after clicking button
-        jTextField1.setText("");
-        jTextArea1.setText("");
-        jTextField7.setText("");
-        jDateChooser1.setCalendar(null);
-        jDateChooser2.setCalendar(null);
-        
-        String url = "http://localhost:9002/events/?";
-        RestAPIHook a = new RestAPIHook();
-        HashMap<String, String> params = new HashMap<>();
-        params.put("association_id", associationDetailsJSON.get("association_id").toString());
-        params.put("start_time", startDateTime);
-        params.put("end_time", endDateTime);
-        params.put("name", name);
-        params.put("venue", venue);
-        params.put("description", desc);
-        System.out.println(params);
-        JSONObject p = a.invokePostMethod(url, params);
-        if(p.get("isSuccess").toString().equals("true")){
-            JOptionPane.showMessageDialog(postEvePanel, "Successfully created an event");
-        }
-        else{
-            JOptionPane.showMessageDialog(postEvePanel, "Could not create an event");
+        //Validate Dates fields first. Date fields should never be null
+        if(validateDate(start, end)){
+            try {
+                //Format the start date and time
+                SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
+                String startDate = dateFormat1.format(start);
+                String startTime = jSpinner1.getValue().toString().split(" ",6)[3];
+                String startDateTime = startDate+" "+startTime;
+                System.out.println("startDateTime -- "+startDateTime);
+                //Format the end date and time
+                String endDate = dateFormat1.format(end);
+                String endTime = jSpinner2.getValue().toString().split(" ",6)[3];
+                String endDateTime = endDate+" "+endTime;
+                System.out.println("startDateTime -- "+endDateTime);
+                
+                //Enter loop if all fields are valid
+                if(validations(startDateTime, endDateTime)){
+                    //Clear the fields after clicking button
+                    jTextField1.setText("");
+                    jTextArea1.setText("");
+                    jTextField7.setText("");
+                    jDateChooser1.setCalendar(null);
+                    jDateChooser2.setCalendar(null);
+                    
+                    //Create a POST call to insert a new event
+                    String url = "http://localhost:9002/events/?";
+                    RestAPIHook a = new RestAPIHook();
+                    HashMap<String, String> params = new HashMap<>();
+                    params.put("association_id", associationDetailsJSON.get("association_id").toString());
+                    params.put("start_time", startDateTime);
+                    params.put("end_time", endDateTime);
+                    params.put("name", name);
+                    params.put("venue", venue);
+                    params.put("description", desc);
+                    System.out.println(params);
+                    JSONObject p = a.invokePostMethod(url, params);
+                    //Display success messsage once POST call is a success
+                    if(p.get("isSuccess").toString().equals("true")){
+                        JOptionPane.showMessageDialog(postEvePanel, "Successfully created an event!");
+                    }
+                    else{
+                        //Display an error message if new event is not created
+                        JOptionPane.showMessageDialog(postEvePanel, "Error in creating an event!");
+                    }
+                }
+            } catch (ParseException ex) {
+                Logger.getLogger(AssociationHomePage.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_postButtonActionPerformed
 
@@ -640,6 +703,10 @@ public final class AssociationHomePage extends javax.swing.JFrame {
     private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -658,7 +725,6 @@ public final class AssociationHomePage extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField7;
     private javax.swing.JLabel logoutLabel;
-    private javax.swing.JLabel menu;
     private javax.swing.JPanel navPanelAssocUser;
     private javax.swing.JButton pastEveAssocButton;
     private javax.swing.JPanel pastEvePanel;

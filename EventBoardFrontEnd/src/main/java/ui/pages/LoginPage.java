@@ -22,6 +22,7 @@ public final class LoginPage extends javax.swing.JFrame {
      * Creates new form HomePage
      */
  
+    //Constructor called on initialization
     public LoginPage() {
         initComponents();
     }
@@ -188,7 +189,7 @@ public final class LoginPage extends javax.swing.JFrame {
         RestAPIHook a = new RestAPIHook();
         JSONObject p = a.invokeGetMethod(url);
 
-        //check whether the credentials are authentic or not  
+        //check whether the credentials are authenticated or not  
         if(p.get("isSuccess").toString() == "true") {  //if authentic, navigate user to a new page  
             System.out.println("hi muneer0");
             System.out.println(p.get("user_code").toString());
@@ -229,9 +230,9 @@ public final class LoginPage extends javax.swing.JFrame {
     private void registerUserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerUserButtonActionPerformed
         // TODO add your handling code here:
         this.dispose();
-        RegistrationPage form = new RegistrationPage();
-        form.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        form.setVisible(true);
+        RegistrationPageUser userRegPage = new RegistrationPageUser();
+        userRegPage.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        userRegPage.setVisible(true);
     }//GEN-LAST:event_registerUserButtonActionPerformed
 
     /**

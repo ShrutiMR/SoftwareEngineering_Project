@@ -289,9 +289,7 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
-                      <Component id="menu" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="650" max="32767" attributes="0"/>
+                      <EmptySpace pref="715" max="32767" attributes="0"/>
                       <Component id="titleLabel" min="-2" pref="290" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="430" max="-2" attributes="0"/>
                       <Component id="logoutLabel" min="-2" max="-2" attributes="0"/>
@@ -303,12 +301,9 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <EmptySpace min="19" pref="19" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                              <Component id="titleLabel" alignment="3" min="-2" pref="26" max="-2" attributes="0"/>
-                              <Component id="logoutLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="menu" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="titleLabel" alignment="3" min="-2" pref="26" max="-2" attributes="0"/>
+                          <Component id="logoutLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="25" max="32767" attributes="0"/>
                   </Group>
@@ -339,14 +334,6 @@
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="logoutLabelMouseClicked"/>
-              </Events>
-            </Component>
-            <Component class="javax.swing.JLabel" name="menu">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="test"/>
-              </Properties>
-              <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="menuMouseClicked"/>
               </Events>
             </Component>
           </SubComponents>

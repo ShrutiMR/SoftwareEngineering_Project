@@ -4,3 +4,11 @@ EventBoardBackEnd/target/classes/microservices/Associations.class
 EventBoardBackEnd/target/classes/microservices/Associations.class
 EventBoardBackEnd/target/classes/microservices/Associations.class
 EventBoardBackEnd/target/classes/microservices/Users.class
+EventBoardBackEnd/target/classes/requestHandlers/AssociationsRequestHandler.class
+EventBoardBackEnd/target/classes/requestHandlers/EventsRequestHandler.class
+EventBoardBackEnd/target/classes/requestHandlers/AssociationsRequestHandler.class
+EventBoardBackEnd/target/classes/requestHandlers/EventsRequestHandler.class
+EventBoardBackEnd/target/classes/requestHandlers/UsersRequestHandler.class
+EventBoardBackEnd/target/classes/requestHandlers/EventsRequestHandler.class
+/EventBoardBackEnd/nbproject/
+/EventBoardFrontEnd/nbproject/
