@@ -10,3 +10,5 @@ EventBoardBackEnd/target/classes/requestHandlers/AssociationsRequestHandler.clas
 EventBoardBackEnd/target/classes/requestHandlers/EventsRequestHandler.class
 EventBoardBackEnd/target/classes/requestHandlers/UsersRequestHandler.class
 EventBoardBackEnd/target/classes/requestHandlers/EventsRequestHandler.class
+/EventBoardBackEnd/nbproject/
+/EventBoardFrontEnd/nbproject/

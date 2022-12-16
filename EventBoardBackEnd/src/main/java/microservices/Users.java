@@ -8,7 +8,7 @@ package microservices;
  *
  * @author mkonidala
  */
-import requesthandlers.UsersRequestHandler;
+import routers.UsersRequestRouter;
 import java.sql.*;
 import java.net.*;
 import java.io.*;
@@ -26,7 +26,7 @@ public class Users {
             Class.forName(driver);
             Connection c = DriverManager.getConnection(url + dbName, userName, dbpassword);
             HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 9000), 0);
-            server.createContext("/users", new UsersRequestHandler(c));
+            server.createContext("/users", new UsersRequestRouter(c));
             server.start();
         } catch (Exception i) {
             System.out.println(i);

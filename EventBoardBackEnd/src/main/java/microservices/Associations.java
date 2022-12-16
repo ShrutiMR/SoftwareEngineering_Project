@@ -8,12 +8,12 @@ package microservices;
  *
  * @author mkonidala
  */
-import requesthandlers.UsersRequestHandler;
+import routers.UsersRequestRouter;
 import java.sql.*;
 import java.net.*;
 import java.io.*;
 import com.sun.net.httpserver.HttpServer;
-import requesthandlers.AssociationsRequestHandler;
+import routers.AssociationsRequestRouter;
 
 public class Associations {
 
@@ -27,7 +27,7 @@ public class Associations {
             Class.forName(driver);
             Connection c = DriverManager.getConnection(url + dbName, userName, dbpassword);
             HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 9001), 0);
-            server.createContext("/associations", new AssociationsRequestHandler(c));
+            server.createContext("/associations", new AssociationsRequestRouter(c));
             server.start();
         } catch (Exception i) {
             System.out.println(i);

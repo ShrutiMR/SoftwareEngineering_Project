@@ -11,7 +11,7 @@ package microservices;
 import java.sql.*;
 import java.net.*;
 import com.sun.net.httpserver.HttpServer;
-import requesthandlers.EventsRequestHandler;
+import routers.EventsRequestRouter;
 
 public class Events {
 
@@ -25,7 +25,7 @@ public class Events {
             Class.forName(driver);
             Connection c = DriverManager.getConnection(url + dbName, userName, dbpassword);
             HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 9002), 0);
-            server.createContext("/events", new EventsRequestHandler(c));
+            server.createContext("/events", new EventsRequestRouter(c));
             server.start();
         } catch (Exception i) {
             System.out.println(i);
