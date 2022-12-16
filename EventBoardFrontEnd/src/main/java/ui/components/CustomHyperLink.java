@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import ui.pages.LoginPage;
-import ui.pages.RegistrationPage;
  
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -24,11 +23,12 @@ import java.net.URISyntaxException;
 import javax.swing.JComponent;
 import java.awt.Window.Type;
 import ui.pages.RegistrationPageAssociation;
+import ui.pages.RegistrationPageUser;
  
 
 public class CustomHyperLink extends JLabel {
 
-	private String url;
+    private String url;
 //    private String html = "<html><a href=''>%s</a></html>";
     String page;
      
@@ -70,7 +70,7 @@ public class CustomHyperLink extends JLabel {
                 //Desktop.getDesktop().browse(new URI(JHyperlinkClass.this.url));
                 if(page == "RegistrationPage"){
                    prevPage.dispose();
-                   RegistrationPage registerPage = new RegistrationPage();
+                   RegistrationPageUser registerPage = new RegistrationPageUser();
                    registerPage.setExtendedState(JFrame.MAXIMIZED_BOTH); 
                    registerPage.setUndecorated(true);
                    registerPage.setVisible(true); //make form visible to the use
