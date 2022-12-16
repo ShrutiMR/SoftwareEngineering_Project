@@ -31,36 +31,45 @@ public class UsersPostRequestHandler {
         OutputStream outputStream = httpExchange.getResponseBody();
 
         try {
+            
+            //Rest call to create a new User 
             Statement st = connection.createStatement();
             String query = "insert into users (USER_CODE, USER_NAME, PASSWORD, FIRST_NAME, LAST_NAME, EMAIL)  "
                     + "values(" + urlBody.get("user_code") + ", '"
                     + urlBody.get("user_name") + "', '" + urlBody.get("password") + "', '" + urlBody.get("first_name") + "', '" + urlBody.get("last_name") + "', '" + urlBody.get("email") + "')";
             System.out.println(query);
             st.executeUpdate(query);
+            
+            //Setting success status in the response
             jo.put("isSuccess", true);
-
+            
+            //Building Response
             String resp = jo.toString();
             byte[] b = resp.getBytes("UTF-8");
             httpExchange.sendResponseHeaders(200, b.length);
-            // htmlResponse.getBytes()
+            
             outputStream.write(b);
-
             outputStream.flush();
             outputStream.close();
             st.close();
+            
         } catch (Exception e) {
+            
+            //Logging exception 
             System.out.println(e.getMessage());
+            
+            //Setting success status to false if the above code doesn't exacute 
             jo.put("isSuccess", false);
 
             try {
                 String resp = jo.toString();
                 byte[] b = resp.getBytes("UTF-8");
                 httpExchange.sendResponseHeaders(200, b.length);
-                // htmlResponse.getBytes()
+                
                 outputStream.write(b);
-
                 outputStream.flush();
                 outputStream.close();
+
             } catch (Exception e1) {
                 System.out.println(e1.getMessage());
             }

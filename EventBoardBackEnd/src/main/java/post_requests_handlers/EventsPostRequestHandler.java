@@ -26,8 +26,6 @@ public class EventsPostRequestHandler {
 
     public void processPostRequest(HashMap urlParameters, HashMap urlBody) {
 
-        System.out.println("I am here");
-        System.out.println(urlParameters);
         OutputStream outputStream = httpExchange.getResponseBody();
         JSONObject jo = new JSONObject();
         String resp = null;
@@ -41,25 +39,37 @@ public class EventsPostRequestHandler {
             Statement st = connection.createStatement();
 
             if (follow != null && user_id != null && event_id != null) {
+                
+                // Rest call for an user to follow or unfollow an event
                 if ("Y".equals(follow)) {
+                    
                     st.executeUpdate("INSERT INTO FOLLOW_EVENTS  (EVENT_ID, USER_ID) VALUES ( " + event_id + "  , " + user_id + ")");
+                    
+                    //Setting success status in the response
                     jo.put("isSuccess", true);
                 } else if ("N".equals(follow)) {
+                    
                     st.executeUpdate("DELETE FROM FOLLOW_EVENTS WHERE EVENT_ID = " + event_id + " AND USER_ID = " + user_id);
+                    
+                    //Setting success status in the response
                     jo.put("isSuccess", true);
                 } else {
+                    
+                    //Setting success status to false if the follow parameter is not Y or N
                     jo.put("isSuccess", false);
                 }
-
+                
+                //Building Response
                 resp = jo.toString();
                 byte[] b = resp.getBytes("UTF-8");
                 httpExchange.sendResponseHeaders(200, b.length);
-                // htmlResponse.getBytes()
+                
                 outputStream.write(b);
-
                 outputStream.flush();
                 outputStream.close();
             } else {
+                
+                //Rest call to create a new event
                 String description = (String) urlBody.get("description");
                 String name = (String) urlBody.get("name");
                 String association_id = (String) urlBody.get("association_id");
@@ -82,45 +92,51 @@ public class EventsPostRequestHandler {
 
                     String query = "INSERT INTO EVENTS (ASSOCIATION_ID, NAME, START_TIME, END_TIME, VENUE, DESCRIPTION)  "
                             + "values(" + association_id + "," + name + "," + start_time + "," + end_time + "," + venue + "," + description + ");";
-                    System.out.println(query);
+                    
                     st.executeUpdate(query);
-
+                    
+                    //Setting success status in the response
                     jo.put("isSuccess", true);
-
+                    
+                    //Building Response
                     resp = jo.toString();
                     byte[] b = resp.getBytes("UTF-8");
                     httpExchange.sendResponseHeaders(200, b.length);
-                    // htmlResponse.getBytes()
+                    
                     outputStream.write(b);
-
                     outputStream.flush();
                     outputStream.close();
                 } else {
+                    //Setting success status to false in the response, if requires params are not passed
                     jo.put("isSuccess", false);
+                    
+                    //Building Response
                     resp = jo.toString();
                     byte[] b = resp.getBytes("UTF-8");
                     httpExchange.sendResponseHeaders(200, b.length);
-                    // htmlResponse.getBytes()
+                    
                     outputStream.write(b);
-
                     outputStream.flush();
                     outputStream.close();
                 }
             }
             st.close();
         } catch (Exception e) {
+            //Logging exception
             System.out.println(e.getMessage());
+            
+            ////Setting success status to false if above code fails to execute 
             jo.put("isSuccess", false);
 
             try {
                 resp = jo.toString();
                 byte[] b = resp.getBytes("UTF-8");
                 httpExchange.sendResponseHeaders(200, b.length);
-                // htmlResponse.getBytes()
+                
                 outputStream.write(b);
-
                 outputStream.flush();
                 outputStream.close();
+                
             } catch (Exception e1) {
                 System.out.println(e1.getMessage());
             }
