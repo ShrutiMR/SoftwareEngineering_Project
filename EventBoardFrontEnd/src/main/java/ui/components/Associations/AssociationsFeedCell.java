@@ -31,6 +31,7 @@ public class AssociationsFeedCell extends AbstractCellEditor implements TableCel
     AssociationsFeed feed;
 
     public AssociationsFeedCell() {
+        //This is the cell of the associations feed table: Text + Approve & Reject Button / Follow & Un Follow Button
         text = new JLabel();
         RestAPIHook rest = new RestAPIHook();
 

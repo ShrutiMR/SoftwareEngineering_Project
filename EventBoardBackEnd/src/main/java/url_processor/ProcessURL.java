@@ -21,6 +21,7 @@ public class ProcessURL {
         this.httpExchange = httpExchange;
     }
     public HashMap getURLParameters() {
+        //This method parses all the parameters passed in the URL 
         HashMap<String, String> parameters = new HashMap();
         
         String[] parser = httpExchange.
@@ -42,6 +43,7 @@ public class ProcessURL {
     }
     
     public HashMap getURLBody() {
+        //This method parses all the parameters passed through the request body
         StringBuilder sb = new StringBuilder();
         InputStream inputStream = httpExchange.getRequestBody();
         int i;

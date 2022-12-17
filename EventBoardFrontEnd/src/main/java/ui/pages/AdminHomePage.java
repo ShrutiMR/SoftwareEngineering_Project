@@ -4,13 +4,10 @@
  */
 package ui.pages;
 
-import java.awt.Component;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.*;
 import org.json.JSONObject;
 import rest.RestAPIHook;

@@ -5,9 +5,6 @@
 package ui.components.Events;
 
 import java.util.HashMap;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 /**
  *
  * @author munee

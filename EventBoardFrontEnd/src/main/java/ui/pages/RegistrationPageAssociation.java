@@ -410,9 +410,8 @@ public final class RegistrationPageAssociation extends javax.swing.JFrame {
             params.put("password", password);
             params.put("description", desc);
             params.put("association_name", name);
-            System.out.println(params);
+       
             JSONObject p = a.invokePostMethod(url, params);
-            System.out.println(p);
             
             //Redirect to login page if POST call is a success
             if(p.get("isSuccess").toString() == "true"){

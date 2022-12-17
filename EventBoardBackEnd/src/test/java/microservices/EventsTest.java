@@ -257,6 +257,7 @@ public class EventsTest {
     
     @BeforeClass
     public static void setUpClass() {
+        //Creating a mock rest service for this instance
         String url = "jdbc:mysql://127.0.0.1:3306/";
         String dbName = "EVENTBOARD";
         String driver = "com.mysql.cj.jdbc.Driver";
@@ -268,7 +269,7 @@ public class EventsTest {
             Class.forName(driver);
             c = DriverManager.getConnection(url + dbName, userName, dbpassword);
             
-            //Starting Http Server on port 9002
+            //Starting Http Server on port 8002
             server = HttpServer.create(new InetSocketAddress("localhost", 8002), 0);
             server.createContext("/events", new EventsRequestRouter(c));
             server.start();
@@ -280,6 +281,7 @@ public class EventsTest {
     
     @AfterClass
     public static void tearDownClass() {
+        //Closing the db connection and stopping the server of the mock service
         try {
             c.close();
             server.stop(0);

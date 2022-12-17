@@ -4,14 +4,13 @@
  */
 package ui.components.Associations;
 
-import java.util.HashMap;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 /**
  *
  * @author munee
  */
+
+import java.util.HashMap;
+
 public class AssociationsFeed {
   public String association_name;
   public String association_id;

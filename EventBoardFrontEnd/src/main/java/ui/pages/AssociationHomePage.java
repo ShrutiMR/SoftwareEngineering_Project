@@ -5,11 +5,9 @@
 package ui.pages;
 
 import java.awt.Color;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -24,9 +22,6 @@ import javax.swing.JTable;
 import javax.swing.SpinnerDateModel;
 import org.json.JSONObject;
 import rest.RestAPIHook;
-import ui.components.Associations.AssociationsFeed;
-import ui.components.Associations.AssociationsFeedCell;
-import ui.components.Associations.AssociationsFeedTableModel;
 import ui.components.Events.EventsFeed;
 import ui.components.Events.EventsFeedCell;
 import ui.components.Events.EventsFeedTableModel;
@@ -661,12 +656,11 @@ public final class AssociationHomePage extends javax.swing.JFrame {
                 String startDate = dateFormat1.format(start);
                 String startTime = startSpinner.getValue().toString().split(" ",6)[3];
                 String startDateTime = startDate+" "+startTime;
-                System.out.println("startDateTime -- "+startDateTime);
+                
                 //Format the end date and time
                 String endDate = dateFormat1.format(end);
                 String endTime = endSpinner.getValue().toString().split(" ",6)[3];
                 String endDateTime = endDate+" "+endTime;
-                System.out.println("startDateTime -- "+endDateTime);
                 
                 //Enter loop if all fields are valid
                 if(validations(startDateTime, endDateTime)){
@@ -689,7 +683,7 @@ public final class AssociationHomePage extends javax.swing.JFrame {
                         params.put("venue", venue);
                     }
                     params.put("description", desc);
-                    System.out.println(params);
+                    
                     JSONObject p = a.invokePostMethod(url, params);
                     //Display success messsage once POST call is a success
                     if(p.get("isSuccess").toString().equals("true")){

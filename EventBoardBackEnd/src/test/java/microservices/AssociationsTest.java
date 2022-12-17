@@ -319,6 +319,7 @@ public class AssociationsTest {
 
     @BeforeClass
     public static void setUpClass() {
+        //Creating a mock rest service for this instance
         String url = "jdbc:mysql://127.0.0.1:3306/";
         String dbName = "EVENTBOARD";
         String driver = "com.mysql.cj.jdbc.Driver";
@@ -342,6 +343,7 @@ public class AssociationsTest {
 
     @AfterClass
     public static void tearDownClass() {
+        //Closing the db connection and stopping the server of the mock service
         try {
             c.close();
             server.stop(0);

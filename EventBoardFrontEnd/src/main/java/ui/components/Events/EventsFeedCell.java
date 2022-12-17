@@ -4,7 +4,6 @@
  */
 package ui.components.Events;
 
-import ui.components.Events.EventsFeed;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -30,6 +29,7 @@ public class EventsFeedCell extends AbstractCellEditor implements TableCellEdito
     EventsFeed feed;
 
     public EventsFeedCell() {
+        //This is the cell of the events feed table: Text + Follow Button + Un Follow Button
         text = new JLabel();
         RestAPIHook rest = new RestAPIHook();
 
@@ -109,7 +109,7 @@ public class EventsFeedCell extends AbstractCellEditor implements TableCellEdito
             }
         }
         
-        
+        // We parse start_time and display time in AM/PM. 
         int start_hour = Integer.parseInt(feed.start_time.substring(11,13));
         String start_time = feed.start_time;
         if(start_hour>12){
@@ -126,6 +126,7 @@ public class EventsFeedCell extends AbstractCellEditor implements TableCellEdito
             start_time+=" AM";
         }
         
+        // We parse end_time and display time in AM/PM. 
         int end_hour = Integer.parseInt(feed.end_time.substring(11,13));
         String end_time = feed.end_time;
         if(end_hour>12){
