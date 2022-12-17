@@ -1,0 +1,21 @@
+System Requirments:
+* MySQL 8.0
+* JDK 19
+* Java supporting IDE
+
+Setting up tools for the project to run:
+
+MySQL 8.0 Setup:
+* Install MySQL server 8.0, MySQL WorkBench 8.0, MySQL Shell 8.0
+* Set the root password to '12345678'. If you set a custom password, 
+change the password in three files present in /EventBoardBackEnd/src/main/java/microservices folder
+* Host the MySQL server using MySQL WorkBench 8.0. Then open the terminal by navigating to C:\Program Files\MySQL\MySQL Server 8.0\bin
+* Run "mysql -u root -p" and enter the password to log into the MySQL server.
+* Create the tables in MySQL using the db_schema.sql file.
+Feel free to edit the admin details before running the sql file.
+
+JDK 19:
+* To run this project we need to install JDK 19.
+* Make sure the default java version is set to JDK 19. Some of our functionality does not work on older JDK versions.
+
+Any Java supporing IDE(Ex: NetBeans):
